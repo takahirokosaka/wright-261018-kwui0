@@ -1,10 +1,11 @@
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { message } from "@tauri-apps/plugin-dialog";
 
 import { EditorView, minimalSetup } from "codemirror";
 import { markdown } from "@codemirror/lang-markdown";
 import { EditorState } from "@codemirror/state";
+
+import "./styles.css";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -17,11 +18,6 @@ async function loadUserCss() {
 			style.id = "user-styles";
 			style.textContent = css;
 			document.head.appendChild(style);
-		} else {
-			await message("Please make a stylesheet file ~/.write.css", {
-				title: "Stylesheet Not Found",
-				kind: "warning",
-			});
 		}
 	} catch (error) {
 		console.error("Failed to load user CSS:", error);
