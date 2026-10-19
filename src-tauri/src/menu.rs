@@ -1,11 +1,7 @@
 use std::{collections::HashSet, sync::Mutex};
-use tauri::{
-	AppHandle, Emitter, Manager, WindowEvent,
-	menu::{MenuItem, SubmenuBuilder},
-};
+use tauri::{AppHandle, Emitter, Manager, WindowEvent, menu::MenuItem};
 
 pub struct MenuState {
-	close_window: MenuItem<tauri::Wry>,
 	save_as: MenuItem<tauri::Wry>,
 	focused_windows: Mutex<HashSet<String>>,
 }
@@ -15,24 +11,23 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 	let save_as = MenuItem::with_id(app, "save-as", "Save As…", true, Some("CmdOrCtrl+S"))?;
 
-	// TODO: ⌘W doesn't appear in the menu. Why?
-	let close_window = MenuItem::with_id(app, "close-editor", "Close", true, Some("CmdOrCtrl+W"))?;
-
-	let file_menu = SubmenuBuilder::new(app, "File")
-		.item(&new_window)
-		.item(&save_as)
-		.item(&close_window)
-		.build()?;
-
-	// Replace the original File menu with the above.
 	if let Some(menu) = app.menu() {
 		let items = menu.items()?;
 
-		for (index, item) in items.iter().enumerate() {
-			if let Some(submenu) = item.as_submenu() {
-				if submenu.text()? == "File" {
-					menu.remove_at(index)?;
-					menu.insert(&file_menu, index)?;
+		for item in &items {
+			if let Some(file_menu) = item.as_submenu() {
+				if file_menu.text()? == "File" {
+					// Change the original predefined menu item's label
+					for file_item in file_menu.items()? {
+						if let Some(predefined) = file_item.as_predefined_menuitem() {
+							if predefined.text()? == "Close Window" {
+								predefined.set_text("Close")?;
+							}
+						}
+					}
+
+					file_menu.prepend(&save_as)?;
+					file_menu.prepend(&new_window)?;
 					break;
 				}
 			}
@@ -47,7 +42,6 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 		.collect();
 
 	app.manage(MenuState {
-		close_window,
 		save_as,
 		focused_windows: Mutex::new(focused_windows),
 	});
@@ -62,7 +56,6 @@ fn update_enabled_state(app: &AppHandle) {
 	let enabled = !state.focused_windows.lock().unwrap().is_empty();
 
 	let _ = state.save_as.set_enabled(enabled);
-	let _ = state.close_window.set_enabled(enabled);
 }
 
 pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
@@ -98,15 +91,6 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 
 			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "menu-save-as", ());
-			}
-		}
-		"close-editor" => {
-			if let Some(window) = app
-				.webview_windows()
-				.into_values()
-				.find(|window| window.is_focused().unwrap_or(false))
-			{
-				let _ = window.close();
 			}
 		}
 		_ => {}
