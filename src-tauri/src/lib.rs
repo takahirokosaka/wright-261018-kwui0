@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use tauri::Manager;
 
 mod menu;
 mod windows;
@@ -18,6 +19,9 @@ pub fn run() {
 		.plugin(tauri_plugin_fs::init())
 		.setup(app_setup)
 		.on_menu_event(menu::handle_event)
+		.on_window_event(|window, event| {
+			menu::handle_window_event(&window.app_handle(), window.label(), event);
+		})
 		.invoke_handler(tauri::generate_handler![load_user_css])
 		.build(tauri::generate_context!())
 		.expect("error while running tauri application");
