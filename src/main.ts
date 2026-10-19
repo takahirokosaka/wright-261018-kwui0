@@ -2,6 +2,10 @@ import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { message } from "@tauri-apps/plugin-dialog";
 
+import { EditorView, minimalSetup } from "codemirror";
+import { markdown } from "@codemirror/lang-markdown";
+import { EditorState } from "@codemirror/state";
+
 console.debug("Window label:", getCurrentWindow().label);
 
 async function loadUserCss() {
@@ -28,3 +32,11 @@ async function loadUserCss() {
 }
 
 void loadUserCss();
+
+new EditorView({
+	state: EditorState.create({
+		doc: "",
+		extensions: [minimalSetup, markdown()],
+	}),
+	parent: document.body,
+});
