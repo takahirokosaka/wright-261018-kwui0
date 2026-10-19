@@ -3,12 +3,6 @@ use std::path::PathBuf;
 mod menu;
 mod windows;
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-	format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 // Load ~/.write.css as a user-customizable stylesheet at startup.
 #[tauri::command]
 fn load_user_css() -> Option<String> {
@@ -24,7 +18,7 @@ pub fn run() {
 		.plugin(tauri_plugin_dialog::init())
 		.setup(app_setup)
 		.on_menu_event(menu::handle_event)
-		.invoke_handler(tauri::generate_handler![greet, load_user_css])
+		.invoke_handler(tauri::generate_handler![load_user_css])
 		.build(tauri::generate_context!())
 		.expect("error while running tauri application");
 
