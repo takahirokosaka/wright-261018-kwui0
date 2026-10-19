@@ -15,7 +15,7 @@ pub fn run() {
 	let app = tauri::Builder::default()
 		.plugin(tauri_plugin_dialog::init())
 		.plugin(tauri_plugin_opener::init())
-		.plugin(tauri_plugin_dialog::init())
+		.plugin(tauri_plugin_fs::init())
 		.setup(app_setup)
 		.on_menu_event(menu::handle_event)
 		.invoke_handler(tauri::generate_handler![load_user_css])
