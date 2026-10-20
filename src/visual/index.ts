@@ -18,6 +18,7 @@ import { horizontalRuleDecorations } from "./horizontal-rule";
 import { inlineCodeDecorations } from "./inline-code";
 import { listDecorations } from "./list";
 import { quoteDecorations } from "./quote";
+import { htmlInlineDecorations } from "./html-inline";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -30,7 +31,8 @@ const handlers: MarkupHandler[] = [
 	horizontalRuleDecorations,
 	inlineCodeDecorations,
 	listDecorations,
-	quoteDecorations
+	quoteDecorations,
+	htmlInlineDecorations
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {
