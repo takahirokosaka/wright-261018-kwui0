@@ -88,3 +88,11 @@ body {
 		transparent calc(50% + 0.5px)
 	);
 }
+
+.md-inline-code {
+	padding: 0.1em 0.2em;
+	border-radius: 4px;
+	background: #e2e5e9;
+	font-family: "Google Sans Code", monospace;
+	font-size: 0.9em;
+}
