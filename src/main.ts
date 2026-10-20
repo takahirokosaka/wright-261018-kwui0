@@ -95,3 +95,5 @@ void updateWindowTitle(view.state.doc.toString());
 		});
 	},
 );
+
+view.focus();
