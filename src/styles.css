@@ -140,3 +140,13 @@ body {
 	margin-left: 2.25em;
 	padding-left: 0.75em;
 }
+
+.md-html-inline {
+	display: inline;
+}
+
+.md-html-inline img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+}
