@@ -1,11 +1,19 @@
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::{collections::HashSet, sync::Mutex};
-use tauri::{AppHandle, Emitter, Listener, Manager, WindowEvent, menu::MenuItem};
+use std::{
+	collections::{HashMap, HashSet},
+	sync::Mutex,
+};
+use tauri::{
+	AppHandle, Emitter, Listener, Manager, WindowEvent,
+	menu::{CheckMenuItem, MenuItem},
+};
 
 pub struct MenuState {
 	save: MenuItem<tauri::Wry>,
 	save_as: MenuItem<tauri::Wry>,
+	source_mode: CheckMenuItem<tauri::Wry>,
 	focused_windows: Mutex<HashSet<String>>,
+	source_mode_by_window: Mutex<HashMap<String, bool>>, // Lets each window retain its own Source Mode setting, even when another window gets focus.
 	quitting: AtomicBool,
 }
 
@@ -20,6 +28,15 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 	// Tauri has documented issues with intercepting native Cmd+Q through its general application-exit event. Replacing the native Quit item gives your app a predictable menu event to handle. See the Tauri issue on macOS application termination. https://github.com/tauri-apps/tauri/issues/9198
 	let quit = MenuItem::with_id(app, "quit", "Quit Write", true, Some("CmdOrCtrl+Q"))?;
+
+	let source_mode = CheckMenuItem::with_id(
+		app,
+		"source-mode",
+		"Source Mode",
+		true,
+		false,
+		Some("CmdOrCtrl+;"),
+	)?;
 
 	if let Some(menu) = app.menu() {
 		let items = menu.items()?;
@@ -57,6 +74,10 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 						}
 					}
 				}
+
+				if submenu_text == "View" {
+					submenu.append(&source_mode)?;
+				}
 			}
 		}
 	}
@@ -68,10 +89,18 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 		.map(|window| window.label().to_string())
 		.collect();
 
+	let source_mode_by_window = app
+		.webview_windows()
+		.keys()
+		.map(|label| (label.clone(), false))
+		.collect();
+
 	app.manage(MenuState {
 		save,
 		save_as,
+		source_mode,
 		focused_windows: Mutex::new(focused_windows),
+		source_mode_by_window: Mutex::new(source_mode_by_window),
 		quitting: AtomicBool::new(false),
 	});
 
@@ -91,10 +120,27 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 fn update_enabled_state(app: &AppHandle) {
 	let state = app.state::<MenuState>();
-	let enabled = !state.focused_windows.lock().unwrap().is_empty();
+
+	let focused_label = state.focused_windows.lock().unwrap().iter().next().cloned();
+
+	let enabled = focused_label.is_some();
+
+	let source_mode_enabled = focused_label
+		.as_ref()
+		.and_then(|label| {
+			state
+				.source_mode_by_window
+				.lock()
+				.unwrap()
+				.get(label)
+				.copied()
+		})
+		.unwrap_or(false);
 
 	let _ = state.save.set_enabled(enabled);
 	let _ = state.save_as.set_enabled(enabled);
+	let _ = state.source_mode.set_enabled(enabled);
+	let _ = state.source_mode.set_checked(source_mode_enabled);
 }
 
 pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
@@ -113,6 +159,7 @@ pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
 		}
 		WindowEvent::Destroyed => {
 			state.focused_windows.lock().unwrap().remove(label);
+			state.source_mode_by_window.lock().unwrap().remove(label);
 
 			if state.quitting.load(Ordering::SeqCst) && app.webview_windows().is_empty() {
 				app.exit(0);
@@ -169,6 +216,31 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 			for window in app.webview_windows().values() {
 				// let _ = window.emit("confirm-quit", ());
 				let _ = window.close();
+			}
+		}
+		"source-mode" => {
+			let focused = app
+				.webview_windows()
+				.into_values()
+				.find(|window| window.is_focused().unwrap_or(false));
+
+			if let Some(window) = focused {
+				let label = window.label().to_string();
+
+				let state = app.state::<MenuState>();
+
+				let enabled = {
+					let mut modes = state.source_mode_by_window.lock().unwrap();
+					let mode = modes.entry(label.clone()).or_insert(false);
+					*mode = !*mode;
+					*mode
+				};
+
+				let _ = window.emit_to(&label, "menu-source-mode", enabled);
+
+				update_enabled_state(app);
+
+				// TODO: have the frontend report its actual Source Mode state back to Rust when it changes, rather than relying exclusively on toggling the stored boolean.
 			}
 		}
 		_ => {}

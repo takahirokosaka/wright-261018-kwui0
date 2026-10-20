@@ -6,6 +6,7 @@ declare global {
 
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { listen } from "@tauri-apps/api/event";
 
 import { EditorView, minimalSetup } from "codemirror";
 import { markdown } from "@codemirror/lang-markdown";
@@ -65,3 +66,9 @@ void updateWindowTitle(view.state.doc.toString());
 /* const unlistenClose = */ await registerCloseConfirmation(() =>
 	view.state.doc.toString(),
 );
+
+// Switch to the source mode.
+/* const unlistenSourceMode = */ await listen<boolean>("menu-source-mode", (event) => {
+	const sourceMode = event.payload;
+	console.log("sourceMode", sourceMode);
+});
