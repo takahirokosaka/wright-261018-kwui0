@@ -1,5 +1,6 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { confirm } from "@tauri-apps/plugin-dialog";
+import { emit } from "@tauri-apps/api/event";
 
 import { getSavedContent } from "./save-file";
 
@@ -37,6 +38,8 @@ export async function registerCloseConfirmation(
 
 			if (shouldClose) {
 				await window.destroy();
+			} else {
+				await emit("quit-cancelled");
 			}
 		} catch (error) {
 			console.error("Close confirmation failed:", error);

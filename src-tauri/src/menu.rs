@@ -1,10 +1,12 @@
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::{collections::HashSet, sync::Mutex};
-use tauri::{AppHandle, Emitter, Manager, WindowEvent, menu::MenuItem};
+use tauri::{AppHandle, Emitter, Listener, Manager, WindowEvent, menu::MenuItem};
 
 pub struct MenuState {
 	save: MenuItem<tauri::Wry>,
 	save_as: MenuItem<tauri::Wry>,
 	focused_windows: Mutex<HashSet<String>>,
+	quitting: AtomicBool,
 }
 
 pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
@@ -14,14 +16,18 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 	let save_as = MenuItem::with_id(app, "save-as", "Save As…", true, Some("CmdOrCtrl+Shift+S"))?;
 
+	// Tauri has documented issues with intercepting native Cmd+Q through its general application-exit event. Replacing the native Quit item gives your app a predictable menu event to handle. See the Tauri issue on macOS application termination. https://github.com/tauri-apps/tauri/issues/9198
+	let quit = MenuItem::with_id(app, "quit", "Quit Write", true, Some("CmdOrCtrl+Q"))?;
+
 	if let Some(menu) = app.menu() {
 		let items = menu.items()?;
 
 		for item in &items {
-			if let Some(file_menu) = item.as_submenu() {
-				if file_menu.text()? == "File" {
-					// Change the original predefined menu item's label
-					for file_item in file_menu.items()? {
+			if let Some(submenu) = item.as_submenu() {
+				let submenu_text = submenu.text()?;
+
+				if submenu_text == "File" {
+					for file_item in submenu.items()? {
 						if let Some(predefined) = file_item.as_predefined_menuitem() {
 							if predefined.text()? == "Close Window" {
 								predefined.set_text("Close")?;
@@ -30,10 +36,23 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 					}
 
 					// Prepend these in reverse order to have them above "Close"
-					file_menu.prepend(&save_as)?;
-					file_menu.prepend(&save)?;
-					file_menu.prepend(&new_window)?;
-					break;
+					submenu.prepend(&save_as)?;
+					submenu.prepend(&save)?;
+					submenu.prepend(&new_window)?;
+				}
+
+				#[cfg(target_os = "macos")]
+				if submenu_text == "Write" {
+					// Replace the native Quit Write item with our custom item.
+					for (index, app_item) in submenu.items()?.iter().enumerate() {
+						if let Some(predefined) = app_item.as_predefined_menuitem() {
+							if predefined.text()? == "Quit Write" {
+								submenu.remove_at(index)?;
+								submenu.append(&quit)?;
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -50,9 +69,19 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 		save,
 		save_as,
 		focused_windows: Mutex::new(focused_windows),
+		quitting: AtomicBool::new(false),
 	});
 
 	update_enabled_state(app.app_handle());
+
+	let handle = app.handle().clone();
+
+	app.listen("quit-cancelled", move |_| {
+		handle
+			.state::<MenuState>()
+			.quitting
+			.store(false, Ordering::SeqCst);
+	});
 
 	Ok(())
 }
@@ -76,8 +105,16 @@ pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
 				.unwrap()
 				.insert(label.to_string());
 		}
-		WindowEvent::Focused(false) | WindowEvent::Destroyed => {
+		WindowEvent::Focused(false) => {
 			state.focused_windows.lock().unwrap().remove(label);
+		}
+		WindowEvent::Destroyed => {
+			state.focused_windows.lock().unwrap().remove(label);
+
+			if state.quitting.load(Ordering::SeqCst) && app.webview_windows().is_empty() {
+				app.exit(0);
+				return;
+			}
 		}
 		_ => return,
 	}
@@ -103,6 +140,23 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 					"menu-save-as"
 				};
 				let _ = window.emit_to(window.label(), event_name, ());
+			}
+		}
+		"quit" => {
+			let windows = app.webview_windows();
+
+			if windows.is_empty() {
+				app.exit(0);
+				return;
+			}
+
+			app.state::<MenuState>()
+				.quitting
+				.store(true, Ordering::SeqCst);
+
+			for window in app.webview_windows().values() {
+				// let _ = window.emit("confirm-quit", ());
+				let _ = window.close();
 			}
 		}
 		_ => {}
