@@ -51,6 +51,7 @@ export function htmlInlineDecorations(view: EditorView): DecorationSet {
 
 	const activeLine = state.doc.lineAt(state.selection.main.head).number;
 
+	// This version only matches HTML fully contained within a visible range. If a <span> starts in one visible range and ends outside it, the regex won't match it.
 	for (const { from, to } of view.visibleRanges) {
 		const source = state.doc.sliceString(from, to);
 		const regex = new RegExp(inlineHtmlRegex.source, inlineHtmlRegex.flags);
