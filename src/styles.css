@@ -122,3 +122,21 @@ body {
 	background-repeat: no-repeat;
 	background-size: 4px 4px;
 }
+
+.md-blockquote {
+	border-left: 2px solid #6a737d;
+	margin-left: 0.75em;
+	padding-left: 0.75em;
+}
+
+.md-blockquote-2 {
+	border-left-color: #569cd6;
+	margin-left: 1.5em;
+	padding-left: 0.75em;
+}
+
+.md-blockquote-3 {
+	border-left-color: #c586c0;
+	margin-left: 2.25em;
+	padding-left: 0.75em;
+}
