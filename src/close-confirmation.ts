@@ -7,6 +7,8 @@ export async function registerCloseConfirmation(
 	getCurrentContent: () => string,
 ): Promise<() => void> {
 	const window = getCurrentWindow();
+
+	// Imagine the user rapidly clicks the window's close button several times. Without this flag, multiple dialogs might be triggered for the same window.
 	let confirming = false;
 
 	const unlisten = await window.onCloseRequested(async (event) => {
