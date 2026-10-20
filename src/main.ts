@@ -19,6 +19,8 @@ import { updateWindowTitle } from "./window-title";
 import { registerCloseConfirmation } from "./close-confirmation";
 import { loadMarkdownFile } from "./save-file";
 
+import { visual } from "./visual";
+
 console.debug("Window label:", getCurrentWindow().label);
 
 async function loadUserCss() {
@@ -52,14 +54,14 @@ const initialContent = initialPath ? await loadMarkdownFile(initialPath) : "";
 
 const modeCompartment = new Compartment();
 
-function modeExtensions(source: boolean) {
+function modeExtensions(sourceMode: boolean) {
 	const common: Extension[] = [];
 
-	if (source) {
+	if (sourceMode) {
 		return [lineNumbers(), ...common];
 	}
 
-	return [...common];
+	return [visual, ...common];
 }
 
 const view = new EditorView({
