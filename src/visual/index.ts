@@ -16,6 +16,7 @@ import { emphasisDecorations } from "./emphasis";
 import { highlightDecorations } from "./highlight";
 import { horizontalRuleDecorations } from "./horizontal-rule";
 import { inlineCodeDecorations } from "./inline-code";
+import { listDecorations } from "./list";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -27,6 +28,7 @@ const handlers: MarkupHandler[] = [
 	highlightDecorations,
 	horizontalRuleDecorations,
 	inlineCodeDecorations,
+	listDecorations
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {

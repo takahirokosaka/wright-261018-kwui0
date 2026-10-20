@@ -96,3 +96,22 @@ body {
 	font-family: "Google Sans Code", monospace;
 	font-size: 0.9em;
 }
+
+.md-list-marker {
+	display: inline-block;
+	text-align: center;
+	pointer-events: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.md-list-marker-bullet::before {
+	content: "";
+	display: inline-block;
+	width: 0.35em;
+	height: 0.35em;
+	margin-right: 0.5em;
+	background-color: currentColor;
+	border-radius: 50%;
+	vertical-align: middle;
+}
