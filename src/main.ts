@@ -31,7 +31,7 @@ import { trailingSpaces } from "./visual/trailing-spaces";
 import { htmlBlockField } from "./visual/html-block";
 import { mathPreview } from "./visual/math";
 
-console.debug("Window label:", getCurrentWindow().label);
+console.debug("👋 Hi. Window label:", getCurrentWindow().label);
 
 async function loadUserCss() {
 	try {
