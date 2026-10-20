@@ -8,6 +8,7 @@ import { EditorState } from "@codemirror/state";
 import "./styles.css";
 import { registerMenuEvents } from "./menu";
 import { updateWindowTitle } from "./window-title";
+import { registerCloseConfirmation } from "./close-confirmation";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -49,3 +50,8 @@ await registerMenuEvents(view);
 
 // Set the initial title.
 void updateWindowTitle(view.state.doc.toString());
+
+// Register the close confirmation handler.
+/* const unlistenClose = */ await registerCloseConfirmation(() =>
+	view.state.doc.toString(),
+);

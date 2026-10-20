@@ -1,0 +1,47 @@
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { confirm } from "@tauri-apps/plugin-dialog";
+
+import { getSavedContent } from "./save-file";
+
+export async function registerCloseConfirmation(
+	getCurrentContent: () => string,
+): Promise<() => void> {
+	const window = getCurrentWindow();
+	let confirming = false;
+
+	const unlisten = await window.onCloseRequested(async (event) => {
+		const hasUnsavedChanges = getCurrentContent() !== getSavedContent();
+
+		if (!hasUnsavedChanges) {
+			return;
+		}
+
+		// Keep the window open while confirmation is pending.
+		event.preventDefault();
+
+		if (confirming) return;
+		confirming = true;
+
+		try {
+			const shouldClose = await confirm(
+				"Are you sure you want to discard unsaved changes?",
+				{
+					title: "Unsaved Changes",
+					kind: "warning",
+					okLabel: "Discard",
+					cancelLabel: "Cancel",
+				},
+			);
+
+			if (shouldClose) {
+				await window.destroy();
+			}
+		} catch (error) {
+			console.error("Close confirmation failed:", error);
+		} finally {
+			confirming = false;
+		}
+	});
+
+	return unlisten;
+}
