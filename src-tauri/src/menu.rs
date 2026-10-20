@@ -88,7 +88,7 @@ pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
 pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 	match event.id().as_ref() {
 		"new-editor" => {
-			let _ = crate::windows::create_editor_window(app);
+			let _ = crate::editor_window::create_editor_window(app);
 		}
 		"save" | "save-as" => {
 			let focused = app

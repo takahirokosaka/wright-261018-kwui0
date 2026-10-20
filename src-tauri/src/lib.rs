@@ -2,7 +2,7 @@ use std::path::PathBuf;
 use tauri::Manager;
 
 mod menu;
-mod windows;
+mod editor_window;
 
 // Load ~/.write.css as a user-customizable stylesheet at startup.
 #[tauri::command]
@@ -39,7 +39,7 @@ pub fn run() {
 
 fn app_setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 	// Create the first editor window.
-	windows::create_editor_window(app.handle())?;
+	editor_window::create_editor_window(app.handle())?;
 
 	// Set up the application menus.
 	menu::setup(app)?;
