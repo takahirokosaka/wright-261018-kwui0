@@ -12,6 +12,7 @@ import {
 	syntaxHighlighting,
 	defaultHighlightStyle,
 } from "@codemirror/language";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { EditorState, Extension } from "@codemirror/state";
 import { Compartment } from "@codemirror/state";
 import { lineNumbers } from "@codemirror/view";
@@ -24,7 +25,7 @@ import { loadMarkdownFile } from "./save-file";
 
 import { visual } from "./visual";
 import { clickableUrl } from "./visual/clickable-url";
-import { markdownSupport } from "./visual/code-block";
+import { codeBlocklanguages } from "./visual/code-block";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -61,7 +62,10 @@ const modeCompartment = new Compartment();
 
 function modeExtensions(sourceMode: boolean) {
 	const common: Extension[] = [
-		markdownSupport,
+		markdown({
+			base: markdownLanguage, // Language support for GFM plus subscript, superscript, and emoji syntax.
+			codeLanguages: codeBlocklanguages,
+		}),
 		syntaxHighlighting(defaultHighlightStyle),
 	];
 

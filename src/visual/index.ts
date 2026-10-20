@@ -12,6 +12,7 @@ import {
 import { headingDecorations } from "./headings";
 import { urlDecorations } from "./clickable-url";
 import { codeBlockDecorations } from "./code-block";
+import { emphasisDecorations } from "./emphasis";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -19,6 +20,7 @@ const handlers: MarkupHandler[] = [
 	headingDecorations,
 	urlDecorations,
 	codeBlockDecorations,
+	emphasisDecorations
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {

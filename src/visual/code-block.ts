@@ -1,6 +1,5 @@
 import { javaLanguage } from "@codemirror/lang-java";
 import { javascript, typescriptLanguage } from "@codemirror/lang-javascript";
-import { markdown } from "@codemirror/lang-markdown";
 import { rustLanguage } from "@codemirror/lang-rust";
 import { shell } from "@codemirror/legacy-modes/mode/shell";
 import {
@@ -19,7 +18,7 @@ import {
 
 const shellLanguage = StreamLanguage.define(shell);
 
-const languages = [
+export const codeBlocklanguages = [
 	LanguageDescription.of({
 		name: "JavaScript",
 		alias: ["js", "jsx"],
@@ -46,10 +45,6 @@ const languages = [
 		support: new LanguageSupport(shellLanguage),
 	}),
 ];
-
-export const markdownSupport = markdown({
-	codeLanguages: languages,
-});
 
 class FenceLabelWidget extends WidgetType {
 	constructor(readonly label: string) {

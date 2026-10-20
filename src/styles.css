@@ -63,3 +63,15 @@ body {
 	font-family: "Google Sans Code", monospace;
 	tab-size: 3;
 }
+
+.md-bold {
+	font-weight: 700;
+}
+
+.md-italic {
+	font-style: italic;
+}
+
+.md-strikethrough {
+	text-decoration: line-through;
+}
