@@ -1,7 +1,9 @@
 import { RangeSetBuilder } from "@codemirror/state";
 import { Decoration, DecorationSet, EditorView } from "@codemirror/view";
 import { syntaxTree } from "@codemirror/language";
-import { openUrl } from "@tauri-apps/plugin-opener";
+import { dirname, resolve } from "@tauri-apps/api/path";
+import { openUrl, openPath } from "@tauri-apps/plugin-opener";
+import { getCurrentFilePath } from "../save-file";
 
 const hideMark = Decoration.replace({});
 const linkMark = Decoration.mark({ class: "md-link" });
@@ -80,6 +82,31 @@ function findUrlAt(view: EditorView, pos: number): string | null {
 	return url;
 }
 
+async function openMarkdownLink(href: string): Promise<void> {
+	if (/^https?:\/\//i.test(href)) {
+		await openUrl(href);
+		return;
+	}
+
+	if (/^file:\/\//i.test(href)) {
+		const url = new URL(href);
+		await openPath(decodeURIComponent(url.pathname));
+		return;
+	}
+
+	const currentFile = getCurrentFilePath();
+
+	if (!currentFile) {
+		console.warn("Cannot resolve relative link: no file is open.");
+		return;
+	}
+
+	const directory = await dirname(currentFile);
+	const targetPath = await resolve(directory, href);
+
+	await openPath(targetPath);
+}
+
 export const clickableUrl = EditorView.domEventHandlers({
 	mousedown(event, view) {
 		if (!(event.ctrlKey || event.metaKey)) return false;
@@ -95,8 +122,8 @@ export const clickableUrl = EditorView.domEventHandlers({
 
 		if (!url) return false;
 
-		void openUrl(url).catch((error) => {
-			console.error("Failed to open URL:", error);
+		void openMarkdownLink(url).catch((error) => {
+			console.error("Failed to open link:", error);
 		});
 
 		return true;

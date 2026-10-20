@@ -11,6 +11,10 @@ export function getCurrentFileName(): Promise<string> {
 		: Promise.resolve("Untitled.md");
 }
 
+export function getCurrentFilePath(): string | null {
+	return currentFilePath;
+}
+
 export function getSavedContent(): string {
 	return savedContent;
 }
