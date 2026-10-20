@@ -10,6 +10,8 @@ pub struct MenuState {
 }
 
 pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
+	let open = MenuItem::with_id(app, "open", "Open…", true, Some("CmdOrCtrl+O"))?;
+
 	let new_window = MenuItem::with_id(app, "new-editor", "New", true, Some("CmdOrCtrl+N"))?;
 
 	let save = MenuItem::with_id(app, "save", "Save", true, Some("CmdOrCtrl+S"))?;
@@ -39,6 +41,7 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 					submenu.prepend(&save_as)?;
 					submenu.prepend(&save)?;
 					submenu.prepend(&new_window)?;
+					submenu.prepend(&open)?;
 				}
 
 				#[cfg(target_os = "macos")]
@@ -124,8 +127,17 @@ pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
 
 pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 	match event.id().as_ref() {
+		"open" => {
+			if let Some(window) = app
+				.webview_windows()
+				.into_values()
+				.find(|window| window.is_focused().unwrap_or(false))
+			{
+				let _ = window.emit_to(window.label(), "menu-open", ());
+			}
+		}
 		"new-editor" => {
-			let _ = crate::editor_window::create_editor_window(app);
+			let _ = crate::editor_window::create_editor_window_without_file(app);
 		}
 		"save" | "save-as" => {
 			let focused = app

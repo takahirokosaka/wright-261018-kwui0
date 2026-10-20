@@ -1,3 +1,9 @@
+declare global {
+	interface Window {
+		__INITIAL_FILE_PATH__?: string;
+	}
+}
+
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
@@ -9,6 +15,7 @@ import "./styles.css";
 import { registerMenuEvents } from "./menu";
 import { updateWindowTitle } from "./window-title";
 import { registerCloseConfirmation } from "./close-confirmation";
+import { loadMarkdownFile } from "./save-file";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -38,9 +45,12 @@ const titleUpdateExtension = EditorView.updateListener.of((update) => {
 	}
 });
 
+const initialPath = window.__INITIAL_FILE_PATH__;
+const initialContent = initialPath ? await loadMarkdownFile(initialPath) : "";
+
 const view = new EditorView({
 	state: EditorState.create({
-		doc: "",
+		doc: initialContent,
 		extensions: [minimalSetup, markdown(), titleUpdateExtension],
 	}),
 	parent: document.body,

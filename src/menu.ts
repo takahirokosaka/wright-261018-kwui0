@@ -1,8 +1,13 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import type { EditorView } from "codemirror";
+import { open } from "@tauri-apps/plugin-dialog";
+import { invoke } from "@tauri-apps/api/core";
 
-import { saveMarkdown, saveMarkdownAs } from "./save-file";
+import type { EditorView } from "codemirror";
+import { undoDepth } from "@codemirror/commands";
+
+import { saveMarkdown, saveMarkdownAs, setOpenedFile } from "./save-file";
 import { updateWindowTitle } from "./window-title";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 
 export async function registerMenuEvents(view: EditorView) {
 	// If we simply listen (import { listen } from "@tauri-apps/api/event";), all editor windows respond to the event, even if window.emit_to is used. We don't know why.
@@ -32,9 +37,51 @@ export async function registerMenuEvents(view: EditorView) {
 		void saveCurrent(true);
 	});
 
+	const unlistenOpen = await window.listen("menu-open", async () => {
+		try {
+			const path = await open({
+				multiple: false,
+				filters: [
+					{
+						name: "Markdown",
+						extensions: ["md", "markdown"],
+					},
+				],
+			});
+
+			if (!path || Array.isArray(path)) return;
+
+			// If the current window is not a genuinely new, empty editor, don't reuse it.
+			const hasContent = view.state.doc.length > 0;
+			const hasUndoHistory = undoDepth(view.state) > 0;
+
+			if (hasContent || hasUndoHistory) {
+				await invoke("open_markdown_in_new_window", { path });
+				return;
+			}
+
+			const content = await readTextFile(path);
+
+			setOpenedFile(path, content);
+
+			view.dispatch({
+				changes: {
+					from: 0,
+					to: view.state.doc.length,
+					insert: content,
+				},
+			});
+
+			await updateWindowTitle(content);
+		} catch (error) {
+			alert(`Open failed: ${String(error)}`);
+		}
+	});
+
 	// Return cleanup callbacks for when the editor is disposed. This is optional if your editor lives for the entire lifetime of its window, but it is useful if we recreate the editor view.
 	return () => {
 		unlistenSave();
 		unlistenSaveAs();
+		unlistenOpen();
 	};
 }

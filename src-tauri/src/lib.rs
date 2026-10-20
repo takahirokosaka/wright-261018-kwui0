@@ -1,8 +1,8 @@
 use std::path::PathBuf;
 use tauri::Manager;
 
-mod menu;
 mod editor_window;
+mod menu;
 
 // Load ~/.write.css as a user-customizable stylesheet at startup.
 #[tauri::command]
@@ -22,7 +22,7 @@ pub fn run() {
 		.on_window_event(|window, event| {
 			menu::handle_window_event(&window.app_handle(), window.label(), event);
 		})
-		.invoke_handler(tauri::generate_handler![load_user_css])
+		.invoke_handler(tauri::generate_handler![load_user_css,editor_window::open_markdown_in_new_window])
 		.build(tauri::generate_context!())
 		.expect("error while running tauri application");
 
@@ -39,7 +39,7 @@ pub fn run() {
 
 fn app_setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 	// Create the first editor window.
-	editor_window::create_editor_window(app.handle())?;
+	editor_window::create_editor_window_without_file(app.handle())?;
 
 	// Set up the application menus.
 	menu::setup(app)?;

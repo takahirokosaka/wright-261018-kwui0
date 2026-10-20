@@ -1,6 +1,6 @@
 import { basename } from "@tauri-apps/api/path";
 import { save } from "@tauri-apps/plugin-dialog";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 
 let currentFilePath: string | null = null;
 let savedContent = "";
@@ -13,6 +13,11 @@ export function getCurrentFileName(): Promise<string> {
 
 export function getSavedContent(): string {
 	return savedContent;
+}
+
+export function setOpenedFile(path: string, content: string): void {
+	currentFilePath = path;
+	savedContent = content;
 }
 
 async function saveToPath(content: string, path: string): Promise<void> {
@@ -46,4 +51,11 @@ export async function saveMarkdownAs(content: string): Promise<void> {
 	if (!path) return;
 
 	await saveToPath(content, path);
+}
+
+export async function loadMarkdownFile(path: string): Promise<string> {
+	const content = await readTextFile(path);
+	currentFilePath = path;
+	savedContent = content;
+	return content;
 }
