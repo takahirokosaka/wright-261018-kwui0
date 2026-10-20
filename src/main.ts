@@ -27,6 +27,7 @@ import { visual } from "./visual";
 import { clickableUrl } from "./visual/clickable-url";
 import { codeBlocklanguages } from "./visual/code-block";
 import { highlightExtension } from "./visual/highlight";
+import { trailingSpaces } from "./visual/trailing-spaces";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -70,6 +71,7 @@ function modeExtensions(sourceMode: boolean) {
 			codeLanguages: codeBlocklanguages,
 		}),
 		syntaxHighlighting(defaultHighlightStyle),
+		trailingSpaces,
 	];
 
 	if (sourceMode) {

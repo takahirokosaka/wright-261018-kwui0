@@ -115,3 +115,10 @@ body {
 	border-radius: 50%;
 	vertical-align: middle;
 }
+
+.md-trailing-space {
+	background-image: radial-gradient(circle, red 2px, transparent 2px);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 4px 4px;
+}
