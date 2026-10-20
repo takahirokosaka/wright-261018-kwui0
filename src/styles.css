@@ -75,3 +75,16 @@ body {
 .md-strikethrough {
 	text-decoration: line-through;
 }
+
+/* Draw a 1px horizontal line through the vertical center of the decorated line. */
+.md-horizontal-rule {
+	border: none;
+	text-decoration: none;
+	background-image: linear-gradient(
+		to bottom,
+		transparent calc(50% - 0.5px),
+		#6a737d calc(50% - 0.5px),
+		#6a737d calc(50% + 0.5px),
+		transparent calc(50% + 0.5px)
+	);
+}

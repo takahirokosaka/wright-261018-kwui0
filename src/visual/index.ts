@@ -14,6 +14,7 @@ import { urlDecorations } from "./clickable-url";
 import { codeBlockDecorations } from "./code-block";
 import { emphasisDecorations } from "./emphasis";
 import { highlightDecorations } from "./highlight";
+import { horizontalRuleDecorations } from "./horizontal-rule";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -23,6 +24,7 @@ const handlers: MarkupHandler[] = [
 	codeBlockDecorations,
 	emphasisDecorations,
 	highlightDecorations,
+	horizontalRuleDecorations
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {
