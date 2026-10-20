@@ -14,7 +14,7 @@ body {
 
 .cm-editor {
 	height: 100%;
-	padding: .5rem;
+	padding: 0.5rem;
 }
 
 .cm-editor .cm-scroller {
@@ -161,4 +161,17 @@ body {
 	max-width: 100%;
 	height: auto;
 	margin-inline: auto;
+}
+
+.md-html-block {
+	border: 1px solid transparent;
+	border-radius: 4px;
+	transition:
+		background-color 150ms ease,
+		border-color 150ms ease;
+
+	&:hover {
+		background-color: #f0f4ff;
+		border-color: #9bbcff;
+	}
 }

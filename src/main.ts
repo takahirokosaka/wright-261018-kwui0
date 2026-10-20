@@ -28,6 +28,7 @@ import { clickableUrl } from "./visual/clickable-url";
 import { codeBlocklanguages } from "./visual/code-block";
 import { highlightExtension } from "./visual/highlight";
 import { trailingSpaces } from "./visual/trailing-spaces";
+import { htmlBlockField } from "./visual/html-block";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -78,7 +79,7 @@ function modeExtensions(sourceMode: boolean) {
 		return [lineNumbers(), ...common];
 	}
 
-	return [visual, clickableUrl, ...common];
+	return [visual, clickableUrl, htmlBlockField, ...common];
 }
 
 const view = new EditorView({
