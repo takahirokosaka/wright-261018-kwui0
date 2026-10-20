@@ -1,37 +1,37 @@
+// A shared helper for loading decorations.
+
+import { RangeSetBuilder } from "@codemirror/state";
 import {
 	ViewPlugin,
+	type Decoration,
 	type DecorationSet,
 	type EditorView,
 	type ViewUpdate,
 } from "@codemirror/view";
 
-import { RangeSetBuilder } from "@codemirror/state";
-
 import { headingDecorations } from "./headings";
+import { urlDecorations } from "./clickable-url";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
-const handlers: MarkupHandler[] = [headingDecorations];
+const handlers: MarkupHandler[] = [headingDecorations, urlDecorations];
 
 function buildDecorations(view: EditorView): DecorationSet {
-	const ranges = handlers.flatMap((handler) => {
-		const decorations = handler(view);
-		const result: {
-			from: number;
-			to: number;
-			value: import("@codemirror/view").Decoration;
-		}[] = [];
+	const ranges: {
+		from: number;
+		to: number;
+		value: Decoration;
+	}[] = [];
 
-		decorations.between(0, view.state.doc.length, (from, to, value) => {
-			result.push({ from, to, value });
+	for (const handler of handlers) {
+		handler(view).between(0, view.state.doc.length, (from, to, value) => {
+			ranges.push({ from, to, value });
 		});
-
-		return result;
-	});
+	}
 
 	ranges.sort((a, b) => a.from - b.from || a.to - b.to);
 
-	const builder = new RangeSetBuilder<import("@codemirror/view").Decoration>();
+	const builder = new RangeSetBuilder<Decoration>();
 
 	for (const range of ranges) {
 		builder.add(range.from, range.to, range.value);

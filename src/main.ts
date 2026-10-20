@@ -20,6 +20,7 @@ import { registerCloseConfirmation } from "./close-confirmation";
 import { loadMarkdownFile } from "./save-file";
 
 import { visual } from "./visual";
+import { clickableUrl } from "./visual/clickable-url";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -61,7 +62,7 @@ function modeExtensions(sourceMode: boolean) {
 		return [lineNumbers(), ...common];
 	}
 
-	return [visual, ...common];
+	return [visual, clickableUrl, ...common];
 }
 
 const view = new EditorView({

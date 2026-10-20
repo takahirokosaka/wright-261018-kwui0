@@ -25,3 +25,10 @@ body {
 	font-family: "Sofia Sans Condensed";
 	font-size: 2rem;
 }
+
+.md-link {
+	color: var(--link-color, #58a6ff);
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	cursor: pointer;
+}
