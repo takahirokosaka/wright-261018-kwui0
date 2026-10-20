@@ -1,14 +1,11 @@
-import "katex/dist/katex.min.css";
-
-import { RangeSetBuilder } from "@codemirror/state";
+import { type Range } from "@codemirror/state";
 import {
 	Decoration,
 	EditorView,
-	ViewPlugin,
-	type DecorationSet,
-	type ViewUpdate,
 	WidgetType,
+	type DecorationSet,
 } from "@codemirror/view";
+import "katex/dist/katex.min.css";
 import katex from "katex";
 
 class MathWidget extends WidgetType {
@@ -44,16 +41,13 @@ class MathWidget extends WidgetType {
 	}
 }
 
-function buildDecorations(view: EditorView): DecorationSet {
-	const builder = new RangeSetBuilder<Decoration>();
+export function mathDecorations(view: EditorView): DecorationSet {
+	const decorations: Range<Decoration>[] = [];
 	const { state } = view;
 	const selection = state.selection.main;
 
-	// Only process visible lines for efficiency.
 	for (const { from, to } of view.visibleRanges) {
 		const text = state.doc.sliceString(from, to);
-
-		// Match display math before inline math.
 		const regex = /^\$\$([\s\S]*?)\$\$|(?<!\$)\$([^$\n]+?)\$(?!\$)/gm;
 
 		let match: RegExpExecArray | null;
@@ -71,35 +65,14 @@ function buildDecorations(view: EditorView): DecorationSet {
 			const displayMode = match[1] !== undefined;
 			const formula = (match[1] ?? match[2]).trim();
 
-			builder.add(
-				start,
-				end,
+			decorations.push(
 				Decoration.replace({
 					widget: new MathWidget(formula, displayMode),
 					block: displayMode,
-				}),
+				}).range(start, end),
 			);
 		}
 	}
 
-	return builder.finish();
+	return Decoration.set(decorations, true);
 }
-
-export const mathPreview = ViewPlugin.fromClass(
-	class {
-		decorations: DecorationSet;
-
-		constructor(view: EditorView) {
-			this.decorations = buildDecorations(view);
-		}
-
-		update(update: ViewUpdate) {
-			if (update.docChanged || update.viewportChanged || update.selectionSet) {
-				this.decorations = buildDecorations(update.view);
-			}
-		}
-	},
-	{
-		decorations: (plugin) => plugin.decorations,
-	},
-);

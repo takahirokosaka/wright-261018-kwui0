@@ -20,6 +20,7 @@ import { listDecorations } from "./list";
 import { quoteDecorations } from "./quote";
 import { htmlInlineDecorations } from "./html-inline";
 import { imageDecorations } from "./image";
+import { mathDecorations } from "./math";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -35,6 +36,7 @@ const handlers: MarkupHandler[] = [
 	quoteDecorations,
 	htmlInlineDecorations,
 	imageDecorations,
+	mathDecorations,
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {
