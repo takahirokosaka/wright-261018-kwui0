@@ -14,11 +14,16 @@ body {
 
 .cm-editor {
 	height: 100%;
+	padding: .5rem;
 }
 
 .cm-editor .cm-scroller {
 	overflow: auto;
 	font: inherit;
+}
+
+.cm-editor .cm-line {
+	padding: 0;
 }
 
 .md-h1 {
@@ -149,4 +154,11 @@ body {
 	max-width: 100%;
 	height: auto;
 	vertical-align: middle;
+}
+
+.md-image {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin-inline: auto;
 }
