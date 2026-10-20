@@ -236,7 +236,7 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 					*mode
 				};
 
-				let _ = window.emit_to(&label, "menu-source-mode", enabled);
+				let _ = window.emit_to(window.label(), "menu-source-mode", enabled);
 
 				update_enabled_state(app);
 

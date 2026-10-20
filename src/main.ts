@@ -6,11 +6,12 @@ declare global {
 
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { listen } from "@tauri-apps/api/event";
 
 import { EditorView, minimalSetup } from "codemirror";
 import { markdown } from "@codemirror/lang-markdown";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
+import { Compartment } from "@codemirror/state";
+import { lineNumbers } from "@codemirror/view";
 
 import "./styles.css";
 import { registerMenuEvents } from "./menu";
@@ -49,10 +50,27 @@ const titleUpdateExtension = EditorView.updateListener.of((update) => {
 const initialPath = window.__INITIAL_FILE_PATH__;
 const initialContent = initialPath ? await loadMarkdownFile(initialPath) : "";
 
+const modeCompartment = new Compartment();
+
+function modeExtensions(source: boolean) {
+	const common: Extension[] = [];
+
+	if (source) {
+		return [lineNumbers(), ...common];
+	}
+
+	return [...common];
+}
+
 const view = new EditorView({
 	state: EditorState.create({
 		doc: initialContent,
-		extensions: [minimalSetup, markdown(), titleUpdateExtension],
+		extensions: [
+			minimalSetup,
+			markdown(),
+			titleUpdateExtension,
+			modeCompartment.of(modeExtensions(false)),
+		],
 	}),
 	parent: document.body,
 });
@@ -68,7 +86,12 @@ void updateWindowTitle(view.state.doc.toString());
 );
 
 // Switch to the source mode.
-/* const unlistenSourceMode = */ await listen<boolean>("menu-source-mode", (event) => {
-	const sourceMode = event.payload;
-	console.log("sourceMode", sourceMode);
-});
+/* const unlistenSourceMode = */ await getCurrentWindow().listen<boolean>(
+	"menu-source-mode",
+	(event) => {
+		const sourceMode = event.payload;
+		view.dispatch({
+			effects: modeCompartment.reconfigure(modeExtensions(sourceMode)),
+		});
+	},
+);
