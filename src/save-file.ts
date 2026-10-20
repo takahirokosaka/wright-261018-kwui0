@@ -1,11 +1,24 @@
+import { basename } from "@tauri-apps/api/path";
 import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 let currentFilePath: string | null = null;
+let savedContent = "";
+
+export function getCurrentFileName(): Promise<string> {
+	return currentFilePath
+		? basename(currentFilePath)
+		: Promise.resolve("Untitled.md");
+}
+
+export function getSavedContent(): string {
+	return savedContent;
+}
 
 async function saveToPath(content: string, path: string): Promise<void> {
 	await writeTextFile(path, content);
 	currentFilePath = path;
+	savedContent = content;
 }
 
 export async function saveMarkdown(content: string): Promise<void> {

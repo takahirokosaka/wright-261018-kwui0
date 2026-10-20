@@ -2,6 +2,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { EditorView } from "codemirror";
 
 import { saveMarkdown, saveMarkdownAs } from "./save-file";
+import { updateWindowTitle } from "./window-title";
 
 export async function registerMenuEvents(view: EditorView) {
 	// If we simply listen (import { listen } from "@tauri-apps/api/event";), all editor windows respond to the event, even if window.emit_to is used. We don't know why.
@@ -16,6 +17,8 @@ export async function registerMenuEvents(view: EditorView) {
 			} else {
 				await saveMarkdown(content);
 			}
+
+			await updateWindowTitle(view.state.doc.toString());
 		} catch (error) {
 			alert(`${saveAs ? "Save As" : "Save"} failed: ${String(error)}`);
 		}

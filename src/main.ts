@@ -7,6 +7,7 @@ import { EditorState } from "@codemirror/state";
 
 import "./styles.css";
 import { registerMenuEvents } from "./menu";
+import { updateWindowTitle } from "./window-title";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -30,12 +31,21 @@ async function loadUserCss() {
 
 void loadUserCss();
 
+const titleUpdateExtension = EditorView.updateListener.of((update) => {
+	if (update.docChanged) {
+		void updateWindowTitle(update.state.doc.toString());
+	}
+});
+
 const view = new EditorView({
 	state: EditorState.create({
 		doc: "",
-		extensions: [minimalSetup, markdown()],
+		extensions: [minimalSetup, markdown(), titleUpdateExtension],
 	}),
 	parent: document.body,
 });
 
 await registerMenuEvents(view);
+
+// Set the initial title.
+void updateWindowTitle(view.state.doc.toString());

@@ -5,6 +5,7 @@
 	"windows": ["*"],
 	"permissions": [
 		"core:default",
+		"core:window:allow-set-title",
 		"opener:default",
 		"dialog:default",
 		"fs:allow-write-text-file"
