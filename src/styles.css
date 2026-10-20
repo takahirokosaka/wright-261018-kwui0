@@ -175,3 +175,7 @@ body {
 		border-color: #9bbcff;
 	}
 }
+
+pre {
+	margin: 0;
+}
