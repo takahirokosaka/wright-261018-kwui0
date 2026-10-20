@@ -179,3 +179,15 @@ body {
 pre {
 	margin: 0;
 }
+
+.md-source-mode {
+	font-family: "Google Sans Code", monospace;
+}
+
+.cm-editor.md-source-mode {
+	padding: 0;
+}
+
+.cm-gutters {
+	margin-right: .3em;
+}

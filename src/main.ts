@@ -64,6 +64,10 @@ const initialContent = initialPath ? await loadMarkdownFile(initialPath) : "";
 
 const modeCompartment = new Compartment();
 
+const sourceModeClass = EditorView.editorAttributes.of({
+  class: "md-source-mode",
+});
+
 function modeExtensions(sourceMode: boolean) {
 	const common: Extension[] = [
 		markdown({
@@ -77,7 +81,7 @@ function modeExtensions(sourceMode: boolean) {
 	];
 
 	if (sourceMode) {
-		return [lineNumbers(), ...common];
+		return [lineNumbers(), sourceModeClass, ...common];
 	}
 
 	return [visual, clickableUrl, htmlBlockField, mathPreview, ...common];
