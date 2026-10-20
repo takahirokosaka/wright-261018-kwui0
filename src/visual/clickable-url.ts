@@ -1,7 +1,7 @@
 import { RangeSetBuilder } from "@codemirror/state";
 import { Decoration, DecorationSet, EditorView } from "@codemirror/view";
 import { syntaxTree } from "@codemirror/language";
-import { dirname, resolve } from "@tauri-apps/api/path";
+import { isAbsolute, dirname, resolve } from "@tauri-apps/api/path";
 import { openUrl, openPath } from "@tauri-apps/plugin-opener";
 import { getCurrentFilePath } from "../save-file";
 
@@ -83,26 +83,33 @@ function findUrlAt(view: EditorView, pos: number): string | null {
 }
 
 async function openMarkdownLink(href: string): Promise<void> {
-	if (/^https?:\/\//i.test(href)) {
-		await openUrl(href);
+	// Remove Markdown's optional angle-bracket delimiters. Wrapping a link destination in angle brackets (<...>) is a standard way to include spaces without percent-encoding them.
+	const path =
+		href.startsWith("<") && href.endsWith(">") ? href.slice(1, -1) : href;
+
+	if (/^https?:\/\//i.test(path)) {
+		await openUrl(path);
 		return;
 	}
 
-	if (/^file:\/\//i.test(href)) {
-		const url = new URL(href);
-		await openPath(decodeURIComponent(url.pathname));
+	if (/^file:\/\//i.test(path)) {
+		await openPath(decodeURIComponent(new URL(path).pathname));
+		return;
+	}
+
+	if (await isAbsolute(path)) {
+		await openPath(path);
 		return;
 	}
 
 	const currentFile = getCurrentFilePath();
 
 	if (!currentFile) {
-		console.warn("Cannot resolve relative link: no file is open.");
-		return;
+		throw new Error("Cannot resolve relative link: no file is open.");
 	}
 
 	const directory = await dirname(currentFile);
-	const targetPath = await resolve(directory, href);
+	const targetPath = await resolve(directory, path);
 
 	await openPath(targetPath);
 }
