@@ -26,6 +26,7 @@ import { loadMarkdownFile } from "./save-file";
 import { visual } from "./visual";
 import { clickableUrl } from "./visual/clickable-url";
 import { codeBlocklanguages } from "./visual/code-block";
+import { highlightExtension } from "./visual/highlight";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -64,6 +65,8 @@ function modeExtensions(sourceMode: boolean) {
 	const common: Extension[] = [
 		markdown({
 			base: markdownLanguage, // Language support for GFM plus subscript, superscript, and emoji syntax.
+			extensions: [highlightExtension],
+
 			codeLanguages: codeBlocklanguages,
 		}),
 		syntaxHighlighting(defaultHighlightStyle),
