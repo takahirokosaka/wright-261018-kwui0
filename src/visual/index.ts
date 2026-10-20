@@ -11,10 +11,15 @@ import {
 
 import { headingDecorations } from "./headings";
 import { urlDecorations } from "./clickable-url";
+import { codeBlockDecorations } from "./code-block";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
-const handlers: MarkupHandler[] = [headingDecorations, urlDecorations];
+const handlers: MarkupHandler[] = [
+	headingDecorations,
+	urlDecorations,
+	codeBlockDecorations,
+];
 
 function buildDecorations(view: EditorView): DecorationSet {
 	const ranges: {

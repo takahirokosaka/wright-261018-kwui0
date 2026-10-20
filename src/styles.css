@@ -32,3 +32,34 @@ body {
 	text-decoration-color: currentColor;
 	cursor: pointer;
 }
+
+.md-code-fence-label::before {
+	content: "";
+	display: inline-block;
+	width: 40px;
+	height: 1px;
+	background-color: currentColor;
+	vertical-align: middle;
+	margin-right: 0.5em;
+}
+
+.md-code-fence-label {
+	display: inline-block;
+	font-family: "Google Sans Code", monospace;
+	vertical-align: middle;
+	margin-bottom: 0.4em;
+}
+
+.md-code-fence-end {
+	display: inline-block;
+	width: 40px;
+	height: 1px;
+	margin-top: 0.5em;
+	background-color: gray;
+	vertical-align: middle;
+}
+
+.md-code-block-line {
+	font-family: "Google Sans Code", monospace;
+	tab-size: 3;
+}

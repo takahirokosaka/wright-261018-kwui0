@@ -8,7 +8,10 @@ import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { EditorView, minimalSetup } from "codemirror";
-import { markdown } from "@codemirror/lang-markdown";
+import {
+	syntaxHighlighting,
+	defaultHighlightStyle,
+} from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
 import { Compartment } from "@codemirror/state";
 import { lineNumbers } from "@codemirror/view";
@@ -21,6 +24,7 @@ import { loadMarkdownFile } from "./save-file";
 
 import { visual } from "./visual";
 import { clickableUrl } from "./visual/clickable-url";
+import { markdownSupport } from "./visual/code-block";
 
 console.debug("Window label:", getCurrentWindow().label);
 
@@ -56,7 +60,10 @@ const initialContent = initialPath ? await loadMarkdownFile(initialPath) : "";
 const modeCompartment = new Compartment();
 
 function modeExtensions(sourceMode: boolean) {
-	const common: Extension[] = [];
+	const common: Extension[] = [
+		markdownSupport,
+		syntaxHighlighting(defaultHighlightStyle),
+	];
 
 	if (sourceMode) {
 		return [lineNumbers(), ...common];
@@ -70,7 +77,6 @@ const view = new EditorView({
 		doc: initialContent,
 		extensions: [
 			minimalSetup,
-			markdown(),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
 		],
