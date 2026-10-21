@@ -1,4 +1,3 @@
-import { dirname, join, basename, extname } from "@tauri-apps/api/path";
 import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
@@ -168,11 +167,8 @@ ${body}
 	const currentFilePath = getCurrentFilePath();
 
 	const defaultPath = currentFilePath
-		? await join(
-				await dirname(currentFilePath),
-				(await basename(filename, await extname(filename))).concat(".html"),
-			)
-		: filename.replace(/\.[^/.]+$/, "") + ".html";
+		? currentFilePath.replace(/\.[^/.]+$/, ".html")
+		: filename.replace(/\.[^/.]+$/, ".html");
 
 	const path = await save({
 		defaultPath,
