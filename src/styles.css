@@ -267,3 +267,47 @@ pre {
 	text-decoration: underline wavy #e53935;
 	text-decoration-skip-ink: none;
 }
+
+/* Base admonition styling */
+.md-admonition-line {
+	background: color-mix(in srgb, var(--admonition-color) 8%, transparent);
+}
+
+.md-admonition-label {
+	display: inline-block;
+	padding: 1px 6px;
+	margin-right: 6px;
+	border-radius: 4px;
+	font-weight: 700;
+	color: var(--admonition-color);
+	background: color-mix(in srgb, var(--admonition-color) 12%, transparent);
+}
+
+.cm-line.md-admonition-line:has(.md-admonition-end) {
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
+	padding: 0;
+}
+
+/* Docusaurus-inspired colors */
+.md-admonition-note {
+	--admonition-color: #448aff;
+}
+
+.md-admonition-tip {
+	--admonition-color: #00a400;
+}
+
+.md-admonition-info {
+	--admonition-color: #00a4b4;
+}
+
+.md-admonition-warning,
+.md-admonition-caution {
+	--admonition-color: #e6a700;
+}
+
+.md-admonition-danger {
+	--admonition-color: #e13238;
+}

@@ -23,6 +23,7 @@ import { imageDecorations } from "./image";
 import { mathDecorations } from "./math";
 import { emptyLineDecorations } from "./empty-line";
 import { loadSpellChecker, spellCheckDecorations } from "./spell";
+import { admonitionDecorations } from "./admonition";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -43,6 +44,7 @@ const handlers: MarkupHandler[] = [
 	mathDecorations,
 	emptyLineDecorations,
 	(view) => spellCheckDecorations(view, spell),
+	admonitionDecorations,
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {
