@@ -262,3 +262,8 @@ pre {
 		white-space: pre-wrap;
 	}
 }
+
+.dm-spell-error {
+	text-decoration: underline wavy #e53935;
+	text-decoration-skip-ink: none;
+}

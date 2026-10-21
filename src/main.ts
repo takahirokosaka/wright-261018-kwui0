@@ -90,7 +90,19 @@ function modeExtensions(sourceMode: boolean) {
 		return [lineNumbers(), sourceModeClass, ...common];
 	}
 
-	return [visual, clickableUrl, htmlBlockField, displayMathField, visualNewlineKeymap, ...common];
+	return [
+		// The native spell checker doesn't work at least on macOS.
+		EditorView.contentAttributes.of({
+			spellcheck: "true",
+			lang: "en-US",
+		}),
+		visual,
+		clickableUrl,
+		htmlBlockField,
+		displayMathField,
+		visualNewlineKeymap,
+		...common,
+	];
 }
 
 const view = new EditorView({

@@ -26,3 +26,7 @@ dist-ssr
 # MathJax was copied from node_modules.
 # cp -R node_modules/mathjax/* public/mathjax/
 /public/mathjax
+
+# Dictionaries were copied from node_modules.
+# cp -a ./node_modules/.pnpm/typo-js@1.4.0/node_modules/typo-js/dictionaries public/
+/public/dictionaries

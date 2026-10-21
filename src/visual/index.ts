@@ -22,8 +22,11 @@ import { htmlInlineDecorations } from "./html-inline";
 import { imageDecorations } from "./image";
 import { mathDecorations } from "./math";
 import { emptyLineDecorations } from "./empty-line";
+import { loadSpellChecker, spellCheckDecorations } from "./spell";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
+
+const spell = await loadSpellChecker();
 
 const handlers: MarkupHandler[] = [
 	headingDecorations,
@@ -39,6 +42,7 @@ const handlers: MarkupHandler[] = [
 	imageDecorations,
 	mathDecorations,
 	emptyLineDecorations,
+	(view) => spellCheckDecorations(view, spell),
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {
