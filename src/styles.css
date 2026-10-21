@@ -26,9 +26,25 @@ body {
 	padding: 0;
 }
 
-.md-h1 {
+:is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6) *, h1, h2, h3, h4, h5, h6 {
 	font-family: "Sofia Sans Condensed";
-	font-size: 2rem;
+	text-decoration: none;
+	line-height: 1.25;
+}
+
+.md-h1, h1
+{
+	font-size: 2.83em;
+}
+
+.md-h2, h2
+{
+	font-size: 2em;
+}
+
+.md-h3, h3
+{
+	font-size: 1.41em;
 }
 
 .md-link {
