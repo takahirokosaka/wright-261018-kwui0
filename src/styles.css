@@ -311,3 +311,56 @@ pre {
 .md-admonition-danger {
 	--admonition-color: #e13238;
 }
+
+/* Export HTML */
+.md-admonition {
+	--admonition-color: #448aff;
+	--admonition-bg: #448aff12;
+
+	margin: 1.25em 0;
+	padding: 0.8em 1em;
+	border-left: 4px solid var(--admonition-color);
+	border-radius: 4px;
+	background: var(--admonition-bg);
+	break-inside: avoid;
+}
+
+.md-admonition-note {
+	--admonition-color: #448aff;
+	--admonition-bg: #448aff12;
+}
+
+.md-admonition-tip {
+	--admonition-color: #00a400;
+	--admonition-bg: #00a40012;
+}
+
+.md-admonition-info {
+	--admonition-color: #00a4b4;
+	--admonition-bg: #00a4b412;
+}
+
+.md-admonition-warning,
+.md-admonition-caution {
+	--admonition-color: #e6a700;
+	--admonition-bg: #e6a70015;
+}
+
+.md-admonition-danger {
+	--admonition-color: #e13238;
+	--admonition-bg: #e1323812;
+}
+
+.md-admonition-title {
+	margin-bottom: 0.5em;
+	color: var(--admonition-color);
+	font-weight: 700;
+}
+
+.md-admonition-content > :first-child {
+	margin-top: 0;
+}
+
+.md-admonition-content > :last-child {
+	margin-bottom: 0;
+}

@@ -64,9 +64,90 @@ async function preRenderMath(markdown: string): Promise<void> {
 	);
 }
 
+function escapeHtml(value: string): string {
+	return value.replace(/[&<>"']/g, (char) => {
+		const entities: Record<string, string> = {
+			"&": "&amp;",
+			"<": "&lt;",
+			">": "&gt;",
+			'"': "&quot;",
+			"'": "&#39;",
+		};
+
+		return entities[char];
+	});
+}
+
+function createAdmonitionExtension() {
+	return {
+		name: "admonition",
+		level: "block" as const,
+
+		start(src: string) {
+			return src.search(/^:::(?:note|tip|info|warning|danger|caution)\b/im);
+		},
+
+		tokenizer(src: string) {
+			const opening = src.match(
+				/^:::(note|tip|info|warning|danger|caution)\b([^\n]*)\n/i,
+			);
+
+			if (!opening) return;
+
+			const type = opening[1].toLowerCase();
+			const customTitle = opening[2].trim();
+
+			const lines = src.split("\n");
+			let depth = 1;
+			let closingIndex = -1;
+
+			for (let i = 1; i < lines.length; i++) {
+				const line = lines[i];
+
+				if (/^:::(note|tip|info|warning|danger|caution)\b/i.test(line)) {
+					depth++;
+				} else if (/^:::[ \t]*$/.test(line)) {
+					depth--;
+
+					if (depth === 0) {
+						closingIndex = i;
+						break;
+					}
+				}
+			}
+
+			// Don't consume an unfinished admonition.
+			if (closingIndex === -1) return;
+
+			const raw = lines.slice(0, closingIndex + 1).join("\n");
+			const text = lines.slice(1, closingIndex).join("\n");
+
+			return {
+				type: "admonition",
+				raw,
+				text,
+				admonitionType: type,
+				title: customTitle || type.charAt(0).toUpperCase() + type.slice(1),
+			};
+		},
+
+		renderer(token: { text: string; admonitionType: string; title: string }) {
+			// Parse the inner Markdown, including nested admonitions,
+			// using the other registered Marked extensions.
+			const content = marked.parse(token.text);
+
+			return `<aside class="md-admonition md-admonition-${token.admonitionType}">
+  <div class="md-admonition-title">${escapeHtml(token.title)}</div>
+  <div class="md-admonition-content">${content}</div>
+</aside>\n`;
+		},
+	};
+}
+
 export async function exportHtml(view: EditorView) {
 	marked.use({
 		extensions: [
+			createAdmonitionExtension(),
 			{
 				name: "math",
 				level: "inline",
