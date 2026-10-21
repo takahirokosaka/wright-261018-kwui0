@@ -189,10 +189,25 @@ pre {
 }
 
 .cm-gutters {
-	margin-right: .3em;
+	margin-right: 0.3em;
 }
 
 /* Make the cursor thicker */
 .cm-editor .cm-cursor {
 	border-left-width: 2px !important;
+}
+
+.md-math-display {
+	text-align: center;
+	margin: 1em 0;
+}
+
+.md-math-inline {
+	display: inline;
+}
+
+.md-math-display svg,
+.md-math-inline svg {
+	max-width: 100%;
+	height: auto;
 }

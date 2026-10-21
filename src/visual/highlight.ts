@@ -28,7 +28,7 @@ export const highlightExtension: MarkdownConfig = {
 	],
 };
 
-const allowedColors: Record<string, string> = {
+export const highlightColors: Record<string, string> = {
 	red: "#fecaca",
 	orange: "#fed7aa",
 	yellow: "#fef08a",
@@ -65,7 +65,7 @@ export function highlightDecorations(view: EditorView): DecorationSet {
 						);
 					}
 
-					const color = match ? allowedColors[match[1]] : allowedColors.yellow;
+					const color = match ? highlightColors[match[1]] : highlightColors.yellow;
 
 					const contentFrom = match
 						? node.from + match[0].length

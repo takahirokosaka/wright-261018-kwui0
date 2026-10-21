@@ -132,4 +132,9 @@ void updateWindowTitle(view.state.doc.toString());
 	},
 );
 
+// Export HTML
+await getCurrentWindow().listen("export", async () => {
+	exportHtml(view);
+});
+
 view.focus();

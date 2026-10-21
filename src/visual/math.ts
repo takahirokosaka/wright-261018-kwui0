@@ -46,6 +46,14 @@ async function renderMath(formula: string, display: boolean): Promise<string> {
 	return svg;
 }
 
+export function getCachedMathSvg(
+	formula: string,
+	display: boolean,
+): string | undefined {
+	const key = `${display ? "display" : "inline"}:${formula}`;
+	return mathCache.get(key);
+}
+
 class MathWidget extends WidgetType {
 	constructor(
 		readonly formula: string,
@@ -57,7 +65,7 @@ class MathWidget extends WidgetType {
 	toDOM(): HTMLElement {
 		const element = document.createElement(this.displayMode ? "div" : "span");
 
-		element.className = "md-math-widget";
+		element.className = this.displayMode ? "md-math-display" : "md-math-inline";
 		element.textContent = this.formula;
 
 		void this.render(element);
