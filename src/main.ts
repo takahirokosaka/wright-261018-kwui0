@@ -15,7 +15,7 @@ import {
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { EditorState, Extension } from "@codemirror/state";
 import { Compartment } from "@codemirror/state";
-import { lineNumbers } from "@codemirror/view";
+import { keymap, lineNumbers } from "@codemirror/view";
 
 import "./styles.css";
 import { registerMenuEvents } from "./menu";
@@ -29,6 +29,7 @@ import { codeBlocklanguages } from "./visual/code-block";
 import { highlightExtension } from "./visual/highlight";
 import { trailingSpaces } from "./visual/trailing-spaces";
 import { htmlBlockField } from "./visual/html-block";
+import { insertTab } from "@codemirror/commands";
 
 console.debug("👋 Hi. Window label:", getCurrentWindow().label);
 
@@ -91,6 +92,7 @@ const view = new EditorView({
 		extensions: [
 			minimalSetup,
 			EditorView.lineWrapping,
+			keymap.of([{ key: "Tab", run: insertTab }]),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
 		],
