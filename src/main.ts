@@ -11,6 +11,7 @@ import { EditorView, minimalSetup } from "codemirror";
 import {
 	syntaxHighlighting,
 	defaultHighlightStyle,
+	bracketMatching,
 } from "@codemirror/language";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { EditorState, Extension } from "@codemirror/state";
@@ -78,6 +79,7 @@ function modeExtensions(sourceMode: boolean) {
 			codeLanguages: codeBlocklanguages,
 		}),
 		syntaxHighlighting(defaultHighlightStyle),
+		bracketMatching(),
 		trailingSpaces,
 	];
 
@@ -95,7 +97,11 @@ const view = new EditorView({
 			minimalSetup,
 			EditorView.lineWrapping,
 			closeBrackets(),
-			keymap.of([{ key: "Tab", run: insertTab }, ...closeBracketsKeymap, ...searchKeymap]),
+			keymap.of([
+				{ key: "Tab", run: insertTab },
+				...closeBracketsKeymap,
+				...searchKeymap,
+			]),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
 		],
