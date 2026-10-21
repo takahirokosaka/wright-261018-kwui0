@@ -12,5 +12,21 @@
 		</style>
 	</head>
 
-	<body></body>
+	<body>
+		<script>
+			window.MathJax = {
+				startup: {
+					typeset: false,
+				},
+				tex: {
+					inlineMath: [["$", "$"]],
+					displayMath: [["$$", "$$"]],
+				},
+				svg: {
+					fontCache: "local",
+				},
+			};
+		</script>
+		<script defer src="/mathjax/tex-svg.js"></script>
+	</body>
 </html>

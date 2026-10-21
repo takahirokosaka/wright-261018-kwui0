@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# MathJax was copied from node_modules.
+# cp -R node_modules/mathjax/* public/mathjax/
+/public/mathjax
