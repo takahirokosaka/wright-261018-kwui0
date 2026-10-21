@@ -13,7 +13,11 @@
 		"withGlobalTauri": true,
 		"windows": [],
 		"security": {
-			"csp": null
+			"assetProtocol": {
+				"enable": true,
+				"scope": ["**"]
+			},
+			"csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost"
 		}
 	},
 	"bundle": {

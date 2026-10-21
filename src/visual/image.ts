@@ -34,11 +34,12 @@ class ImageWidget extends WidgetType {
 
 			if (markdownPath) {
 				void resolveImageUrl(markdownPath, this.url).then((resolved) => {
+					console.log(resolved);
 					img.src = resolved;
 				});
 			}
 		}
-		img.alt = "";
+		img.alt = "image here";
 		img.loading = "lazy";
 		return img;
 	}
@@ -74,7 +75,12 @@ export function imageDecorations(view: EditorView): DecorationSet {
 
 				if (!urlNode) return;
 
-				const url = view.state.doc.sliceString(urlNode.from, urlNode.to);
+				let url = view.state.doc.sliceString(urlNode.from, urlNode.to);
+
+				// CodeMirror include Markdown's destination delimiters.
+				if (url.startsWith("<") && url.endsWith(">")) {
+					url = url.slice(1, -1);
+				}
 
 				decorations.push(
 					Decoration.replace({ widget: new ImageWidget(url) }).range(
