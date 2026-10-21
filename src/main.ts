@@ -17,6 +17,7 @@ import { EditorState, Extension } from "@codemirror/state";
 import { Compartment } from "@codemirror/state";
 import { keymap, lineNumbers } from "@codemirror/view";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
+import { searchKeymap } from "@codemirror/search";
 
 import "./styles.css";
 import { registerMenuEvents } from "./menu";
@@ -94,7 +95,7 @@ const view = new EditorView({
 			minimalSetup,
 			EditorView.lineWrapping,
 			closeBrackets(),
-			keymap.of([{ key: "Tab", run: insertTab }, ...closeBracketsKeymap]),
+			keymap.of([{ key: "Tab", run: insertTab }, ...closeBracketsKeymap, ...searchKeymap]),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
 		],
