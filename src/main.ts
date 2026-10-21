@@ -16,6 +16,7 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { EditorState, Extension } from "@codemirror/state";
 import { Compartment } from "@codemirror/state";
 import { keymap, lineNumbers } from "@codemirror/view";
+import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 
 import "./styles.css";
 import { registerMenuEvents } from "./menu";
@@ -92,7 +93,8 @@ const view = new EditorView({
 		extensions: [
 			minimalSetup,
 			EditorView.lineWrapping,
-			keymap.of([{ key: "Tab", run: insertTab }]),
+			closeBrackets(),
+			keymap.of([{ key: "Tab", run: insertTab }, ...closeBracketsKeymap]),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
 		],
