@@ -160,10 +160,8 @@ export async function exportHtml(view: EditorView) {
 		${getLoadedCss()}
 	</style>
 </head>
-<body>
-	<article class="exported-document">
-		${body}
-	</article>
+<body style="overflow: auto;">
+${body}
 </body>
 </html>`;
 
