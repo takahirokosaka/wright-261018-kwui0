@@ -21,6 +21,7 @@ import { quoteDecorations } from "./quote";
 import { htmlInlineDecorations } from "./html-inline";
 import { imageDecorations } from "./image";
 import { mathDecorations } from "./math";
+import { emptyLineDecorations } from "./empty-line";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -37,6 +38,7 @@ const handlers: MarkupHandler[] = [
 	htmlInlineDecorations,
 	imageDecorations,
 	mathDecorations,
+	emptyLineDecorations,
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {
