@@ -19,9 +19,7 @@ const markerNames = new Set(["EmphasisMark", "StrikethroughMark"]);
 export function emphasisDecorations(view: EditorView): DecorationSet {
 	const decorations: Range<Decoration>[] = [];
 	const tree = syntaxTree(view.state);
-
 	const selection = view.state.selection.main;
-	const cursorLine = view.state.doc.lineAt(selection.head).number;
 
 	for (const { from, to } of view.visibleRanges) {
 		tree.iterate({
@@ -36,12 +34,21 @@ export function emphasisDecorations(view: EditorView): DecorationSet {
 					);
 				}
 
-				// Hide emphasis markers when the cursor is outside
-				// the line containing the markup.
-				if (
-					markerNames.has(node.name) &&
-					view.state.doc.lineAt(node.from).number !== cursorLine
-				) {
+				if (!markerNames.has(node.name)) return;
+
+				// Find the enclosing emphasis node.
+				let parent = node.node.parent;
+				while (parent && !emphasisClasses[parent.name]) {
+					parent = parent.parent;
+				}
+
+				if (!parent) return;
+
+				// Show both markers if the cursor touches either boundary.
+				const cursorInsideMarkup =
+					selection.from >= parent.from && selection.to <= parent.to;
+
+				if (!cursorInsideMarkup) {
 					decorations.push(hideMark.range(node.from, node.to));
 				}
 			},
