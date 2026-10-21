@@ -35,6 +35,7 @@ import { htmlBlockField } from "./visual/html-block";
 import { insertTab } from "@codemirror/commands";
 import { exportHtml } from "./export-html";
 import { displayMathField } from "./visual/math";
+import { visualNewlineKeymap } from "./visual/newline";
 
 console.debug("👋 Hi. Window label:", getCurrentWindow().label);
 
@@ -89,7 +90,7 @@ function modeExtensions(sourceMode: boolean) {
 		return [lineNumbers(), sourceModeClass, ...common];
 	}
 
-	return [visual, clickableUrl, htmlBlockField, displayMathField, ...common];
+	return [visual, clickableUrl, htmlBlockField, displayMathField, visualNewlineKeymap, ...common];
 }
 
 const view = new EditorView({
