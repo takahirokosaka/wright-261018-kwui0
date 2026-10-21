@@ -64,7 +64,7 @@ const initialContent = initialPath ? await loadMarkdownFile(initialPath) : "";
 const modeCompartment = new Compartment();
 
 const sourceModeClass = EditorView.editorAttributes.of({
-  class: "md-source-mode",
+	class: "md-source-mode",
 });
 
 function modeExtensions(sourceMode: boolean) {
@@ -72,7 +72,6 @@ function modeExtensions(sourceMode: boolean) {
 		markdown({
 			base: markdownLanguage, // Language support for GFM plus subscript, superscript, and emoji syntax.
 			extensions: [highlightExtension],
-
 			codeLanguages: codeBlocklanguages,
 		}),
 		syntaxHighlighting(defaultHighlightStyle),
@@ -91,6 +90,7 @@ const view = new EditorView({
 		doc: initialContent,
 		extensions: [
 			minimalSetup,
+			EditorView.lineWrapping,
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
 		],
