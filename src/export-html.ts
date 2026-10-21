@@ -1,3 +1,4 @@
+import { dirname, join, basename, extname } from "@tauri-apps/api/path";
 import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
@@ -8,7 +9,7 @@ import { highlightColors } from "./visual/highlight";
 import appCss from "./styles.css?inline";
 
 import { getCachedMathSvg } from "./visual/math";
-import { getCurrentFileName } from "./save-file";
+import { getCurrentFileName, getCurrentFilePath } from "./save-file";
 
 declare global {
 	interface Window {
@@ -166,8 +167,17 @@ export async function exportHtml(view: EditorView) {
 </body>
 </html>`;
 
+	const currentFilePath = getCurrentFilePath();
+
+	const defaultPath = currentFilePath
+		? await join(
+				await dirname(currentFilePath),
+				(await basename(filename, await extname(filename))).concat(".html"),
+			)
+		: filename.replace(/\.[^/.]+$/, "") + ".html";
+
 	const path = await save({
-		defaultPath: filename.replace(/\.[^/.]+$/, "") + ".html",
+		defaultPath,
 		filters: [
 			{
 				name: "HTML",
