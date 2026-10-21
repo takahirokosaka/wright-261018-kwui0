@@ -45,9 +45,7 @@ export function highlightDecorations(view: EditorView): DecorationSet {
 	const decorations: Range<Decoration>[] = [];
 	const tree = syntaxTree(view.state);
 
-	const cursorLine = view.state.doc.lineAt(
-		view.state.selection.main.head,
-	).number;
+	const selection = view.state.selection.main;
 
 	for (const { from, to } of view.visibleRanges) {
 		tree.iterate({
@@ -56,18 +54,15 @@ export function highlightDecorations(view: EditorView): DecorationSet {
 			enter(node) {
 				if (node.name === "Highlight") {
 					const text = view.state.doc.sliceString(node.from, node.to);
-
 					const match = text.match(/^==\{([a-z]+)\}/);
 
-					if (match) {
-						// Hide =={yellow}...==
-						const line = view.state.doc.lineAt(node.from);
+					const cursorInsideMarkup =
+						selection.from >= node.from && selection.to <= node.to;
 
-						if (line.number !== cursorLine) {
-							decorations.push(
-								hideMark.range(node.from, node.from + match[0].length),
-							);
-						}
+					if (match && !cursorInsideMarkup) {
+						decorations.push(
+							hideMark.range(node.from, node.from + match[0].length),
+						);
 					}
 
 					const color = match ? allowedColors[match[1]] : allowedColors.yellow;
@@ -90,10 +85,20 @@ export function highlightDecorations(view: EditorView): DecorationSet {
 				}
 
 				if (node.name === "HighlightMark") {
-					const line = view.state.doc.lineAt(node.from);
+					// Find the enclosing Highlight node.
+					let parent = node.node.parent;
 
-					if (line.number !== cursorLine) {
-						decorations.push(hideMark.range(node.from, node.to));
+					while (parent && parent.name !== "Highlight") {
+						parent = parent.parent;
+					}
+
+					if (parent) {
+						const cursorInsideMarkup =
+							selection.from >= parent.from && selection.to <= parent.to;
+
+						if (!cursorInsideMarkup) {
+							decorations.push(hideMark.range(node.from, node.to));
+						}
 					}
 				}
 			},
