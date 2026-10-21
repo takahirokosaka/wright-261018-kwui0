@@ -36,6 +36,7 @@ import { insertTab } from "@codemirror/commands";
 import { exportHtml } from "./export-html";
 import { displayMathField } from "./visual/math";
 import { visualNewlineKeymap } from "./visual/newline";
+import { setupFileDrop } from "./file-drop";
 
 console.debug("👋 Hi. Window label:", getCurrentWindow().label);
 
@@ -105,6 +106,13 @@ function modeExtensions(sourceMode: boolean) {
 	];
 }
 
+const pasteLogger = EditorView.domEventHandlers({
+	paste(event) {
+		console.log("CodeMirror paste fired", event);
+		console.log("Clipboard:", event.clipboardData);
+	},
+});
+
 const view = new EditorView({
 	state: EditorState.create({
 		doc: initialContent,
@@ -119,6 +127,7 @@ const view = new EditorView({
 			]),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
+			pasteLogger,
 		],
 	}),
 	parent: document.body,
@@ -149,5 +158,8 @@ void updateWindowTitle(view.state.doc.toString());
 await getCurrentWindow().listen("export", async () => {
 	exportHtml(view);
 });
+
+// Handle drag & drop from Finder
+await setupFileDrop(view);
 
 view.focus();
