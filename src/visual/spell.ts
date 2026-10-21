@@ -7,7 +7,7 @@ import {
 import Typo from "typo-js";
 
 const spellError = Decoration.mark({
-	class: "dm-spell-error",
+	class: "md-spell-error",
 });
 
 export async function loadSpellChecker() {
