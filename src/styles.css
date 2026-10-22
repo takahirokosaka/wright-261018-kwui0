@@ -17,13 +17,12 @@ body {
 	padding: 0.5rem;
 }
 
-.cm-scroller {
+.cm-editor .cm-scroller {
 	overflow: auto;
 	font: inherit;
-	height: 100%;
 }
 
-.cm-line {
+.cm-editor .cm-line {
 	padding: 0;
 }
 
@@ -216,10 +215,6 @@ pre {
 /* Make the cursor thicker */
 .cm-cursor {
 	border-left-width: 2px !important;
-}
-
-.cm-content {
-	min-height: 100%;
 }
 
 .md-math-display {
