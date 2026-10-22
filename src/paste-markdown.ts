@@ -15,7 +15,7 @@ const turndown = new TurndownService({
 	codeBlockStyle: "fenced",
 });
 
-export async function readClipboardAsMarkdown(): Promise<string> {
+async function readClipboardAsMarkdown(): Promise<string> {
 	if (await hasHTML()) {
 		const html = await readHTML();
 		if (html) return turndown.turndown(html);
@@ -35,7 +35,7 @@ export async function readClipboardAsMarkdown(): Promise<string> {
 	return "";
 }
 
-export const markdownPaste = EditorView.domEventHandlers({
+export const pasteMarkdown = EditorView.domEventHandlers({
 	paste(event, view) {
 		// Only intercept when clipboard data contains rich text.
 		const html = event.clipboardData?.getData("text/html");
