@@ -34,7 +34,6 @@ class ImageWidget extends WidgetType {
 
 			if (markdownPath) {
 				void resolveImageUrl(markdownPath, this.url).then((resolved) => {
-					console.log(resolved);
 					img.src = resolved;
 				});
 			}
