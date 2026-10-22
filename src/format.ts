@@ -1,32 +1,56 @@
 import { EditorView } from "codemirror";
 
-export async function format(view: EditorView, formatType: string) {
+const FORMAT_TYPES = ["bold", "italic", "highlight", "mute"] as const;
+
+type FormatType = (typeof FORMAT_TYPES)[number];
+
+export function isFormatType(value: string): value is FormatType {
+	return (FORMAT_TYPES as readonly string[]).includes(value);
+}
+
+const FORMAT_MARKERS: Record<FormatType, { open: string; close: string }> = {
+	bold: { open: "**", close: "**" },
+	italic: { open: "*", close: "*" },
+	highlight: { open: "==", close: "==" },
+	mute: { open: "=={gray}", close: "==" },
+};
+
+export function format(view: EditorView, formatType: FormatType) {
 	const { from, to } = view.state.selection.main;
 	if (from === to) return;
 
-	if (formatType === "bold") {
-		const isBold =
-			from >= 2 &&
-			view.state.sliceDoc(from - 2, from) === "**" &&
-			view.state.sliceDoc(to, to + 2) === "**";
+	const { open, close } = FORMAT_MARKERS[formatType];
+	const doc = view.state;
 
-		if (isBold) {
-			view.dispatch({
-				changes: [
-					{ from: from - 2, to: from, insert: "" },
-					{ from: to, to: to + 2, insert: "" },
-				],
-				selection: { anchor: from - 2, head: to - 2 },
-			});
-		} else {
-			view.dispatch({
-				changes: [
-					{ from, insert: "**" },
-					{ from: to, insert: "**" },
-				],
-				selection: { anchor: from + 2, head: to + 2 },
-			});
-		}
+	const isFormatted =
+		from >= open.length &&
+		doc.sliceDoc(from - open.length, from) === open &&
+		doc.sliceDoc(to, to + close.length) === close;
+
+	if (isFormatted) {
+		// Remove the surrounding markers.
+		view.dispatch({
+			changes: [
+				{ from: from - open.length, to: from, insert: "" },
+				{ from: to, to: to + close.length, insert: "" },
+			],
+			selection: {
+				anchor: from - open.length,
+				head: to - open.length,
+			},
+		});
+	} else {
+		// Add the surrounding markers.
+		view.dispatch({
+			changes: [
+				{ from, insert: open },
+				{ from: to, insert: close },
+			],
+			selection: {
+				anchor: from + open.length,
+				head: to + open.length,
+			},
+		});
 	}
 
 	view.focus();

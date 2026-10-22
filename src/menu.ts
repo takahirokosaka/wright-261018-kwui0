@@ -8,7 +8,7 @@ import { undoDepth } from "@codemirror/commands";
 import { saveMarkdown, saveMarkdownAs, setOpenedFile } from "./save-file";
 import { updateWindowTitle } from "./window-title";
 import { readTextFile } from "@tauri-apps/plugin-fs";
-import { format } from "./format";
+import { format, isFormatType } from "./format";
 
 export async function registerMenuEvents(view: EditorView) {
 	// If we simply listen (import { listen } from "@tauri-apps/api/event";), all editor windows respond to the event, even if window.emit_to is used. We don't know why.
@@ -80,7 +80,9 @@ export async function registerMenuEvents(view: EditorView) {
 	});
 
 	const unlistenFormat = await window.listen<string>("format", (event) => {
-		void format(view, event.payload);
+		if (isFormatType(event.payload)) {
+			void format(view, event.payload);
+		}
 	});
 
 	// Return cleanup callbacks for when the editor is disposed. This is optional if your editor lives for the entire lifetime of its window, but it is useful if we recreate the editor view.

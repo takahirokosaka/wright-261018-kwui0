@@ -40,6 +40,18 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 	let bold = MenuItem::with_id(app, "format-bold", "Bold", true, Some("CmdOrCtrl+B"))?;
 
+	let italic = MenuItem::with_id(app, "format-italic", "Italic", true, Some("CmdOrCtrl+I"))?;
+
+	let highlight = MenuItem::with_id(
+		app,
+		"format-highlight",
+		"Highlight",
+		true,
+		Some("CmdOrCtrl+Shift+H"),
+	)?;
+
+	let mute = MenuItem::with_id(app, "format-mute", "Mute", true, Some("CmdOrCtrl+Shift+M"))?;
+
 	let source_mode = CheckMenuItem::with_id(
 		app,
 		"source-mode",
@@ -93,7 +105,8 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 			}
 		}
 
-		let format_menu = Submenu::with_items(app, "Format", true, &[&bold])?;
+		let format_menu =
+			Submenu::with_items(app, "Format", true, &[&bold, &italic, &highlight, &mute])?;
 
 		// Insert Format menu after Edit. TOOD: Windows and Linux
 		menu.insert(&format_menu, 3)?;
@@ -259,6 +272,21 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 		"format-bold" => {
 			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "format", "bold");
+			}
+		}
+		"format-italic" => {
+			if let Some(window) = focused {
+				let _ = window.emit_to(window.label(), "format", "italic");
+			}
+		}
+		"format-highlight" => {
+			if let Some(window) = focused {
+				let _ = window.emit_to(window.label(), "format", "highlight");
+			}
+		}
+		"format-mute" => {
+			if let Some(window) = focused {
+				let _ = window.emit_to(window.label(), "format", "mute");
 			}
 		}
 		_ => {}
