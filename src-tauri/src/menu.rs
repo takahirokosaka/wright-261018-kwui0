@@ -3,6 +3,7 @@ use std::{
 	collections::{HashMap, HashSet},
 	sync::Mutex,
 };
+use tauri::menu::Submenu;
 use tauri::{
 	AppHandle, Emitter, Listener, Manager, WindowEvent,
 	menu::{CheckMenuItem, MenuItem},
@@ -26,10 +27,18 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 	let save_as = MenuItem::with_id(app, "save-as", "Save As…", true, Some("CmdOrCtrl+Shift+S"))?;
 
-	let export = MenuItem::with_id(app, "export", "Export HTML", true, Some("CmdOrCtrl+Shift+E"))?;
+	let export = MenuItem::with_id(
+		app,
+		"export",
+		"Export HTML",
+		true,
+		Some("CmdOrCtrl+Shift+E"),
+	)?;
 
 	// Tauri has documented issues with intercepting native Cmd+Q through its general application-exit event. Replacing the native Quit item gives your app a predictable menu event to handle. See the Tauri issue on macOS application termination. https://github.com/tauri-apps/tauri/issues/9198
 	let quit = MenuItem::with_id(app, "quit", "Quit Write", true, Some("CmdOrCtrl+Q"))?;
+
+	let bold = MenuItem::with_id(app, "format-bold", "Bold", true, Some("CmdOrCtrl+B"))?;
 
 	let source_mode = CheckMenuItem::with_id(
 		app,
@@ -83,6 +92,11 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 				}
 			}
 		}
+
+		let format_menu = Submenu::with_items(app, "Format", true, &[&bold])?;
+
+		// Insert Format menu after Edit. TOOD: Windows and Linux
+		menu.insert(&format_menu, 3)?;
 	}
 
 	let focused_windows = app
@@ -176,13 +190,14 @@ pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
 }
 
 pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
+	let focused = app
+		.webview_windows()
+		.into_values()
+		.find(|window| window.is_focused().unwrap_or(false));
+
 	match event.id().as_ref() {
 		"open" => {
-			if let Some(window) = app
-				.webview_windows()
-				.into_values()
-				.find(|window| window.is_focused().unwrap_or(false))
-			{
+			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "menu-open", ());
 			}
 		}
@@ -190,11 +205,6 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 			let _ = crate::editor_window::create_editor_window_without_file(app);
 		}
 		"save" | "save-as" => {
-			let focused = app
-				.webview_windows()
-				.into_values()
-				.find(|window| window.is_focused().unwrap_or(false));
-
 			if let Some(window) = focused {
 				let event_name = if event.id().as_ref() == "save" {
 					"menu-save"
@@ -205,11 +215,6 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 			}
 		}
 		"export" => {
-			let focused = app
-				.webview_windows()
-				.into_values()
-				.find(|window| window.is_focused().unwrap_or(false));
-
 			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "export", ());
 			}
@@ -232,11 +237,6 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 			}
 		}
 		"source-mode" => {
-			let focused = app
-				.webview_windows()
-				.into_values()
-				.find(|window| window.is_focused().unwrap_or(false));
-
 			if let Some(window) = focused {
 				let label = window.label().to_string();
 
@@ -254,6 +254,11 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 				update_enabled_state(app);
 
 				// TODO: have the frontend report its actual Source Mode state back to Rust when it changes, rather than relying exclusively on toggling the stored boolean.
+			}
+		}
+		"format-bold" => {
+			if let Some(window) = focused {
+				let _ = window.emit_to(window.label(), "format", "bold");
 			}
 		}
 		_ => {}
