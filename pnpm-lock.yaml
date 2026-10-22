@@ -77,6 +77,12 @@ importers:
       pathe:
         specifier: ^2.0.3
         version: 2.0.3
+      tauri-plugin-clipboard-x-api:
+        specifier: ^2.0.2
+        version: 2.0.2
+      turndown:
+        specifier: ^7.2.4
+        version: 7.2.4
       typo-js:
         specifier: ^1.4.0
         version: 1.4.0
@@ -84,6 +90,9 @@ importers:
       '@tauri-apps/cli':
         specifier: ^2
         version: 2.12.3
+      '@types/turndown':
+        specifier: ^5.0.6
+        version: 5.0.6
       '@types/typo-js':
         specifier: ^1.2.2
         version: 1.2.2
@@ -173,6 +182,9 @@ packages:
 
   '@mathjax/mathjax-newcm-font@4.1.3':
     resolution: {integrity: sha512-gzAB3dFHilHX1l5x2xUqRL+1jDQt3Fyza1DkEMVXWC4E8SvsGdlgEza47HYi2WhVcgfkvf4zgUGzuhbq3Pjlew==}
+
+  '@mixmark-io/domino@2.2.0':
+    resolution: {integrity: sha512-Y28PR25bHXUg88kCV7nivXrP2Nj2RueZ3/l/jdx6J9f8J4nsEGcgX0Qe6lt7Pa+J79+kPiJU3LguR6O/6zrLOw==}
 
   '@oxc-project/types@0.154.0':
     resolution: {integrity: sha512-KYOUGQFlLWR+s4QMV2Q9ko38TZm7EdO87Qm7rvZLqk/webse/cDjtyxKhg/47l0byCbs/k46LT8qc4PKjAikzA==}
@@ -367,6 +379,9 @@ packages:
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
+  '@types/turndown@5.0.6':
+    resolution: {integrity: sha512-ru00MoyeeouE5BX4gRL+6m/BsDfbRayOskWqUvh7CLGW+UXxHQItqALa38kKnOiZPqJrtzJUgAC2+F0rL1S4Pg==}
+
   '@types/typo-js@1.2.2':
     resolution: {integrity: sha512-AgN5IwO3EPXv2d+UE9VdoOcueCBa4ZcHHwUvx2/IXlfRvkW4Yt3g+eRHzJbkySfj9pyILRT6Zk7V6Vr4LD5Kvg==}
 
@@ -510,9 +525,16 @@ packages:
   style-mod@4.1.4:
     resolution: {integrity: sha512-XXWIQt633/EpAFx8aZDOTjBzrCaGmhvEQlQo6MVPfa2OzO2cWo+4hV9h+6UkHYlXGfy+ODXKUdP7Pthmcu5ATw==}
 
+  tauri-plugin-clipboard-x-api@2.0.2:
+    resolution: {integrity: sha512-gvV69iBHsy2IZXWaEucEr9s0L+5IoE/cTpQPe6SvxkQuipgGT3XzDlw5n9ffx4Intp+xJppGUPmWvFHCIw6Ahw==}
+
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
+
+  turndown@7.2.4:
+    resolution: {integrity: sha512-I8yFsfRzmzK0WV1pNNOA4A7y4RDfFxPRxb3t+e3ui14qSGOxGtiSP6GjeX+Y6CHb7HYaFj7ECUD7VE5kQMZWGQ==}
+    engines: {node: '>=18', npm: '>=9'}
 
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
@@ -722,6 +744,8 @@ snapshots:
 
   '@mathjax/mathjax-newcm-font@4.1.3': {}
 
+  '@mixmark-io/domino@2.2.0': {}
+
   '@oxc-project/types@0.154.0': {}
 
   '@rolldown/binding-android-arm-eabi@1.2.14':
@@ -834,6 +858,8 @@ snapshots:
 
   '@types/trusted-types@2.0.7':
     optional: true
+
+  '@types/turndown@5.0.6': {}
 
   '@types/typo-js@1.2.2': {}
 
@@ -956,10 +982,18 @@ snapshots:
 
   style-mod@4.1.4: {}
 
+  tauri-plugin-clipboard-x-api@2.0.2:
+    dependencies:
+      '@tauri-apps/api': 2.12.4
+
   tinyglobby@0.2.17:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.7)
       picomatch: 4.0.7
+
+  turndown@7.2.4:
+    dependencies:
+      '@mixmark-io/domino': 2.2.0
 
   typescript@6.0.3: {}
 

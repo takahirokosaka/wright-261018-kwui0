@@ -28,6 +28,7 @@ tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
 dirs = "7.0.0"
 toml = "1.1.8"
+tauri-plugin-clipboard-x = "2.0.2"
 
 # Read the optimization guideline for more details: https://tauri.app/concept/size/#cargo-configuration
 [profile.release]
