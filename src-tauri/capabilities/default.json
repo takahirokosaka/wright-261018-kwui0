@@ -20,6 +20,11 @@
 		"dialog:default",
 		"fs:allow-write-text-file",
 		"fs:allow-read-text-file",
-		"clipboard-x:default"
+		"clipboard-x:default",
+		"clipboard-x:allow-has-image",
+		"clipboard-x:allow-read-image",
+		"fs:allow-mkdir",
+		"fs:allow-write-file",
+		"fs:scope"
 	]
 }

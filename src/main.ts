@@ -38,6 +38,7 @@ import { displayMathField } from "./visual/math";
 import { visualNewlineKeymap } from "./visual/newline";
 import { setupFileDrop } from "./file-drop";
 import { pasteMarkdown } from "./paste-markdown";
+import { pasteImageHandler } from "./paste-image";
 
 console.debug("👋 Hi. Window label:", getCurrentWindow().label);
 
@@ -86,7 +87,8 @@ function modeExtensions(sourceMode: boolean) {
 		syntaxHighlighting(defaultHighlightStyle),
 		bracketMatching(),
 		trailingSpaces,
-		pasteMarkdown
+		pasteMarkdown,
+		pasteImageHandler
 	];
 
 	if (sourceMode) {
