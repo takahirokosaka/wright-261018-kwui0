@@ -14,7 +14,16 @@ class HtmlBlockWidget extends WidgetType {
 	toDOM() {
 		const el = document.createElement("div");
 		el.className = "md-html-block";
-		el.innerHTML = DOMPurify.sanitize(this.html);
+
+		const sanitized = DOMPurify.sanitize(this.html);
+
+		// Display <br> (<br> is an inline element but CodeMirror displays it as a block element if there's nothing else in the line) literally instead of rendering it as a line break.
+		const html = sanitized.replace(
+			/<br\b[^>]*\/?>/gi,
+			'<span style="color: gray;">&lt;br&gt;</span>',
+		);
+
+		el.innerHTML = html;
 		return el;
 	}
 }
