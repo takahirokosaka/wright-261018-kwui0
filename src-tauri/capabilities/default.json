@@ -25,6 +25,11 @@
 		"clipboard-x:allow-read-image",
 		"fs:allow-mkdir",
 		"fs:allow-write-file",
-		"fs:scope"
+		"fs:allow-open",
+		"fs:scope",
+		{
+			"identifier": "fs:scope",
+			"allow": [{ "path": "**" }]
+		}
 	]
 }

@@ -31,6 +31,14 @@
 			"icons/icon.icns",
 			"icons/icon.ico"
 		],
-		"copyright": "Written by Takahiro Kosaka"
+		"copyright": "Written by Takahiro Kosaka",
+		"fileAssociations": [
+			{
+				"ext": ["md", "markdown"],
+				"name": "Markdown Document",
+				"description": "Markdown document",
+				"mimeType": "text/markdown"
+			}
+		]
 	}
 }
