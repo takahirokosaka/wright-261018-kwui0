@@ -1,8 +1,9 @@
 use std::path::PathBuf;
 use tauri::Manager;
 
-mod editor_window;
 mod allow_directory;
+mod config;
+mod editor_window;
 mod menu;
 
 // Load ~/.write.css as a user-customizable stylesheet at startup.
@@ -24,7 +25,12 @@ pub fn run() {
 		.on_window_event(|window, event| {
 			menu::handle_window_event(&window.app_handle(), window.label(), event);
 		})
-		.invoke_handler(tauri::generate_handler![load_user_css,editor_window::open_markdown_in_new_window, allow_directory::allow_document_directory])
+		.invoke_handler(tauri::generate_handler![
+			load_user_css,
+			editor_window::open_markdown_in_new_window,
+			allow_directory::allow_document_directory,
+			config::get_assets_suffix
+		])
 		.build(tauri::generate_context!())
 		.expect("error while running tauri application");
 

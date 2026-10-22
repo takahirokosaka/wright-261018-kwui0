@@ -16,7 +16,10 @@ async function pasteImage(view: EditorView, file: File) {
 		return true;
 	}
 
-	const defaultPath = currentFilePath.replace(/\.[^/.]+$/, ".assets");
+	const assetsSuffix = await invoke<string>("get_assets_suffix");
+	const defaultPath = currentFilePath.replace(/\.[^/.]+$/, assetsSuffix);
+
+	console.log(defaultPath);
 
 	await invoke("allow_document_directory", {
 		filePath: currentFilePath,
