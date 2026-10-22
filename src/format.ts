@@ -1,6 +1,6 @@
 import { EditorView } from "codemirror";
 
-const FORMAT_TYPES = ["bold", "italic", "highlight", "mute"] as const;
+const FORMAT_TYPES = ["bold", "italic", "highlight", "mute", "underline"] as const;
 
 type FormatType = (typeof FORMAT_TYPES)[number];
 
@@ -13,6 +13,7 @@ const FORMAT_MARKERS: Record<FormatType, { open: string; close: string }> = {
 	italic: { open: "*", close: "*" },
 	highlight: { open: "==", close: "==" },
 	mute: { open: "=={gray}", close: "==" },
+	underline: { open: "<u>", close: "</u>" },
 };
 
 export function format(view: EditorView, formatType: FormatType) {

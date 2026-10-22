@@ -52,6 +52,14 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 	let mute = MenuItem::with_id(app, "format-mute", "Mute", true, Some("CmdOrCtrl+Shift+M"))?;
 
+	let underline = MenuItem::with_id(
+		app,
+		"format-underline",
+		"Underline",
+		true,
+		Some("CmdOrCtrl+Shift+I"),
+	)?;
+
 	let source_mode = CheckMenuItem::with_id(
 		app,
 		"source-mode",
@@ -105,8 +113,12 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 			}
 		}
 
-		let format_menu =
-			Submenu::with_items(app, "Format", true, &[&bold, &italic, &highlight, &mute])?;
+		let format_menu = Submenu::with_items(
+			app,
+			"Format",
+			true,
+			&[&bold, &italic, &highlight, &underline, &mute],
+		)?;
 
 		// Insert Format menu after Edit. TOOD: Windows and Linux
 		menu.insert(&format_menu, 3)?;
@@ -287,6 +299,11 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 		"format-mute" => {
 			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "format", "mute");
+			}
+		}
+		"format-underline" => {
+			if let Some(window) = focused {
+				let _ = window.emit_to(window.label(), "format", "underline");
 			}
 		}
 		_ => {}
