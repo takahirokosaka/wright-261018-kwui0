@@ -5,6 +5,50 @@ import { EditorView, Decoration, WidgetType } from "@codemirror/view";
 import { syntaxTree } from "@codemirror/language";
 import DOMPurify from "dompurify";
 
+const allowedBlockTags = new Set([
+	"address",
+	"article",
+	"aside",
+	"blockquote",
+	"details",
+	"dialog",
+	"div",
+	"dl",
+	"fieldset",
+	"figcaption",
+	"figure",
+	"footer",
+	"form",
+	"h1",
+	"h2",
+	"h3",
+	"h4",
+	"h5",
+	"h6",
+	"header",
+	"hr",
+	"main",
+	"nav",
+	"ol",
+	"p",
+	"pre",
+	"section",
+	"table",
+	"ul",
+]);
+
+function isValidHtmlBlock(html: string): boolean {
+	const tags = html.matchAll(/<\/?([a-z][a-z0-9-]*)\b[^>]*>/gi);
+
+	for (const match of tags) {
+		if (!allowedBlockTags.has(match[1].toLowerCase())) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 class HtmlBlockWidget extends WidgetType {
 	readonly html: string;
 	constructor(html: string) {
@@ -34,6 +78,10 @@ function buildHtmlDecorations(state: EditorState) {
 	syntaxTree(state).iterate({
 		enter(node) {
 			if (node.name !== "HTMLBlock") return;
+
+			const html = state.doc.sliceString(node.from, node.to);
+
+			if (!isValidHtmlBlock(html)) return;
 
 			ranges.push(
 				Decoration.replace({
