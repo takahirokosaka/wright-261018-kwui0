@@ -1,6 +1,6 @@
 :root {
-	font-family: Inter;
-	font-size: 16px;
+	font-family: Inter, sans-serif;
+	font-size: 18px;
 	line-height: 24px;
 }
 
@@ -14,12 +14,15 @@ body {
 
 .cm-editor {
 	height: 100%;
-	padding: 0.5rem;
 }
 
 .cm-editor .cm-scroller {
 	overflow: auto;
 	font: inherit;
+}
+
+.cm-editor:not(.md-source-mode) .cm-scroller {
+	padding: 0.5rem;
 }
 
 .cm-editor .cm-line {
@@ -364,4 +367,18 @@ pre {
 
 .md-admonition-content > :last-child {
 	margin-bottom: 0;
+}
+
+.dracula {
+	font-size: 0.726rem;
+	overflow-wrap: anywhere;
+	white-space: pre-wrap;
+	display: block;
+	box-sizing: border-box;
+	width: calc(100% + 0.8rem);
+	transform: translateX(-0.4rem);
+	padding: 0.4rem;
+	padding-top: 0.33rem;
+	padding-bottom: 0.33rem;
+	border-radius: 0.4rem;
 }
