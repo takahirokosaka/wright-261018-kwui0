@@ -15,8 +15,9 @@ const quoteLine = (depth: number) =>
 	});
 
 export function quoteDecorations(view: EditorView): DecorationSet {
-	const decorations : Range<Decoration>[]= [];
+	const decorations: Range<Decoration>[] = [];
 	const tree = syntaxTree(view.state);
+	const lineDepths = new Map<number, number>();
 
 	for (const { from, to } of view.visibleRanges) {
 		tree.iterate({
@@ -33,11 +34,13 @@ export function quoteDecorations(view: EditorView): DecorationSet {
 						lineNo <= endLine.number;
 						lineNo++
 					) {
-						decorations.push(
-							quoteLine(depth).range(view.state.doc.line(lineNo).from),
+						lineDepths.set(
+							lineNo,
+							Math.max(lineDepths.get(lineNo) ?? 0, depth),
 						);
 					}
 				}
+
 				if (node.name === "QuoteMark") {
 					const line = view.state.doc.lineAt(node.from);
 					const cursorLine = view.state.doc.lineAt(
@@ -45,17 +48,23 @@ export function quoteDecorations(view: EditorView): DecorationSet {
 					).number;
 
 					if (line.number !== cursorLine) {
-						// Hide ">"
 						decorations.push(hideMark.range(node.from, node.to));
 
-						// Hide the following space, if present
-						if (view.state.doc.sliceString(node.to, node.to + 1) === " ") {
+						if (
+							view.state.doc.sliceString(node.to, node.to + 1) === " "
+						) {
 							decorations.push(hideMark.range(node.to, node.to + 1));
 						}
 					}
 				}
 			},
 		});
+	}
+
+	for (const [lineNo, depth] of lineDepths) {
+		decorations.push(
+			quoteLine(depth).range(view.state.doc.line(lineNo).from),
+		);
 	}
 
 	return Decoration.set(decorations, true);

@@ -1,5 +1,19 @@
 # Markdown Editor Demo
 
+## 4. Blockquotes
+
+> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
+
+Nested blockquotes:
+
+> This is the first level.
+>
+>> This is a nested blockquote.
+>>
+>> It can contain multiple paragraphs.
+>> 
+>>> It can contain multiple paragraphs. It can contain multiple paragraphs.
+
 ## 3. Lists
 
 Unordered List
@@ -126,18 +140,6 @@ This sample file demonstrates
 This sample file demonstrates
 
 ###### Heading 6
-
-## 4. Blockquotes
-
-> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
-
-Nested blockquotes:
-
-> This is the first level.
->> This is a nested blockquote.
->>
->> It can contain multiple paragraphs.
-
 
 ## 6. Tables
 
