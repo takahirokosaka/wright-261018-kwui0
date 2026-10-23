@@ -21,7 +21,7 @@ import { quoteDecorations } from "./quote";
 import { htmlInlineDecorations } from "./html-inline";
 import { imageDecorations } from "./image";
 import { mathDecorations } from "./math";
-import { emptyLineDecorations } from "./empty-line";
+// import { emptyLineDecorations } from "./empty-line"; This is annoying.
 import { loadSpellChecker, spellCheckDecorations } from "./spell";
 import { admonitionDecorations } from "./admonition";
 
@@ -42,7 +42,7 @@ const handlers: MarkupHandler[] = [
 	htmlInlineDecorations,
 	imageDecorations,
 	mathDecorations,
-	emptyLineDecorations,
+	// emptyLineDecorations,
 	(view) => spellCheckDecorations(view, spell),
 	admonitionDecorations,
 ];
