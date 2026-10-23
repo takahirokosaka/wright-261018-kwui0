@@ -1,7 +1,9 @@
 :root {
 	font-family: Inter, sans-serif;
 	font-size: 18px;
-	line-height: 24px;
+	line-height: 1.41;
+	color: #212121;
+	--link-color: #1976d2
 }
 
 html,
@@ -33,6 +35,10 @@ body {
 	padding: 0;
 }
 
+img {
+	max-width: 100%;
+}
+
 /* h1 to h6 are for exporting HTML */
 :is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6) *,
 h1,
@@ -43,7 +49,16 @@ h5,
 h6 {
 	font-family: "Sofia Sans Condensed";
 	text-decoration: none;
-	line-height: 1.25;
+	line-height: 1;
+}
+
+.md-h1,
+.md-h2,
+.md-h3,
+.md-h4,
+.md-h5,
+.md-h6 {
+	line-height: 1;
 }
 
 .md-h1,
@@ -61,11 +76,14 @@ h3 {
 	font-size: 1.41em;
 }
 
-.md-link {
-	color: var(--link-color, #58a6ff);
-	text-decoration: underline;
-	text-decoration-color: currentColor;
+.md-link * {
+	color: var(--link-color);
+	text-decoration: none;
 	cursor: pointer;
+}
+
+.md-link:hover {
+	text-decoration: underline;
 }
 
 .md-code-fence-label::before {
