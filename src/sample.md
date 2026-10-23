@@ -1,6 +1,38 @@
 # Markdown Editor Demo
 
+## 5. Code Blocks
+
+Inline code example: `console.log("Hello, world!");`
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
+const user: User = {
+  id: 1,
+  name: "Alice",
+  active: true,
+};
+
+function greet(user: User): string {
+  return `Hello, ${user.name}!`;
+}
+
+console.log(greet(user));
+```
+
+```shell
+npm install
+npm run dev
+npm run build
+```
+
+
 Trailing space 
+
 
 ## 3. Lists
 
@@ -89,35 +121,6 @@ Nested blockquotes:
 >>
 >> It can contain multiple paragraphs.
 
-## 5. Code Blocks
-
-Inline code example: `console.log("Hello, world!");`
-
-```ts
-interface User {
-  id: number;
-  name: string;
-  active: boolean;
-}
-
-const user: User = {
-  id: 1,
-  name: "Alice",
-  active: true,
-};
-
-function greet(user: User): string {
-  return `Hello, ${user.name}!`;
-}
-
-console.log(greet(user));
-```
-
-```shell
-npm install
-npm run dev
-npm run build
-```
 
 ## 6. Tables
 

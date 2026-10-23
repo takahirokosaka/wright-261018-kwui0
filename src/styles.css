@@ -4,6 +4,7 @@
 	line-height: 1.41;
 	color: #212121;
 	--link-color: #1976d2;
+	--code-fence-header: #E8EDF3;
 }
 
 html,
@@ -87,34 +88,32 @@ h3 {
 }
 
 .md-code-fence-label::before {
-	content: "";
-	display: inline-block;
-	width: 40px;
-	height: 1px;
-	background-color: currentColor;
-	vertical-align: middle;
-	margin-right: 0.5em;
+	content: " >>> ";
 }
 
-.md-code-fence-label {
-	display: inline-block;
-	font-family: "Google Sans Code", monospace;
-	vertical-align: middle;
-	margin-bottom: 0.4em;
-}
-
+.md-code-fence-label,
 .md-code-fence-end {
-	display: inline-block;
-	width: 40px;
-	height: 1px;
-	margin-top: 0.5em;
-	background-color: gray;
-	vertical-align: middle;
+	font-family: "Google Sans Code", monospace;
+}
+
+.cm-line:has(.md-code-fence-label) {
+	background-color: var(--code-fence-header);
+	border-radius: 8px 8px 0 0;
+}
+
+.md-code-fence-end::before {
+	content: " <<<";
+}
+
+.cm-line:has(.md-code-fence-end) {
+	background-color: var(--code-fence-header);
+	border-radius: 0 0 8px 8px;
 }
 
 .md-code-block-line {
 	font-family: "Google Sans Code", monospace;
 	tab-size: 3;
+	background-color: #f6f7f9;
 }
 
 .md-bold {
