@@ -37,11 +37,27 @@ const allowedBlockTags = new Set([
 	"ul",
 ]);
 
+const allowedInlineTags = new Set([
+	"a",
+	"b",
+	"br",
+	"code",
+	"em",
+	"i",
+	"span",
+	"strong",
+	"sub",
+	"sup",
+	"u"
+]);
+
 function isValidHtmlBlock(html: string): boolean {
+	const allowedTags = new Set([...allowedBlockTags, ...allowedInlineTags]);
+
 	const tags = html.matchAll(/<\/?([a-z][a-z0-9-]*)\b[^>]*>/gi);
 
 	for (const match of tags) {
-		if (!allowedBlockTags.has(match[1].toLowerCase())) {
+		if (!allowedTags.has(match[1].toLowerCase())) {
 			return false;
 		}
 	}
