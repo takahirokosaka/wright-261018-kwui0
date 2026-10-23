@@ -7,8 +7,9 @@ declare global {
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
-import { EditorView, minimalSetup } from "codemirror";
+import { EditorView } from "codemirror";
 import {
+	indentOnInput,
 	syntaxHighlighting,
 	defaultHighlightStyle,
 	bracketMatching,
@@ -32,7 +33,12 @@ import { codeBlocklanguages } from "./visual/code-block";
 import { highlightExtension } from "./visual/highlight";
 import { trailingSpaces } from "./visual/trailing-spaces";
 import { htmlBlockField } from "./visual/html-block";
-import { insertTab } from "@codemirror/commands";
+import {
+	insertTab,
+	defaultKeymap,
+	history,
+	historyKeymap,
+} from "@codemirror/commands";
 import { exportHtml } from "./export-html";
 import { displayMathField } from "./visual/math";
 import { visualNewlineKeymap } from "./visual/newline";
@@ -93,7 +99,9 @@ function modeExtensions(sourceMode: boolean) {
 			codeLanguages: codeBlocklanguages,
 		}),
 		syntaxHighlighting(defaultHighlightStyle),
+		indentOnInput(),
 		bracketMatching(),
+		closeBrackets(),
 		trailingSpaces,
 		pasteMarkdown,
 		pasteImageHandler,
@@ -129,14 +137,20 @@ const view = new EditorView({
 	state: EditorState.create({
 		doc: initialContent,
 		extensions: [
-			minimalSetup,
+			// minimalSetup,
 			EditorView.lineWrapping,
 			closeBrackets(),
 			keymap.of([
 				{ key: "Tab", run: insertTab },
+				// defaultKeymap, included in minimalSetup, causes cursor jumping around html blocks
+				...defaultKeymap.filter(
+					({ key }) => key !== "ArrowUp" && key !== "ArrowDown",
+				),
+				...historyKeymap,
 				...closeBracketsKeymap,
 				...searchKeymap,
 			]),
+			history(),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
 			pasteLogger,
