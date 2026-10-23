@@ -25,10 +25,11 @@ class HtmlInlineWidget extends WidgetType {
 	}
 }
 
+// TODO: Use DOM-based HTML parser
 const inlineHtmlRegex =
-	/<span\b[^>]*>[\s\S]*?<\/span\s*>|<u\b[^>]*>[\s\S]*?<\/u\s*>|<img\b[^>]*\/?>|<sub\b[^>]*>[\s\S]*?<\/sub\s*>|<sup\b[^>]*>[\s\S]*?<\/sup\s*>/gi;
+	/<span\b[^>]*>[\s\S]*?<\/span\s*>|<u\b[^>]*>[\s\S]*?<\/u\s*>|<a\b[^>]*>[\s\S]*?<\/a\s*>|<img\b[^>]*\/?>|<sub\b[^>]*>[\s\S]*?<\/sub\s*>|<sup\b[^>]*>[\s\S]*?<\/sup\s*>/gi;
 
-	const excludedNodes = new Set([
+const excludedNodes = new Set([
 	"HTMLBlock",
 	"FencedCode",
 	"CodeBlock",
