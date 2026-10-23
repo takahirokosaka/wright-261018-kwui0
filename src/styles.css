@@ -88,6 +88,10 @@ h3 {
 	font-size: 1.41em;
 }
 
+.cm-line.md-h4 span, h4 {
+  font-weight: 900 !important;
+}
+
 .md-link * {
 	color: var(--link-color);
 	text-decoration: none;
