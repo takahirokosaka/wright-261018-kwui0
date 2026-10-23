@@ -5,6 +5,7 @@
 	color: #212121;
 	--link-color: #1976d2;
 	--code-fence-header: #e8edf3;
+	background: white;
 }
 
 html,
@@ -22,6 +23,16 @@ body {
 .cm-editor .cm-scroller {
 	overflow: auto;
 	font: inherit;
+}
+
+/* Width of the writing area */
+.cm-scroller:not(:has(> .cm-gutters)) .cm-content {
+	/* Match printing: Inter Regualr, 10pt, in a column with a width of 126 mm. 126 mm * 2 + 15 mm * 3 = 297 mm, which is A4 landscape. */
+	width: 634px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	background: #fefefe;
 }
 
 .cm-editor:not(.md-source-mode) .cm-scroller {
