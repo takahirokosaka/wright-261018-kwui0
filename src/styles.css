@@ -394,10 +394,10 @@ pre {
 	white-space: pre-wrap;
 	display: block;
 	box-sizing: border-box;
-	width: calc(100% + 0.8rem);
-	transform: translateX(-0.4rem);
 	padding: 0.4rem;
 	padding-top: 0.33rem;
 	padding-bottom: 0.33rem;
 	border-radius: 0.4rem;
+	background: black;
+	color:#eaeaea; /* Default text color */
 }
