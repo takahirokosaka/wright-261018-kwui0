@@ -1,5 +1,13 @@
 # Markdown Editor Demo
 
+13. HTML
+
+<div style="padding: 12px; border: 1px solid #888; border-radius: 4px;">
+ <strong>HTML block</strong>
+ <p>This section tests whether your Markdown renderer supports inline HTML.</p>
+</div>
+
+
 ## 4. Blockquotes
 
 > Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
@@ -200,13 +208,6 @@ Unsupported.
 Here is a sentence with a footnote reference.[^1]
 
 [^1]: This is the footnote content.
-
-13. HTML
-
-<div style="padding: 12px; border: 1px solid #888; border-radius: 8px;">
- <strong>HTML block</strong>
- <p>This section tests whether your Markdown renderer supports inline HTML.</p>
-</div>
 
 ## 14. Long Paragraph Test
 
