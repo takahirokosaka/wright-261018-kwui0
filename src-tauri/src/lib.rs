@@ -1,6 +1,8 @@
 use std::path::PathBuf;
 use tauri::AppHandle;
 use tauri::Manager;
+use tauri::plugin::Builder;
+use tauri_plugin_opener::OpenerExt;
 
 use crate::editor_window::open_markdown_in_new_window;
 
@@ -21,6 +23,40 @@ pub fn run() {
 	let app = tauri::Builder::default()
 		.plugin(tauri_plugin_dialog::init())
 		.plugin(tauri_plugin_opener::init())
+		.plugin(
+			Builder::<tauri::Wry, ()>::new("external-link-guard")
+				.on_navigation(|webview, url| {
+					let scheme = url.scheme();
+					let host = url.host_str().unwrap_or("");
+
+					// Allow the app's own pages.
+					if scheme == "tauri" && host == "localhost" {
+						return true;
+					}
+
+					// Allow the standard Tauri production origin.
+					if (scheme == "http" || scheme == "https") && host == "tauri.localhost" {
+						return true;
+					}
+
+					// Allow the local development server.
+					if cfg!(dev) && (host == "localhost" || host == "127.0.0.1" || host == "::1") {
+						return true;
+					}
+
+					// Send external web links to the system browser.
+					if scheme == "http" || scheme == "https" {
+						let _ = webview
+							.app_handle()
+							.opener()
+							.open_url(url.as_str(), None::<&str>);
+					}
+
+					// Cancel the WebView navigation in all other cases.
+					false
+				})
+				.build(),
+		)
 		.plugin(tauri_plugin_fs::init())
 		.plugin(tauri_plugin_clipboard_x::init())
 		.setup(app_setup)
@@ -86,7 +122,7 @@ fn app_setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 				// Only create a default window if no window exists.
 				if handle_for_task.webview_windows().is_empty() {
 					if let Err(err) =
-						editor_window::create_editor_window(&handle_for_task, None, false )
+						editor_window::create_editor_window(&handle_for_task, None, false)
 					{
 						eprintln!("Failed to create editor window: {err}");
 					}
