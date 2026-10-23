@@ -1,6 +1,48 @@
 # Markdown Editor Demo
 
+Trailing space 
+
+## 3. Lists
+
+Unordered List
+
+- Apples
+- Bananas
+- Oranges
+- Mandarin oranges
+- Blood oranges
+ - Grapes
+
+Ordered List
+
+1. Plan the project
+2. Write the code
+3. Test the application
+4. Release the final version
+
+Task List
+
+Unsupported.
+
+
+
 Welcome to your Markdown editor! This sample file demonstrates common Markdown features so you can test both editing and preview rendering.
+
+<a href="https://google.com"><img src="https://placehold.co/20"></a> image <span>aaa</span>
+
+<a href="https://google.com"><img src="https://placehold.co/100"></a>
+
+[test](./Untitled3.md)
+
+![](<./Untitled.assets/lfs/paste-2026-10-22T05-29-43.065Z.png>)
+
+
+
+
+This does not work in CodeMirror \[![Alt text](https://placehold.co/600)](https://google.com). https://codemirror-live-markdown.vercel.app
+
+<div><a href="https://google.com"><img src="https://placehold.co/100"></a></div>
+
 
 ## 1. Text Formatting
 
@@ -35,28 +77,6 @@ This sample file demonstrates
 This sample file demonstrates
 
 ###### Heading 6
-
-## 3. Lists
-
-Unordered List
-
-- Apples
-- Bananas
-- Oranges
-- Mandarin oranges
-- Blood oranges
- - Grapes
-
-Ordered List
-
-1. Plan the project
-2. Write the code
-3. Test the application
-4. Release the final version
-
-Task List
-
-Unsupported.
 
 ## 4. Blockquotes
 
@@ -113,11 +133,13 @@ Content below the divider.
 
 ## 8. Images
 
-![Placeholder image](https://placehold.co/200)
+![Placeholder image](https://placehold.co/800)
 
 ![local](./Untitled.assets/lfs/sample.png)
 
 Figure 1: An example image in a Markdown document.
+
+<img src="https://placehold.co/800">
 
 ## 9. Links and References
 

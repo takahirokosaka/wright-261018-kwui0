@@ -3,7 +3,7 @@
 	font-size: 18px;
 	line-height: 1.41;
 	color: #212121;
-	--link-color: #1976d2
+	--link-color: #1976d2;
 }
 
 html,
@@ -161,19 +161,21 @@ h3 {
 .md-list-marker-bullet::before {
 	content: "";
 	display: inline-block;
-	width: 0.35em;
-	height: 0.35em;
+	width: 0.3em;
+	height: 0.3em;
 	margin-right: 0.5em;
 	background-color: currentColor;
 	border-radius: 50%;
 	vertical-align: middle;
+	transform: translateY(-0.1em);
 }
 
 .md-trailing-space {
-	background-image: radial-gradient(circle, red 2px, transparent 2px);
+	background-image: radial-gradient(circle, #ef4444 0.15em, transparent 0.16em);
+	background-size: 0.6em 0.6em;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-size: 4px 4px;
+	transform: translateY(-0.1em);
 }
 
 .md-blockquote {
