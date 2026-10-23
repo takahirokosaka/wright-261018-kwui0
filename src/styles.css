@@ -168,6 +168,19 @@ h3 {
 	user-select: none;
 }
 
+.md-list-depth-0 {
+	margin-left: 0;
+}
+.md-list-depth-1 {
+	margin-left: .5em;
+}
+.md-list-depth-2 {
+	margin-left: 1em;
+}
+.md-list-depth-3 {
+	margin-left: 1.5em;
+}
+
 .md-list-marker-bullet::before {
 	content: "";
 	display: inline-block;

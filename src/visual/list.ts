@@ -1,4 +1,3 @@
-import { syntaxTree } from "@codemirror/language";
 import { type Range } from "@codemirror/state";
 import {
 	Decoration,
@@ -7,26 +6,34 @@ import {
 } from "@codemirror/view";
 import { WidgetType } from "@codemirror/view";
 
+const INDENT_SIZE = 2;
+
 const hideMark = Decoration.replace({});
 
 class ListMarker extends WidgetType {
 	readonly marker: string;
+	readonly depth: number;
 
-	constructor(marker: string) {
+	constructor(marker: string, depth: number) {
 		super();
 		this.marker = marker;
+		this.depth = depth;
 	}
 
 	eq(other: ListMarker) {
-		return this.marker === other.marker;
+		return this.marker === other.marker && this.depth === other.depth;
 	}
 
 	toDOM() {
 		const span = document.createElement("span");
-		span.className =
+
+		span.className = [
+			"md-list-marker",
 			this.marker === "bullet"
-				? "md-list-marker md-list-marker-bullet"
-				: "md-list-marker md-list-marker-number";
+				? "md-list-marker-bullet"
+				: "md-list-marker-number",
+			`md-list-depth-${this.depth}`,
+		].join(" ");
 
 		span.textContent = this.marker === "bullet" ? "" : `${this.marker}. `;
 
@@ -36,69 +43,41 @@ class ListMarker extends WidgetType {
 
 export function listDecorations(view: EditorView): DecorationSet {
 	const decorations: Range<Decoration>[] = [];
-	const tree = syntaxTree(view.state);
 
 	const cursorLine = view.state.doc.lineAt(
 		view.state.selection.main.head,
 	).number;
 
 	for (const { from, to } of view.visibleRanges) {
-		tree.iterate({
-			from,
-			to,
-			enter(node) {
-				const isBullet = node.name === "BulletList";
-				const isOrdered = node.name === "OrderedList";
+		const startLine = view.state.doc.lineAt(from).number;
+		const endLine = view.state.doc.lineAt(to).number;
 
-				if (!isBullet && !isOrdered) return;
+		for (let lineNo = startLine; lineNo <= endLine; lineNo++) {
+			const line = view.state.doc.line(lineNo);
 
-				// Find the list marker at the start of each list item.
-				node.node.cursor().iterate((child) => {
-					if (child.name !== "ListMark" && child.name !== "ListItem") {
-						return;
-					}
+			if (lineNo === cursorLine) continue;
 
-					if (child.name === "ListItem") {
-						const itemLine = view.state.doc.lineAt(child.from);
+			const match = line.text.match(/^( *)([-+*]|\d+[.)])\s+/);
 
-						// Only show Markdown source for the active item.
-						if (itemLine.number === cursorLine) return;
+			if (!match) continue;
 
-						const itemText = view.state.doc.sliceString(
-							itemLine.from,
-							itemLine.to,
-						);
+			const markerFrom = line.from + match[1].length;
+			const markerTo = line.from + match[0].length;
+			const depth = Math.floor(match[1].length / INDENT_SIZE);
 
-						const match = itemText.match(/^(\s*)([-+*]|\d+[.)])\s+/);
+			const marker = /^\d/.test(match[2])
+				? match[2].replace(/[.)]$/, "")
+				: "bullet";
 
-						if (match) {
-							const markerFrom = itemLine.from + match[1].length;
-							const markerTo = itemLine.from + match[0].length;
+			decorations.push(hideMark.range(markerFrom, markerTo));
 
-							decorations.push(hideMark.range(markerFrom, markerTo));
-
-							if (isBullet) {
-								decorations.push(
-									Decoration.widget({
-										widget: new ListMarker("bullet"),
-										side: -1,
-									}).range(markerFrom),
-								);
-							} else {
-								const number = match[2].replace(/[.)]$/, "");
-
-								decorations.push(
-									Decoration.widget({
-										widget: new ListMarker(number),
-										side: -1,
-									}).range(markerFrom),
-								);
-							}
-						}
-					}
-				});
-			},
-		});
+			decorations.push(
+				Decoration.widget({
+					widget: new ListMarker(marker, depth),
+					side: -1,
+				}).range(markerFrom),
+			);
+		}
 	}
 
 	return Decoration.set(decorations, true);
