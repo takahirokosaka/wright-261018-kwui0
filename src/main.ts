@@ -126,13 +126,6 @@ function modeExtensions(sourceMode: boolean) {
 	];
 }
 
-const pasteLogger = EditorView.domEventHandlers({
-	paste(event) {
-		console.log("CodeMirror paste fired", event);
-		console.log("Clipboard:", event.clipboardData);
-	},
-});
-
 const view = new EditorView({
 	state: EditorState.create({
 		doc: initialContent,
@@ -153,7 +146,6 @@ const view = new EditorView({
 			history(),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
-			pasteLogger,
 		],
 	}),
 	parent: document.body,
