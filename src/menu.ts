@@ -1,6 +1,7 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open } from "@tauri-apps/plugin-dialog";
 import { invoke } from "@tauri-apps/api/core";
+import type { Event } from "@tauri-apps/api/event";
 
 import type { EditorView } from "codemirror";
 import { undoDepth } from "@codemirror/commands";
@@ -38,46 +39,56 @@ export async function registerMenuEvents(view: EditorView) {
 		void saveCurrent(true);
 	});
 
-	const unlistenOpen = await window.listen("menu-open", async () => {
-		try {
-			const path = await open({
-				multiple: false,
-				filters: [
-					{
-						name: "Markdown",
-						extensions: ["md", "markdown"],
+	const unlistenOpen = await window.listen<boolean>(
+		"menu-open",
+		async (event: Event<boolean>) => {
+			const closeWindowIfCanceled = event.payload;
+
+			try {
+				const path = await open({
+					multiple: false,
+					filters: [
+						{
+							name: "Markdown",
+							extensions: ["md", "markdown"],
+						},
+					],
+				});
+
+				if (!path || Array.isArray(path)) {
+					if (closeWindowIfCanceled) {
+						await window.close();
+					}
+					return;
+				}
+
+				// If the current window is not a genuinely new, empty editor, don't reuse it.
+				const hasContent = view.state.doc.length > 0;
+				const hasUndoHistory = undoDepth(view.state) > 0;
+
+				if (hasContent || hasUndoHistory) {
+					await invoke("open_markdown_in_new_window", { path });
+					return;
+				}
+
+				const content = await readTextFile(path);
+
+				setOpenedFile(path, content);
+
+				view.dispatch({
+					changes: {
+						from: 0,
+						to: view.state.doc.length,
+						insert: content,
 					},
-				],
-			});
+				});
 
-			if (!path || Array.isArray(path)) return;
-
-			// If the current window is not a genuinely new, empty editor, don't reuse it.
-			const hasContent = view.state.doc.length > 0;
-			const hasUndoHistory = undoDepth(view.state) > 0;
-
-			if (hasContent || hasUndoHistory) {
-				await invoke("open_markdown_in_new_window", { path });
-				return;
+				await updateWindowTitle(content);
+			} catch (error) {
+				alert(`Open failed: ${String(error)}`);
 			}
-
-			const content = await readTextFile(path);
-
-			setOpenedFile(path, content);
-
-			view.dispatch({
-				changes: {
-					from: 0,
-					to: view.state.doc.length,
-					insert: content,
-				},
-			});
-
-			await updateWindowTitle(content);
-		} catch (error) {
-			alert(`Open failed: ${String(error)}`);
-		}
-	});
+		},
+	);
 
 	const unlistenFormat = await window.listen<string>("format", (event) => {
 		if (isFormatType(event.payload)) {

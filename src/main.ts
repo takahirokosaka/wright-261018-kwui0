@@ -40,7 +40,9 @@ import { setupFileDrop } from "./file-drop";
 import { pasteMarkdown } from "./paste-markdown";
 import { pasteImageHandler } from "./paste-image";
 
-console.debug("👋 Hi. Window label:", getCurrentWindow().label);
+const currentWindow = getCurrentWindow();
+
+console.debug("👋 Hi. Window label:", currentWindow.label);
 
 async function loadUserCss() {
 	try {
@@ -88,7 +90,7 @@ function modeExtensions(sourceMode: boolean) {
 		bracketMatching(),
 		trailingSpaces,
 		pasteMarkdown,
-		pasteImageHandler
+		pasteImageHandler,
 	];
 
 	if (sourceMode) {
@@ -159,7 +161,7 @@ void updateWindowTitle(view.state.doc.toString());
 );
 
 // Export HTML
-await getCurrentWindow().listen("export", async () => {
+await currentWindow.listen("export", async () => {
 	exportHtml(view);
 });
 
@@ -167,3 +169,8 @@ await getCurrentWindow().listen("export", async () => {
 await setupFileDrop(view);
 
 view.focus();
+
+// A workaround for Tauri/macOS bug. See lib.rs.
+if (currentWindow.label.startsWith("openfc-")) {
+	currentWindow.emit("menu-open", true);
+}

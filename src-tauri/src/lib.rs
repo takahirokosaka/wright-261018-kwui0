@@ -86,7 +86,7 @@ fn app_setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 				// Only create a default window if no window exists.
 				if handle_for_task.webview_windows().is_empty() {
 					if let Err(err) =
-						editor_window::create_editor_window_without_file(&handle_for_task)
+						editor_window::create_editor_window(&handle_for_task, None, false )
 					{
 						eprintln!("Failed to create editor window: {err}");
 					}

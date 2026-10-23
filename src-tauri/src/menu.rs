@@ -223,11 +223,60 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 	match event.id().as_ref() {
 		"open" => {
 			if let Some(window) = focused {
-				let _ = window.emit_to(window.label(), "menu-open", ());
+				let _ = window.emit_to(window.label(), "menu-open", true);
+			} else {
+				let app = app.clone();
+
+				// TODO: Open a file chooser.
+
+				// On macOS, there appears to be a bug where Tauri or macOS creates a temporary window before opening the file chooser and attaches the file chooser to that window. After the user selects a file or cancels the dialog, the temporary window remains open. The window is useless and unresponsive, and we cannot close it because it is not exposed to us.
+				// TOOD: Report
+				#[cfg(any())]
+				{
+					eprintln!(
+						"[dialog] Tauri windows before dialog: {:?}",
+						app.webview_windows().keys().collect::<Vec<_>>()
+					);
+					app.dialog()
+						.file()
+						.add_filter("Markdown", &["md", "markdown"])
+						.pick_file(move |file_path| {
+							let Some(file_path) = file_path else {
+								// User cancelled; don't create a window.
+								eprintln!("Canceled");
+								return;
+							};
+
+							let path = match file_path.into_path() {
+								Ok(path) => path,
+								Err(err) => {
+									eprintln!("Failed to convert file path: {err}");
+									return;
+								}
+							};
+
+							let Some(path_str) = path.to_str() else {
+								eprintln!("File path is not valid UTF-8");
+								return;
+							};
+
+							println!("{}", path_str);
+
+							if let Err(err) =
+								crate::editor_window::create_editor_window(&app, Some(path_str))
+							{
+								eprintln!("Failed to open Markdown file: {err}");
+							}
+						});
+				}
+
+				// A workaround: Create a new window and tell it to oepn the file chooser. If the user cancels the file dialog, the window should be closed.
+				let _window = crate::editor_window::create_editor_window(&app, None, true)
+					.expect("Failed to create editor window"); // TODO: Error handling?
 			}
 		}
 		"new-editor" => {
-			let _ = crate::editor_window::create_editor_window_without_file(app);
+			let _ = crate::editor_window::create_editor_window(app, None, false);
 		}
 		"save" | "save-as" => {
 			if let Some(window) = focused {
