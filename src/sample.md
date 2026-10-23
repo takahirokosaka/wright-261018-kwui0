@@ -1,5 +1,23 @@
 # Markdown Editor Demo
 
+==Highlight Default== =={red}Red== =={gray}Gray==
+
+:::note
+This is a note.
+:::
+
+:::tip Custom title
+This is a tip.
+:::
+
+:::danger
+This is a dangerous operation.
+:::
+
+:::warning
+Be careful!
+:::
+
 13. HTML
 
 <div style="padding: 12px; border: 1px solid #888; border-radius: 4px;">
@@ -233,3 +251,5 @@ Happy writing! ✍️
 <span style="color: rgb(190,192,1);"> </span><span style="color: rgb(194,188,1);"> </span><span style="color: rgb(197,184,1);"> </span><span style="color: rgb(201,180,1);"> </span><span style="color: rgb(204,177,2);"> </span><span style="color: rgb(208,173,2);"> </span><span style="color: rgb(211,169,3);"> </span><span style="color: rgb(214,165,4);"> </span><span style="color: rgb(217,161,5);"> </span><span style="color: rgb(220,157,6);"> </span><span style="color: rgb(223,152,7);"> </span><span style="color: rgb(226,148,9);"> </span><span style="color: rgb(228,144,10);"> </span><span style="color: rgb(231,140,12);"> </span><span style="color: rgb(233,136,14);"> </span><span style="color: rgb(236,131,16);"> </span><span style="color: rgb(238,127,18);"> </span><span style="color: rgb(240,123,20);"> </span><span style="color: rgb(242,119,22);"> </span><span style="color: rgb(243,114,25);"> </span><span style="color: rgb(245,110,27);"> </span><span style="color: rgb(247,106,30);"> </span><span style="color: rgb(248,102,33);"> </span><span style="color: rgb(249,98,35);"> </span><span style="color: rgb(250,94,38);"> </span><span style="color: rgb(251,90,41);"> </span><span style="color: rgb(252,86,45);"> </span><span style="color: rgb(253,82,48);"> </span><span style="color: rgb(254,78,51);"> </span><span style="color: rgb(254,74,55);"> </span><span style="color: rgb(254,70,58);"> </span><span style="color: rgb(254,66,62);"> </span><span style="color: rgb(254,63,65);"> </span><span style="color: rgb(254,59,69);"> </span><span style="color: rgb(254,55,73);"> </span><span style="color: rgb(254,52,77);"> </span><span style="color: rgb(253,49,81);"> </span><span style="color: rgb(252,45,85);"> </span><span style="color: rgb(252,42,89);"> </span><span style="color: rgb(251,39,93);"> </span><span style="color: rgb(250,36,97);"> </span><span style="color: rgb(248,33,101);"> </span><span style="color: rgb(247,30,105);"> </span>
 <span style="color: rgb(255,146,208);">~</span><span style="color: rgb(202,169,255);"> %</span>
 </pre>
+
+End
