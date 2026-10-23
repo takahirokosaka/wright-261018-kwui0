@@ -48,7 +48,8 @@ const allowedInlineTags = new Set([
 	"strong",
 	"sub",
 	"sup",
-	"u"
+	"u",
+	"img"
 ]);
 
 function isValidHtmlBlock(html: string): boolean {
