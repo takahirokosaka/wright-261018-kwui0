@@ -40,6 +40,8 @@ import { setupFileDrop } from "./file-drop";
 import { pasteMarkdown } from "./paste-markdown";
 import { pasteImageHandler } from "./paste-image";
 
+import sampleMd from "./sample.md?raw";
+
 const currentWindow = getCurrentWindow();
 
 console.debug("👋 Hi. Window label:", currentWindow.label);
@@ -71,7 +73,11 @@ const titleUpdateExtension = EditorView.updateListener.of((update) => {
 });
 
 const initialPath = window.__INITIAL_FILE_PATH__;
-const initialContent = initialPath ? await loadMarkdownFile(initialPath) : "";
+const initialContent = initialPath
+	? await loadMarkdownFile(initialPath)
+	: import.meta.env.DEV
+		? sampleMd
+		: "";
 
 const modeCompartment = new Compartment();
 
