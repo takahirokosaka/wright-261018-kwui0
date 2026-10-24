@@ -2,7 +2,7 @@ import { EditorState, StateField } from "@codemirror/state";
 import { Range } from "@codemirror/state";
 
 import { EditorView, Decoration, WidgetType } from "@codemirror/view";
-import { syntaxTree } from "@codemirror/language";
+import { syntaxTree, ensureSyntaxTree } from "@codemirror/language";
 import DOMPurify from "dompurify";
 
 const allowedBlockTags = new Set([
@@ -49,7 +49,7 @@ const allowedInlineTags = new Set([
 	"sub",
 	"sup",
 	"u",
-	"img"
+	"img",
 ]);
 
 function isValidHtmlBlock(html: string): boolean {
@@ -92,7 +92,11 @@ class HtmlBlockWidget extends WidgetType {
 function buildHtmlDecorations(state: EditorState) {
 	const ranges: Range<Decoration>[] = [];
 
-	syntaxTree(state).iterate({
+	// Force the syntax tree to cover the whole document before collecting blocks. TODO: performance optimization
+	const tree =
+		ensureSyntaxTree(state, state.doc.length, 1000) ?? syntaxTree(state);
+
+	tree.iterate({
 		enter(node) {
 			if (node.name !== "HTMLBlock") return;
 
