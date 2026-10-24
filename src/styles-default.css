@@ -20,55 +20,6 @@
 }
 
 /*
- * Basic editor area settings. Do not edit.
- */
-
-html,
-body {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	overflow: hidden;
-}
-
-.cm-editor {
-	height: 100%;
-}
-
-.cm-editor .cm-scroller {
-	overflow: auto;
-	font: inherit;
-}
-
-.cm-editor:not(.md-source-mode) .cm-scroller {
-	padding: 0.5rem;
-}
-
-.cm-editor .cm-line {
-	padding: 0;
-}
-
-.cm-editor .cm-content {
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
-}
-
-/* Make the cursor thicker */
-.cm-cursor {
-	border-left-width: 2px !important;
-}
-
-.md-source-mode {
-	font-family: var(--code-font);
-	font-size: 0.9rem;
-	padding: 0;
-}
-
-.cm-gutters {
-	margin-right: 0.3em;
-}
-
-/*
  * Width of the writing area
  */
 

@@ -21,7 +21,9 @@ import { keymap, lineNumbers } from "@codemirror/view";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 import { searchKeymap } from "@codemirror/search";
 
-import "./styles.css";
+import "./styles-default.css";
+import "./styles-immutable.css";
+
 import { registerMenuEvents } from "./menu";
 import { updateWindowTitle } from "./window-title";
 import { registerCloseConfirmation } from "./close-confirmation";

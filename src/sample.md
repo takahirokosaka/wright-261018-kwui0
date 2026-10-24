@@ -39,6 +39,8 @@ When exporting HTML, contiguous empty lines are handled as one empty line.
 
 ## Raw HTML
 
+Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
+
 `<pre>`
 
 <pre>abc edt

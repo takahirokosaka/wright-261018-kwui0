@@ -5,7 +5,7 @@ import type { EditorView } from "@codemirror/view";
 import { marked } from "marked";
 
 import { highlightColors } from "./visual/highlight";
-import appCss from "./styles.css?inline";
+import appCss from "./styles-export.css?inline";
 
 import { getCachedMathSvg } from "./visual/math";
 import { getCurrentFileName, getCurrentFilePath } from "./save-file";
