@@ -1,37 +1,54 @@
 # Markdown Editor Demo
 
-# 2. Headings
-
-This sample file demonstrates
-
 # Heading 1
 
-This sample file demonstrates
+The headings use a condensed font, tight line spacing, and a top margin that scales with their font size.
 
 ## Heading 2
 
-This sample file demonstrates
+A small, curious fox wandered through the quiet garden at dusk.
 
 ### Heading 3
 
-This sample file demonstrates
+Rain tapped gently against the windows as the city lights began to glow.
 
 #### Heading 4
 
-This sample file demonstrates
+A paper airplane glided across the room and landed beside the open book.
 
 ##### Heading 5
 
-This sample file demonstrates
+Unused.
 
 ###### Heading 6
 
+Unused.
 
+## Empty Line
+
+An empty line is rendered with a regular line height. You can make a vertical space by pressing Enter key many times.
+
+
+
+
+
+
+
+
+When exporting HTML, contiguous empty lines are handled as one empty line.
+
+## Raw HTML
+
+`<pre>`
 
 <pre>abc edt
 wef
 weawf
 </pre>
+
+`<div>`
+
+<div>This is a div.</div>
 
 ## 8. Images
 

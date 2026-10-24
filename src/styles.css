@@ -68,11 +68,6 @@ body {
 	margin-right: 0.3em;
 }
 
-/* There's no <p>. All lines are .cm-line. We use empty lines as margins between paragraphs. */
-.cm-line:has(.md-empty-line) {
-	height: 0.2em;
-}
-
 /*
  * Width of the writing area
  */
@@ -103,7 +98,7 @@ body {
 .cm-line.md-h6 {
 	line-height: 1;
 	padding-top: 0.5em; /* Margins distort CodeMirror lines. */
-	padding-bottom: .2em;
+	margin-bottom: -.25em;
 }
 
 .md-h1,
