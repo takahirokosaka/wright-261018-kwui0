@@ -3,10 +3,24 @@
 	font-size: 18px;
 	line-height: 1.41;
 	color: #212121;
+	background: #fefefe;
 	--link-color: #1976d2;
-	--code-fence-header: #e8edf3;
-	background: white;
+	--code-font: "Google Sans Code", monospace;
+	--code-font-size: 0.9em;
+	--code-fence-header-bg: #e8edf3;
+	--code-fence-bg: #f6f7f9;
+	--inline-code-bg: #e2e5e9;
+	--horizontal-rule-color: #6a737d;
+	--warning-text-color: #ef4444;
+	--blockquote-1-border-color: #6a737d;
+	--blockquote-2-border-color: #569cd6;
+	--blockquote-3-border-color: #c586c0;
+	--html-block-border-color: #9bbcff;
 }
+
+/*
+ * Basic editor area settings. Do not edit.
+ */
 
 html,
 body {
@@ -25,16 +39,6 @@ body {
 	font: inherit;
 }
 
-/* Width of the writing area */
-.cm-scroller:not(:has(> .cm-gutters)) .cm-content {
-	/* Match printing: Inter Regualr, 10pt, in a column with a width of 126 mm. 126 mm * 2 + 15 mm * 3 = 297 mm, which is A4 landscape. */
-	width: 634px;
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	background: #fefefe;
-}
-
 .cm-editor:not(.md-source-mode) .cm-scroller {
 	padding: 0.5rem;
 }
@@ -48,9 +52,36 @@ body {
 	padding-bottom: 0.5em;
 }
 
-img {
-	max-width: 100%;
+/* Make the cursor thicker */
+.cm-cursor {
+	border-left-width: 2px !important;
 }
+
+.md-source-mode {
+	font-family: var(--code-font);
+	font-size: 0.9rem;
+	padding: 0;
+}
+
+.cm-gutters {
+	margin-right: 0.3em;
+}
+
+/*
+ * Width of the writing area
+ */
+
+.cm-scroller:not(:has(> .cm-gutters)) .cm-content {
+	/* Match printing: Inter Regualr, 10pt, in a column with a width of 126 mm. 126 mm * 2 + 15 mm * 3 = 297 mm, which is A4 landscape. */
+	width: 634px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+/*
+ * Headers
+ */
 
 /* h1 to h6 are for exporting HTML */
 :is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6) *,
@@ -89,9 +120,14 @@ h3 {
 	font-size: 1.41em;
 }
 
-.cm-line.md-h4 span, h4 {
-  font-weight: 900 !important;
+.cm-line.md-h4 span,
+h4 {
+	font-weight: 900 !important;
 }
+
+/*
+ * Link
+ */
 
 .md-link * {
 	color: var(--link-color);
@@ -103,34 +139,52 @@ h3 {
 	text-decoration: underline;
 }
 
+/*
+ * Code
+ */
+
 .md-code-fence-label::before {
-	content: " >>> ";
+	content: "</>";
 }
 
 .md-code-fence-label,
-.md-code-fence-end {
-	font-family: "Google Sans Code", monospace;
+.cm-line.md-code-fence-line {
+	font-family: var(--code-font);
+	font-size: var(--code-font-size);
+}
+
+.cm-line:has(.md-code-fence-label),
+.cm-line:has(.md-code-fence-end) {
+	background-color: var(--code-fence-header-bg);
+	text-align: right;
+	padding-right: 8px;
 }
 
 .cm-line:has(.md-code-fence-label) {
-	background-color: var(--code-fence-header);
-	border-radius: 8px 8px 0 0;
-}
-
-.md-code-fence-end::before {
-	content: " <<<";
+	border-radius: 4px 4px 0 0;
 }
 
 .cm-line:has(.md-code-fence-end) {
-	background-color: var(--code-fence-header);
-	border-radius: 0 0 8px 8px;
+	border-radius: 0 0 4px 4px;
 }
 
-.md-code-block-line {
-	font-family: "Google Sans Code", monospace;
+.cm-line.md-code-fence-line {
 	tab-size: 3;
-	background-color: #f6f7f9;
+	background-color: var(--code-fence-bg);
+	padding-left: 4px;
 }
+
+.md-inline-code {
+	padding: 0.1em 0.2em;
+	border-radius: 4px;
+	background: var(--inline-code-bg);
+	font-family: var(--code-font);
+	font-size: var(--code-font-size);
+}
+
+/*
+ * Emphasis
+ */
 
 .md-bold {
 	font-weight: 700;
@@ -144,26 +198,22 @@ h3 {
 	text-decoration: line-through;
 }
 
-/* Draw a 1px horizontal line through the vertical center of the decorated line. */
+/*
+ * Horizontal rule. Draw a 1px line through the vertical center of the decorated line.
+ */
 .md-horizontal-rule {
-	border: none;
-	text-decoration: none;
 	background-image: linear-gradient(
 		to bottom,
 		transparent calc(50% - 0.5px),
-		#6a737d calc(50% - 0.5px),
-		#6a737d calc(50% + 0.5px),
+		var(--horizontal-rule-color) calc(50% - 0.5px),
+		var(--horizontal-rule-color) calc(50% + 0.5px),
 		transparent calc(50% + 0.5px)
 	);
 }
 
-.md-inline-code {
-	padding: 0.1em 0.2em;
-	border-radius: 4px;
-	background: #e2e5e9;
-	font-family: "Google Sans Code", monospace;
-	font-size: 0.9em;
-}
+/*
+ * List
+ */
 
 .md-list-marker {
 	display: inline-block;
@@ -176,12 +226,15 @@ h3 {
 .md-list-depth-0 {
 	margin-left: 0;
 }
+
 .md-list-depth-1 {
 	margin-left: 0.5em;
 }
+
 .md-list-depth-2 {
 	margin-left: 1em;
 }
+
 .md-list-depth-3 {
 	margin-left: 1.5em;
 }
@@ -198,44 +251,53 @@ h3 {
 	transform: translateY(-0.1em);
 }
 
-.md-trailing-space {
-	background-image: radial-gradient(circle, #ef4444 0.15em, transparent 0.16em);
-	background-size: 0.6em 0.6em;
-	background-position: center;
-	background-repeat: no-repeat;
-	transform: translateY(-0.1em);
-}
+/*
+ * Block quote
+ */
 
 .cm-line.md-blockquote-1 {
-	border-left: 2px solid #6a737d;
+	border-left: 2px solid var(--blockquote-1-border-color);
 	padding-left: 0.6em;
 }
 
 .cm-line.md-blockquote-2 {
-	border-left: 2px solid #6a737d;
+	border-left: 2px solid var(--blockquote-1-border-color);
 	padding-left: 1.2em;
 
-	background-image: linear-gradient(#569cd6,#569cd6 );
+	background-image: linear-gradient(
+		var(--blockquote-2-border-color),
+		var(--blockquote-2-border-color)
+	);
 	background-size: 2px 100%;
 	background-position: 0.6em 0;
 	background-repeat: no-repeat;
 }
 
 .cm-line.md-blockquote-3 {
-	border-left: 2px solid #6a737d;
+	border-left: 2px solid var(--blockquote-1-border-color);
 	padding-left: 1.8em;
 
 	background-image:
-		linear-gradient(#569cd6, #569cd6),
-		linear-gradient(#c586c0,#c586c0);
-	background-size: 2px 100%, 2px 100%;
-	background-position: 0.6em 0, calc(1.2em + 2px) 0;
+		linear-gradient(
+			var(--blockquote-2-border-color),
+			var(--blockquote-2-border-color)
+		),
+		linear-gradient(
+			var(--blockquote-3-border-color),
+			var(--blockquote-3-border-color)
+		);
+	background-size:
+		2px 100%,
+		2px 100%;
+	background-position:
+		0.6em 0,
+		calc(1.2em + 2px) 0;
 	background-repeat: no-repeat;
 }
 
-.md-html-inline {
-	display: inline;
-}
+/*
+ * Image
+ */
 
 .md-html-inline img {
 	max-width: 100%;
@@ -250,6 +312,19 @@ h3 {
 	margin-inline: auto;
 }
 
+/* Handle <img> in raw HTML */
+img {
+	max-width: 100%;
+}
+
+/*
+ * Raw HTML
+ */
+
+.md-html-inline {
+	display: inline;
+}
+
 .md-html-block {
 	border: 1px solid transparent;
 	border-radius: 4px;
@@ -258,28 +333,19 @@ h3 {
 		border-color 150ms ease;
 
 	&:hover {
-		background-color: #f0f4ff;
-		border-color: #9bbcff;
+		border-color: var(--html-block-border-color);
 	}
 }
 
 pre {
 	margin: 0;
+	font-family: var(--code-font);
+	font-size: var(--code-font-size)
 }
 
-.md-source-mode {
-	font-family: "Google Sans Code", monospace;
-	padding: 0;
-}
-
-.cm-gutters {
-	margin-right: 0.3em;
-}
-
-/* Make the cursor thicker */
-.cm-cursor {
-	border-left-width: 2px !important;
-}
+/*
+ * Math
+ */
 
 .md-math-display {
 	text-align: center;
@@ -296,42 +362,17 @@ pre {
 	height: auto;
 }
 
-.md-empty-line {
-	color: gray;
-}
-
-@media print {
-	html,
-	body {
-		height: auto !important;
-		min-height: 0 !important;
-		overflow: visible !important;
-	}
-
-	body {
-		display: block !important;
-	}
-
-	article {
-		height: auto !important;
-		max-height: none !important;
-		overflow: visible !important;
-	}
-
-	pre {
-		overflow: visible !important;
-		white-space: pre-wrap;
-	}
-}
-
-.md-spell-error {
-	text-decoration: underline wavy #e53935;
-	text-decoration-skip-ink: none;
-}
-
-/* Base admonition styling */
-.md-admonition-line {
+/*
+ * Admonition & attention
+ */
+.cm-line.md-admonition-line {
 	background: color-mix(in srgb, var(--admonition-color) 8%, transparent);
+	padding: 2px;
+}
+
+.cm-line.md-admonition-line:not(:has(.md-admonition-label)) {
+	padding: 4px;
+	padding-left: 8px;
 }
 
 .md-admonition-label {
@@ -344,14 +385,20 @@ pre {
 	background: color-mix(in srgb, var(--admonition-color) 12%, transparent);
 }
 
+div.cm-line:has(.md-admonition-label) {
+	border-radius: 4px 4px 0 0;
+}
+
 .cm-line.md-admonition-line:has(.md-admonition-end) {
-	height: 0;
+	height: 4px;
 	min-height: 0;
 	overflow: hidden;
 	padding: 0;
+	border-radius: 0 0 4px 4px;
 }
 
-/* Docusaurus-inspired colors */
+/* Docusaurus colors */
+
 .md-admonition-note {
 	--admonition-color: #448aff;
 }
@@ -364,8 +411,7 @@ pre {
 	--admonition-color: #00a4b4;
 }
 
-.md-admonition-warning,
-.md-admonition-caution {
+.md-admonition-warning {
 	--admonition-color: #e6a700;
 }
 
@@ -373,60 +419,40 @@ pre {
 	--admonition-color: #e13238;
 }
 
-/* Export HTML */
-.md-admonition {
-	--admonition-color: #448aff;
-	--admonition-bg: #448aff12;
-
-	margin: 1.25em 0;
-	padding: 0.8em 1em;
-	border-left: 4px solid var(--admonition-color);
-	border-radius: 4px;
-	background: var(--admonition-bg);
-	break-inside: avoid;
-}
-
-.md-admonition-note {
-	--admonition-color: #448aff;
-	--admonition-bg: #448aff12;
-}
-
-.md-admonition-tip {
-	--admonition-color: #00a400;
-	--admonition-bg: #00a40012;
-}
-
-.md-admonition-info {
-	--admonition-color: #00a4b4;
-	--admonition-bg: #00a4b412;
-}
-
-.md-admonition-warning,
-.md-admonition-caution {
-	--admonition-color: #e6a700;
-	--admonition-bg: #e6a70015;
-}
-
-.md-admonition-danger {
-	--admonition-color: #e13238;
-	--admonition-bg: #e1323812;
-}
-
+/* For exporting HTML */
 .md-admonition-title {
 	margin-bottom: 0.5em;
 	color: var(--admonition-color);
 	font-weight: 700;
 }
 
-.md-admonition-content > :first-child {
-	margin-top: 0;
+/* Unused */
+.md-empty-line {
+	color: gray;
 }
 
-.md-admonition-content > :last-child {
-	margin-bottom: 0;
+.md-spell-error {
+	text-decoration: underline wavy var(--warning-text-color);
+	text-decoration-skip-ink: none;
 }
 
-.dracula {
+ .md-trailing-space {
+	background-image: radial-gradient(
+		circle,
+		var(--warning-text-color) 0.15em,
+		transparent 0.16em
+	);
+	background-size: 0.6em 0.6em;
+	background-position: center;
+	background-repeat: no-repeat;
+	transform: translateY(-0.1em);
+}
+
+/*
+ * Miscellaneous
+ */
+
+.terminal {
 	font-size: 0.726rem;
 	overflow-wrap: anywhere;
 	white-space: pre-wrap;
@@ -440,7 +466,7 @@ pre {
 	color: #eaeaea; /* Default text color */
 }
 
-/* You need this font installed on your operating system. */
+/* Fonts need to be installed on your operating system. */
 .material-symbols-outlined {
 	font-family: "Material Symbols Outlined";
 	font-weight: normal;
@@ -451,3 +477,4 @@ pre {
 		"opsz" 24;
 	vertical-align: -15%;
 }
+

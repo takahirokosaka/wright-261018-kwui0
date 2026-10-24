@@ -71,7 +71,7 @@ class FenceLabelWidget extends WidgetType {
 }
 
 const codeLine = Decoration.line({
-	class: "md-code-block-line",
+	class: "md-code-fence-line",
 });
 
 export function codeBlockDecorations(view: EditorView): DecorationSet {
@@ -106,7 +106,9 @@ export function codeBlockDecorations(view: EditorView): DecorationSet {
 			if (cursorLine !== openingLine.number) {
 				decorations.push(
 					Decoration.replace({
-						widget: new FenceLabelWidget(info || ""),
+						widget: new FenceLabelWidget(
+							(info.length === 0 ? "" : " ") + info || "",
+						),
 					}).range(from, from + openingLineEnd),
 				);
 			}
