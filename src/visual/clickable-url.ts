@@ -62,20 +62,24 @@ export function urlDecorations(view: EditorView): DecorationSet {
 
 function findUrlAt(view: EditorView, pos: number): string | null {
 	const tree = syntaxTree(view.state);
-	let node = tree.resolveInner(pos, 1);
 
-	while (node) {
-		if (node.name === "Link") {
-			for (let child = node.firstChild; child; child = child.nextSibling) {
-				if (child.name === "URL") {
-					return view.state.doc.sliceString(child.from, child.to);
+	for (const bias of [-1, 1] as const) {
+		let node = tree.resolveInner(pos, bias);
+
+		while (node) {
+			if (node.name === "Link") {
+				for (let child = node.firstChild; child; child = child.nextSibling) {
+					if (child.name === "URL") {
+						return view.state.doc.sliceString(child.from, child.to);
+					}
 				}
+
+				break;
 			}
 
-			return null;
+			if (!node.parent) break;
+			node = node.parent;
 		}
-
-		node = node.parent!;
 	}
 
 	return null;
@@ -124,7 +128,15 @@ export const clickableUrl = EditorView.domEventHandlers({
 
 		if (pos == null) return false;
 
+		console.log({
+			pos,
+			line: view.state.doc.lineAt(pos).text,
+			node: syntaxTree(view.state).resolveInner(pos, 1).name,
+		});
+
 		const url = findUrlAt(view, pos);
+
+		console.log(url);
 
 		if (!url) return false;
 
