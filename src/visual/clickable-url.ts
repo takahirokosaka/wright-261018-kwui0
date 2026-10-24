@@ -7,11 +7,11 @@ import { getCurrentFilePath } from "../save-file";
 
 const hideMark = Decoration.replace({});
 const linkMark = Decoration.mark({ class: "md-link" });
+const bareUrlMark = Decoration.mark({ class: "md-bare-url" });
 
 export function urlDecorations(view: EditorView): DecorationSet {
 	const builder = new RangeSetBuilder<Decoration>();
 	const tree = syntaxTree(view.state);
-
 	const cursor = view.state.selection.main.head;
 
 	for (const { from, to } of view.visibleRanges) {
@@ -19,6 +19,11 @@ export function urlDecorations(view: EditorView): DecorationSet {
 			from,
 			to,
 			enter(node) {
+				if (node.name === "URL") {
+					builder.add(node.from, node.to, bareUrlMark);
+					return;
+				}
+
 				if (node.name !== "Link") return;
 
 				const line = view.state.doc.lineAt(node.from);
@@ -45,13 +50,8 @@ export function urlDecorations(view: EditorView): DecorationSet {
 
 				if (!urlNode || marks.length < 3) return;
 
-				// Hide the opening "[".
 				builder.add(node.from, node.from + 1, hideMark);
-
-				// Style the link label.
 				builder.add(marks[0].to, marks[1].from, linkMark);
-
-				// Hide everything from the closing label marker through ')'.
 				builder.add(marks[1].from, node.to, hideMark);
 			},
 		});
@@ -67,6 +67,12 @@ function findUrlAt(view: EditorView, pos: number): string | null {
 		let node = tree.resolveInner(pos, bias);
 
 		while (node) {
+			// Bare URL, e.g. https://google.com
+			if (node.name === "URL") {
+				return view.state.doc.sliceString(node.from, node.to);
+			}
+
+			// Markdown link, e.g. [Google](https://google.com)
 			if (node.name === "Link") {
 				for (let child = node.firstChild; child; child = child.nextSibling) {
 					if (child.name === "URL") {
@@ -86,7 +92,6 @@ function findUrlAt(view: EditorView, pos: number): string | null {
 }
 
 async function openMarkdownLink(href: string): Promise<void> {
-	// Remove Markdown's optional angle-bracket delimiters. Wrapping a link destination in angle brackets (<...>) is a standard way to include spaces without percent-encoding them.
 	const path =
 		href.startsWith("<") && href.endsWith(">") ? href.slice(1, -1) : href;
 
@@ -128,15 +133,7 @@ export const clickableUrl = EditorView.domEventHandlers({
 
 		if (pos == null) return false;
 
-		console.log({
-			pos,
-			line: view.state.doc.lineAt(pos).text,
-			node: syntaxTree(view.state).resolveInner(pos, 1).name,
-		});
-
 		const url = findUrlAt(view, pos);
-
-		console.log(url);
 
 		if (!url) return false;
 

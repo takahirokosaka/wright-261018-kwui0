@@ -79,10 +79,21 @@ h4 {
 .md-link * {
 	color: var(--link-color);
 	text-decoration: none;
+	text-decoration-color: currentColor;
 	cursor: pointer;
 }
 
 .md-link:hover {
+	text-decoration: underline;
+}
+
+.cm-line .md-bare-url span {
+	color: var(--link-color);
+	text-decoration-color: currentColor;
+	cursor: pointer;
+}
+
+.cm-line .md-bare-url:hover span {
 	text-decoration: underline;
 }
 
