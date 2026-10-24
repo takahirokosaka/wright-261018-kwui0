@@ -32,7 +32,7 @@
 }
 
 /*
- * Headers
+ * Headings
  */
 
 :is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6) * {
@@ -48,8 +48,8 @@
 .cm-line.md-h5,
 .cm-line.md-h6 {
 	line-height: 1;
-	padding-top: 0.5em; /* Margins distort CodeMirror lines. */
-	margin-bottom: -.25em;
+	padding-top: 0.5em; /* Margins interfere with CodeMirror's position recognition. */
+	/* margin-bottom: -0.25em; */
 }
 
 .md-h1,
@@ -100,19 +100,21 @@ h4 {
 	font-size: var(--code-font-size);
 }
 
-.cm-line:has(.md-code-fence-label),
-.cm-line:has(.md-code-fence-end) {
+.cm-line:has(.md-code-fence-label) {
 	background-color: var(--code-fence-header-bg);
 	text-align: right;
 	padding-right: 8px;
 }
 
-.cm-line:has(.md-code-fence-label) {
-	border-radius: 4px 4px 0 0;
+/* Fake a bottom padding */
+.cm-line.md-code-fence-line:has(+ .cm-line img.cm-widgetBuffer) {
+	padding-bottom: 4px;
+	background-color: var(--code-fence-bg);
+	border-radius: 0 0 4px 4px;
 }
 
-.cm-line:has(.md-code-fence-end) {
-	border-radius: 0 0 4px 4px;
+.cm-line:has(.md-code-fence-label) {
+	border-radius: 4px 4px 0 0;
 }
 
 .cm-line.md-code-fence-line {

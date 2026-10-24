@@ -1,16 +1,18 @@
 # Markdown Editor Demo
 
-## Images
+## Link
 
-Large images shrink to the width.
+[URL](https://example.com)
 
-![Placeholder image](https://placehold.co/2000)
+Image link <a href="https://google.com"><img src="https://placehold.co/18"></a>
 
-![local](./Untitled.assets/lfs/sample.png)
+[Local file of an absolute path](</Library/WebServer/share/httpd/manual/images/build_a_mod_3.png>) is clickable.
 
-Figure 1: An example image in a Markdown document.
+[Local file of a relative path](<./Untitled2.md>) is clickable when this markdown file is saved on the disk.
 
-<img src="https://placehold.co/800">
+This does not work in CodeMirror \[![Alt text](https://placehold.co/300x200)](https://google.com). Check https://codemirror-live-markdown.vercel.app.
+
+<div><a href="https://google.com"><img src="https://placehold.co/100" style="display:block;"></a></div>
 
 # Heading 1
 
@@ -36,36 +38,53 @@ Unused.
 
 Unused.
 
-## Empty Line
+## Font
 
-Empty lines are rendered with a regular line height. You can make a vertical space by pressing Enter key many times.
+Fonts you want to use must be installed on your operating system. You can also render Material Symbols icons if you install them: <span class="material-symbols-outlined" >search</span>.
 
+## Table
 
+Unsupported. Simple tables can be drawn using ASCII art. More complex tables and formatting usually require a spreadsheet. Paste them as an SVG.
 
-
-
-
-
-
-When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
-
-## Raw HTML
-
-Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
-
-`<pre>`
-
-<pre>abc edt
-wef
-weawf
+<pre>
+┌───────┬─────┬────────┐
+│ Name  │ Age │ City   │
+├───────┼─────┼────────┤
+│ Alice │  25 │ Tokyo  │
+│ Bob   │  30 │ Osaka  │
+│ Carol │  28 │ Nagoya │
+└───────┴─────┴────────┘
 </pre>
 
-`<div>`
+## Highlight
 
-<div>This is a div.</div>
+==Highlight Default Yellow (Cmd/Ctrl+Shift+H)== =={red}Red== =={orange}Orange== =={green}Green== =={blue}Blue== =={purple}Purple== =={pink}Pink== =={gray}Gray==
 
+Gray can be used for collaborative editing (Cmd/Ctrl+Shift+M, M is for mute).
 
-## 5. Code Blocks
+## Blockquotes
+
+> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
+
+Nested blockquotes:
+
+> This is the first level.
+>
+>> This is a nested blockquote. To include multiple paragraphs, please use `<span>&nbsp;</span>`.
+>> <span>&nbsp;</span>
+>> This is the second paragraph.
+>>
+>>> It can contain multiple paragraphs. It can contain multiple paragraphs.
+
+## Horizontal Rule
+
+Content above the divider.
+
+---
+
+Content below the divider.
+
+## Code Blocks
 
 Inline code example: `console.log("Hello, world!");`
 
@@ -101,8 +120,58 @@ npm run dev
 npm run build
 ```
 
-Admonitions
+## Images
 
+Large images shrink to the width.
+
+![Placeholder image](https://placehold.co/2000)
+
+A local images of an absolute path:
+
+![Local aboluste](</Library/WebServer/share/httpd/manual/images/build_a_mod_3.png>)
+
+A local images of a relative path appears when this markdown file is saved on the disk.
+
+![local](<./Untitled.assets/lfs/sample.png>)
+
+A block `<img>`:
+
+<img src="https://placehold.co/800" style="display:block;">
+
+## Empty Line
+
+Empty lines are rendered with a half line height. You can make a vertical space by pressing Enter key many times.
+
+
+
+
+
+
+
+
+We use empty lines as margins between paragraphs. An empty line is also used to make a margin between a heading and the next line of text, because a heading cannot have margins above or below it. Margins interfere with pointer-to-document position mapping if they alter the geometry CodeMirror expects. As a result, clicking on a line won't work as expected if lines have margins.
+
+When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
+
+## Raw HTML
+
+Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
+
+`<pre>`
+
+<pre>abc edt
+wef
+weawf
+</pre>
+
+`<div>`
+
+<div style="padding: 12px; border: 1px solid #888; border-radius: 4px;">
+ <strong>HTML block</strong>
+ <p>This section tests whether your Markdown renderer supports inline HTML.</p>
+</div>
+
+## Admonitions
 
 :::note
 This is a note.
@@ -120,42 +189,9 @@ This is a dangerous operation.
 Be careful!
 :::
 
+## Lists
 
-
-13. HTML
-
-<div style="padding: 12px; border: 1px solid #888; border-radius: 4px;">
- <strong>HTML block</strong>
- <p>This section tests whether your Markdown renderer supports inline HTML.</p>
-</div>
-
-## 4. Blockquotes
-
-> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
-
-Nested blockquotes:
-
-> This is the first level.
->
->> This is a nested blockquote.
->>
->> It can contain multiple paragraphs.
->> 
->>> It can contain multiple paragraphs. It can contain multiple paragraphs.
-
-## 7. Horizontal Rules
-
-Content above the divider. 
-
----
-
-Content below the divider.
-
-==Highlight Default== =={red}Red== =={gray}Gray==
-
-## 3. Lists
-
-Unordered List
+### Unordered List
 
 - Apples
 - Bananas
@@ -165,53 +201,16 @@ Unordered List
   - Grapes
     - Fruit
 
-Ordered List
+### Ordered List
 
 1. Plan the project
   2. Write the code
     3. Test the application
 4. Release the final version
 
-Task List
+### Task List
 
 Unsupported.
-
-<pre>
-┌───────┬─────┬────────┐
-│ Name  │ Age │ City   │
-├───────┼─────┼────────┤
-│ Alice │  25 │ Tokyo  │
-│ Bob   │  30 │ Osaka  │
-│ Carol │  28 │ Nagoya │
-└───────┴─────┴────────┘
-</pre>
-
-012345678901234567890123456789012345678901234567890123456789
-
-Search <span class="material-symbols-outlined" >search</span>
-
-Trailing space 
-
-
-
-
-Welcome to your Markdown editor! This sample file demonstrates common Markdown features so you can test both editing and preview rendering.
-
-<a href="https://google.com"><img src="https://placehold.co/20"></a> image <span>aaa</span>
-
-<a href="https://google.com"><img src="https://placehold.co/100"></a>
-
-[test](./Untitled3.md)
-
-![](<./Untitled.assets/lfs/paste-2026-10-22T05-29-43.065Z.png>)
-
-
-
-
-This does not work in CodeMirror \[![Alt text](https://placehold.co/600)](https://google.com). https://codemirror-live-markdown.vercel.app
-
-<div><a href="https://google.com"><img src="https://placehold.co/100"></a></div>
-
 
 ## 1. Text Formatting
 
@@ -268,6 +267,14 @@ Here is a sentence with a footnote reference.[^1]
 
 Markdown is designed to be easy to read in its plain-text form while also being easy to convert into structured HTML. A good Markdown editor should preserve line breaks appropriately, handle long paragraphs without breaking the layout, render links and inline formatting correctly, and support a comfortable editing experience across different screen sizes. This paragraph is intentionally long to test wrapping, scrolling, and preview layout.
 
+## Extra
+
+Trailing space 
+
+Missspell
+
+<span>&nbsp;</span>
+
 End of sample document.
 
 Happy writing! ✍️
@@ -290,3 +297,5 @@ Happy writing! ✍️
 </pre>
 
 End
+
+012345678901234567890123456789012345678901234567890123456789
