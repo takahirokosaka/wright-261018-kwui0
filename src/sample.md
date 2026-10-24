@@ -1,5 +1,23 @@
 # Markdown Editor Demo
 
+## Mathematical Expressions
+
+Inline math: $E = mc^2$
+
+Block math: Block math (if supported):
+
+$$
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+$$
+
+## Text Formatting
+
+This is a paragraph with **bold** text, *italic* text, ~~strikethrough~~, and `inline code`.
+
+You can also combine formatting: ***bold and italic***.
+
+Here is a [link](https://commonmark.org/help) to the Markdown Guide.
+
 ## Raw HTML
 
 Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
@@ -209,30 +227,7 @@ Be careful!
 
 Unsupported.
 
-## 1. Text Formatting
-
-This is a paragraph with **bold** text, *italic* text, ~~strikethrough~~, and `inline code`.
-
-You can also combine formatting: ***bold and italic***.
-
-Here is a [link](https://commonmark.org/help) to the Markdown Guide.
-
-## 6. Tables
-
-Unsupported. Tables should be created using an external tool and rendered using `<img>` tags. Use SVG.
-
-
-## 9. Links and References
-
-Automatic URL: https://example.com
-
-Email link: hello@example.com
-
-[link label](https://example.com)
-
-[Local file](./Untitled.assets/lfs/sample.png)
-
-## 10. Escaping Special Characters
+## Escaping Special Characters
 
 Use a backslash to display Markdown characters literally:
 
@@ -242,17 +237,7 @@ Use a backslash to display Markdown characters literally:
 
 \`This is not inline code.\`
 
-## 11. Mathematical Expressions
-
-Inline math (if supported): $E = mc^2$
-
-Block math (if supported):
-
-$$
-\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
-$$
-
-12. Footnotes
+## Footnotes
 
 Unsupported.
 
@@ -260,21 +245,11 @@ Here is a sentence with a footnote reference.[^1]
 
 [^1]: This is the footnote content.
 
-## 14. Long Paragraph Test
-
-Markdown is designed to be easy to read in its plain-text form while also being easy to convert into structured HTML. A good Markdown editor should preserve line breaks appropriately, handle long paragraphs without breaking the layout, render links and inline formatting correctly, and support a comfortable editing experience across different screen sizes. This paragraph is intentionally long to test wrapping, scrolling, and preview layout.
-
 ## Extra
 
 Trailing space 
 
 Missspell
-
-<span>&nbsp;</span>
-
-End of sample document.
-
-Happy writing! ✍️
 
 <pre class="terminal">
 <span style="color: rgb(255,146,208);">~</span><span style="color: rgb(202,169,255);"> %</span> <span style="color: rgb(80,250,123);">date</span> | <span style="color: rgb(80,250,123);">figlet</span> | <span style="color: rgb(80,250,123);">lolcat</span>
@@ -293,6 +268,10 @@ Happy writing! ✍️
 <span style="color: rgb(255,146,208);">~</span><span style="color: rgb(202,169,255);"> %</span>
 </pre>
 
-End
+
+End of sample document.
+
+Happy writing! ✍️
+
 
 012345678901234567890123456789012345678901234567890123456789
