@@ -11,13 +11,14 @@ import { convertFileSrc } from "@tauri-apps/api/core";
 import { dirname, resolve } from "@tauri-apps/api/path";
 import { getCurrentFilePath } from "../save-file";
 
-// Ignore alt text
 class ImageWidget extends WidgetType {
 	readonly url: string;
+	readonly alt: string;
 
-	constructor(url: string) {
+	constructor(url: string, alt: string) {
 		super();
 		this.url = url;
+		this.alt = alt;
 	}
 
 	eq(other: ImageWidget) {
@@ -38,7 +39,7 @@ class ImageWidget extends WidgetType {
 				});
 			}
 		}
-		img.alt = "image here";
+		img.alt = this.alt.length > 0 ? this.alt : this.url;
 		img.loading = "lazy";
 		return img;
 	}
@@ -65,10 +66,13 @@ export function imageDecorations(view: EditorView): DecorationSet {
 				if (line.number === cursorLine) return;
 
 				let urlNode: { from: number; to: number } | undefined;
+				let altNode: { from: number; to: number } | undefined;
 
 				node.node.cursor().iterate((child) => {
 					if (child.name === "URL") {
 						urlNode = { from: child.from, to: child.to };
+					} else if (child.name === "LinkLabel") {
+						altNode = { from: child.from, to: child.to };
 					}
 				});
 
@@ -81,8 +85,12 @@ export function imageDecorations(view: EditorView): DecorationSet {
 					url = url.slice(1, -1);
 				}
 
+				const alt = altNode
+					? view.state.doc.sliceString(altNode.from, altNode.to)
+					: "";
+
 				decorations.push(
-					Decoration.replace({ widget: new ImageWidget(url) }).range(
+					Decoration.replace({ widget: new ImageWidget(url, alt) }).range(
 						node.from,
 						node.to,
 					),
