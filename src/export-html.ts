@@ -2,7 +2,7 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 import type { EditorView } from "@codemirror/view";
-import { marked } from "marked";
+import { marked, Renderer } from "marked";
 
 import { highlightColors } from "./visual/highlight";
 import appCss from "./styles-export.css?inline";
@@ -145,6 +145,8 @@ function createAdmonitionExtension() {
 }
 
 export async function exportHtml(view: EditorView) {
+	const defaultRenderer = new Renderer();
+
 	marked.use({
 		extensions: [
 			createAdmonitionExtension(),
@@ -220,6 +222,27 @@ export async function exportHtml(view: EditorView) {
 				},
 			},
 		],
+		renderer: {
+			code(token) {
+				const html = defaultRenderer.code(token);
+				const language = token.lang?.split(/\s+/)[0];
+
+				if (!language) return html;
+
+				const safeLanguage = language.replace(
+					/[&"<']/g,
+					(char) =>
+						({
+							"&": "&amp;",
+							'"': "&quot;",
+							"<": "&lt;",
+							"'": "&#39;",
+						})[char]!,
+				);
+
+				return html.replace("<pre>", `<pre data-language="${safeLanguage}">`);
+			},
+		},
 	});
 
 	const markdown = view.state.doc.toString();
