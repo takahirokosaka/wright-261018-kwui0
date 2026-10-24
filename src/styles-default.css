@@ -378,13 +378,6 @@ div.cm-line:has(.md-admonition-label) {
 	--admonition-color: #e13238;
 }
 
-/* For exporting HTML */
-.md-admonition-title {
-	margin-bottom: 0.5em;
-	color: var(--admonition-color);
-	font-weight: 700;
-}
-
 .md-spell-error {
 	text-decoration: underline wavy var(--warning-text-color);
 	text-decoration-skip-ink: none;
