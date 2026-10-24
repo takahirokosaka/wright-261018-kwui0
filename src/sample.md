@@ -1,18 +1,34 @@
 # Markdown Editor Demo
 
+## Raw HTML
+
+Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
+
+`<pre>`
+
+<pre>abc edt
+wef
+weawf
+</pre>
+
+`<div>`
+
+<div style="padding: 12px; border: 1px solid #888; border-radius: 4px;">
+ <strong>HTML block</strong>
+ <p>This section tests whether your Markdown renderer supports inline HTML.</p>
+</div>
+
 ## Link
 
-[URL](https://example.com)
+[Google](https://example.com)
 
-Image link <a href="https://google.com"><img src="https://placehold.co/18"></a>
+Image link <a href="https://placehold.co/18"><img src="https://placehold.co/18"></a>
 
 [Local file of an absolute path](</Library/WebServer/share/httpd/manual/images/build_a_mod_3.png>) is clickable.
 
 [Local file of a relative path](<./Untitled2.md>) is clickable when this markdown file is saved on the disk.
 
 This does not work in CodeMirror \[![Alt text](https://placehold.co/300x200)](https://google.com). Check https://codemirror-live-markdown.vercel.app.
-
-<div><a href="https://google.com"><img src="https://placehold.co/100" style="display:block;"></a></div>
 
 # Heading 1
 
@@ -112,7 +128,6 @@ function greet(user: User): string {
 console.log(greet(user));
 ```
 
-aaa
 
 ```shell
 npm install
@@ -134,9 +149,9 @@ A local images of a relative path appears when this markdown file is saved on th
 
 ![local](<./Untitled.assets/lfs/sample.png>)
 
-A block `<img>`:
+Images can also be rendered as block elements.
 
-<img src="https://placehold.co/800" style="display:block;">
+<a href="https://placehold.co/100"><img src="https://placehold.co/100" style="display:block;"></a>
 
 ## Empty Line
 
@@ -152,24 +167,6 @@ Empty lines are rendered with a half line height. You can make a vertical space 
 We use empty lines as margins between paragraphs. An empty line is also used to make a margin between a heading and the next line of text, because a heading cannot have margins above or below it. Margins interfere with pointer-to-document position mapping if they alter the geometry CodeMirror expects. As a result, clicking on a line won't work as expected if lines have margins.
 
 When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
-
-## Raw HTML
-
-Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
-
-`<pre>`
-
-<pre>abc edt
-wef
-weawf
-</pre>
-
-`<div>`
-
-<div style="padding: 12px; border: 1px solid #888; border-radius: 4px;">
- <strong>HTML block</strong>
- <p>This section tests whether your Markdown renderer supports inline HTML.</p>
-</div>
 
 ## Admonitions
 
