@@ -89,14 +89,20 @@ class HtmlBlockWidget extends WidgetType {
 	}
 }
 
+let forcedFullParse = false;
+
 function buildHtmlDecorations(state: EditorState) {
 	const ranges: Range<Decoration>[] = [];
 
-	// Force the syntax tree to cover the whole document before collecting blocks. TODO: performance optimization
-	const tree =
-		ensureSyntaxTree(state, state.doc.length, 1000) ?? syntaxTree(state);
+	let tree = syntaxTree(state);
 
-	tree.iterate({
+	// Force the syntax tree to cover the whole document before collecting blocks.
+	if (!forcedFullParse) {
+		tree = ensureSyntaxTree(state, state.doc.length, 1000) ?? tree;
+		forcedFullParse = true;
+	}
+
+	tree!.iterate({
 		enter(node) {
 			if (node.name !== "HTMLBlock") return;
 
