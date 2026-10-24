@@ -62,24 +62,23 @@ export function urlDecorations(view: EditorView): DecorationSet {
 
 function findUrlAt(view: EditorView, pos: number): string | null {
 	const tree = syntaxTree(view.state);
-	let url: string | null = null;
+	let node = tree.resolveInner(pos, 1);
 
-	tree.iterate({
-		from: pos,
-		to: pos,
-		enter(node) {
-			if (node.name !== "Link") return;
-
-			for (let child = node.node.firstChild; child; child = child.nextSibling) {
+	while (node) {
+		if (node.name === "Link") {
+			for (let child = node.firstChild; child; child = child.nextSibling) {
 				if (child.name === "URL") {
-					url = view.state.doc.sliceString(child.from, child.to);
-					break;
+					return view.state.doc.sliceString(child.from, child.to);
 				}
 			}
-		},
-	});
 
-	return url;
+			return null;
+		}
+
+		node = node.parent!;
+	}
+
+	return null;
 }
 
 async function openMarkdownLink(href: string): Promise<void> {
