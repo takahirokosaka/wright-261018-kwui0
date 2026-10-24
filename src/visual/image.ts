@@ -8,7 +8,7 @@ import {
 import { Range } from "@codemirror/state";
 
 import { convertFileSrc } from "@tauri-apps/api/core";
-import { dirname, resolve } from "@tauri-apps/api/path";
+import { dirname, resolve, isAbsolute } from "@tauri-apps/api/path";
 import { getCurrentFilePath } from "../save-file";
 
 class ImageWidget extends WidgetType {
@@ -33,11 +33,13 @@ class ImageWidget extends WidgetType {
 		} else {
 			const markdownPath = getCurrentFilePath();
 
-			if (markdownPath) {
-				void resolveImageUrl(markdownPath, this.url).then((resolved) => {
-					img.src = resolved;
-				});
-			}
+			void (async () => {
+				if (await isAbsolute(this.url)) {
+					img.src = convertFileSrc(this.url);
+				} else if (markdownPath) {
+					img.src = await resolveImageUrl(markdownPath, this.url);
+				}
+			})();
 		}
 		img.alt = this.alt.length > 0 ? this.alt : this.url;
 		img.loading = "lazy";
