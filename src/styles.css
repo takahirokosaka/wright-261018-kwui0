@@ -16,6 +16,7 @@
 	--blockquote-2-border-color: #569cd6;
 	--blockquote-3-border-color: #c586c0;
 	--html-block-border-color: #9bbcff;
+	--header-font: "Sofia Sans Condensed", sans-serif;
 }
 
 /*
@@ -67,6 +68,11 @@ body {
 	margin-right: 0.3em;
 }
 
+/* There's no <p>. All lines are .cm-line. We use empty lines as margins between paragraphs. */
+.cm-line:has(.md-empty-line) {
+	height: 0.2em;
+}
+
 /*
  * Width of the writing area
  */
@@ -83,26 +89,21 @@ body {
  * Headers
  */
 
-/* h1 to h6 are for exporting HTML */
-:is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6) *,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-family: "Sofia Sans Condensed";
+:is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6) * {
+	font-family: var(--header-font);
 	text-decoration: none;
 	line-height: 1;
 }
 
-.md-h1,
-.md-h2,
-.md-h3,
-.md-h4,
-.md-h5,
-.md-h6 {
+.cm-line.md-h1,
+.cm-line.md-h2,
+.cm-line.md-h3,
+.cm-line.md-h4,
+.cm-line.md-h5,
+.cm-line.md-h6 {
 	line-height: 1;
+	padding-top: 0.5em; /* Margins distort CodeMirror lines. */
+	padding-bottom: .2em;
 }
 
 .md-h1,
@@ -340,7 +341,7 @@ img {
 pre {
 	margin: 0;
 	font-family: var(--code-font);
-	font-size: var(--code-font-size)
+	font-size: var(--code-font-size);
 }
 
 /*
@@ -426,17 +427,12 @@ div.cm-line:has(.md-admonition-label) {
 	font-weight: 700;
 }
 
-/* Unused */
-.md-empty-line {
-	color: gray;
-}
-
 .md-spell-error {
 	text-decoration: underline wavy var(--warning-text-color);
 	text-decoration-skip-ink: none;
 }
 
- .md-trailing-space {
+.md-trailing-space {
 	background-image: radial-gradient(
 		circle,
 		var(--warning-text-color) 0.15em,
@@ -477,4 +473,3 @@ div.cm-line:has(.md-admonition-label) {
 		"opsz" 24;
 	vertical-align: -15%;
 }
-

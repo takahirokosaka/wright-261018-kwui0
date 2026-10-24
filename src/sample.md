@@ -1,5 +1,33 @@
 # Markdown Editor Demo
 
+# 2. Headings
+
+This sample file demonstrates
+
+# Heading 1
+
+This sample file demonstrates
+
+## Heading 2
+
+This sample file demonstrates
+
+### Heading 3
+
+This sample file demonstrates
+
+#### Heading 4
+
+This sample file demonstrates
+
+##### Heading 5
+
+This sample file demonstrates
+
+###### Heading 6
+
+
+
 <pre>abc edt
 wef
 weawf
@@ -46,12 +74,15 @@ function greet(user: User): string {
 console.log(greet(user));
 ```
 
+aaa
+
 ```shell
 npm install
 npm run dev
 npm run build
 ```
 
+Admonitions
 
 
 :::note
@@ -170,32 +201,6 @@ This is a paragraph with **bold** text, *italic* text, ~~strikethrough~~, and `i
 You can also combine formatting: ***bold and italic***.
 
 Here is a [link](https://commonmark.org/help) to the Markdown Guide.
-
-# 2. Headings
-
-This sample file demonstrates
-
-# Heading 1
-
-This sample file demonstrates
-
-## Heading 2
-
-This sample file demonstrates
-
-### Heading 3
-
-This sample file demonstrates
-
-#### Heading 4
-
-This sample file demonstrates
-
-##### Heading 5
-
-This sample file demonstrates
-
-###### Heading 6
 
 ## 6. Tables
 

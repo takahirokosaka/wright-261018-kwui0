@@ -10,7 +10,7 @@ class EmptyLineWidget extends WidgetType {
 	toDOM() {
 		const span = document.createElement("span");
 		span.className = "md-empty-line";
-		span.textContent = "·";
+		span.textContent = "";
 		return span;
 	}
 
