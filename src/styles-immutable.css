@@ -46,3 +46,7 @@ body {
 .cm-gutters {
 	margin-right: 0.3em;
 }
+
+.cm-line .cm-widgetBuffer {
+	display: none;
+}

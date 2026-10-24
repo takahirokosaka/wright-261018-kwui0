@@ -1,5 +1,17 @@
 # Markdown Editor Demo
 
+## Images
+
+Large images shrink to the width.
+
+![Placeholder image](https://placehold.co/2000)
+
+![local](./Untitled.assets/lfs/sample.png)
+
+Figure 1: An example image in a Markdown document.
+
+<img src="https://placehold.co/800">
+
 # Heading 1
 
 The headings use a condensed font, tight line spacing, and a top margin that scales with their font size.
@@ -26,7 +38,7 @@ Unused.
 
 ## Empty Line
 
-An empty line is rendered with a regular line height. You can make a vertical space by pressing Enter key many times.
+Empty lines are rendered with a regular line height. You can make a vertical space by pressing Enter key many times.
 
 
 
@@ -35,7 +47,7 @@ An empty line is rendered with a regular line height. You can make a vertical sp
 
 
 
-When exporting HTML, contiguous empty lines are handled as one empty line.
+When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
 
 ## Raw HTML
 
@@ -51,18 +63,6 @@ weawf
 `<div>`
 
 <div>This is a div.</div>
-
-## 8. Images
-
-This should shrink.
-
-![Placeholder image](https://placehold.co/2000)
-
-![local](./Untitled.assets/lfs/sample.png)
-
-Figure 1: An example image in a Markdown document.
-
-<img src="https://placehold.co/800">
 
 
 ## 5. Code Blocks
