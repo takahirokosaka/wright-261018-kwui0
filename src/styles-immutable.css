@@ -55,11 +55,6 @@ body {
 	display: inline;
 }
 
-/* There's no <p>. All lines are .cm-line. We use empty lines as margins between paragraphs. An empty line is also used to make a margin between a heading and the next line of text, because a heading cannot have margins above or below it. Margins interfere with pointer-to-document position mapping if they alter the geometry CodeMirror expects. As a result, clicking on a line won't work as expected if lines have margins. */
-.cm-line:has(.md-empty-line) {
-	height: 0.5rem;
-}
-
 /*
  * For printing exported HTML
  */
