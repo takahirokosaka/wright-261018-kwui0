@@ -546,6 +546,8 @@ aside.md-admonition {
 	border-radius: 0.4rem;
 	background: black;
 	color: #eaeaea; /* Default text color */
+	-webkit-print-color-adjust: exact;
+	print-color-adjust: exact;
 }
 
 /* Fonts need to be installed on your operating system. */
