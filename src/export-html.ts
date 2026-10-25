@@ -5,9 +5,8 @@ import type { EditorView } from "@codemirror/view";
 import { marked, Renderer } from "marked";
 
 import { highlightColors } from "./visual/highlight";
- import appCss from "./styles-immutable.css?inline"; // Only html and body matter. Marked.js doesn't know CodeMirror styles.
+import appCss from "./styles-immutable.css?inline"; // Only html and body matter. Marked.js doesn't know CodeMirror styles.
 
- import { getCachedMathSvg } from "./visual/math";
 import { getCurrentFileName, getCurrentFilePath } from "./save-file";
 
 declare global {
@@ -25,13 +24,6 @@ declare global {
 }
 
 async function mathToSvg(formula: string, display: boolean): Promise<string> {
-	// Reuse SVGs already rendered by the editor.
-	const cached = getCachedMathSvg(formula.trim(), display);
-	if (cached) {
-		console.debug("Math svg cache hit");
-		return cached;
-	}
-
 	const mathJax = window.MathJax;
 
 	if (!mathJax) {
@@ -45,7 +37,7 @@ async function mathToSvg(formula: string, display: boolean): Promise<string> {
 	return new XMLSerializer().serializeToString(node);
 }
 
-async function preRenderMath(markdown: string): Promise<void> {
+async function preRenderMath(markdown: string): Promise<Map<string, string>> {
 	const regex = /\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g;
 	const formulas = new Map<string, { formula: string; display: boolean }>();
 
@@ -57,11 +49,14 @@ async function preRenderMath(markdown: string): Promise<void> {
 		formulas.set(key, { formula, display });
 	}
 
-	await Promise.all(
-		[...formulas.values()].map(({ formula, display }) =>
-			mathToSvg(formula, display),
+	const entries = await Promise.all(
+		[...formulas.entries()].map(
+			async ([key, { formula, display }]) =>
+				[key, await mathToSvg(formula, display)] as const,
 		),
 	);
+
+	return new Map(entries);
 }
 
 function escapeHtml(value: string): string {
@@ -147,6 +142,11 @@ function createAdmonitionExtension() {
 export async function exportHtml(view: EditorView) {
 	const defaultRenderer = new Renderer();
 
+	const markdown = view.state.doc.toString();
+
+	// Render all math, including formulas outside the viewport.
+	const mathSvgs = await preRenderMath(markdown);
+
 	marked.use({
 		extensions: [
 			createAdmonitionExtension(),
@@ -159,37 +159,25 @@ export async function exportHtml(view: EditorView) {
 				tokenizer(src) {
 					// Display math first, including multiline formulas.
 					const displayMatch = src.match(/^\$\$([\s\S]+?)\$\$/);
+					const inlineMatch = displayMatch
+						? null
+						: src.match(/^\$([^$\n]+?)\$/);
 
-					if (displayMatch) {
-						const formula = displayMatch[1].trim();
-						const cached = getCachedMathSvg(formula, true);
+					if (!displayMatch && !inlineMatch) return;
 
-						if (cached) {
-							return {
-								type: "math",
-								raw: displayMatch[0],
-								text: cached,
-								display: true,
-							};
-						}
+					const display = displayMatch !== null;
+					const formula = (display ? displayMatch![1] : inlineMatch![1]).trim();
 
-						return;
-					}
+					const key = `${display ? "display" : "inline"}:${formula}`;
+					const svg = mathSvgs.get(key);
 
-					const inlineMatch = src.match(/^\$([^$\n]+?)\$/);
-
-					if (!inlineMatch) return;
-
-					const formula = inlineMatch[1].trim();
-					const cached = getCachedMathSvg(formula, false);
-
-					if (!cached) return;
+					if (svg === undefined) return;
 
 					return {
 						type: "math",
-						raw: inlineMatch[0],
-						text: cached,
-						display: false,
+						raw: displayMatch?.[0] ?? inlineMatch![0],
+						text: svg,
+						display,
 					};
 				},
 				renderer(token) {
@@ -244,10 +232,6 @@ export async function exportHtml(view: EditorView) {
 			},
 		},
 	});
-
-	const markdown = view.state.doc.toString();
-
-	await preRenderMath(markdown);
 
 	const body = await marked.parse(markdown, { async: true });
 
