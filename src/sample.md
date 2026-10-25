@@ -232,9 +232,7 @@ Empty lines are rendered with a half line height. You can make a vertical space 
 
 
 
-We use empty lines as margins between paragraphs. An empty line is also used to make a margin between a heading and the next line of text, because a heading cannot have margins above or below it. Margins interfere with pointer-to-document position mapping if they alter the geometry CodeMirror expects. As a result, clicking on a line won't work as expected if lines have margins.
-
-When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
+Empty lines are used as margins between paragraphs. When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
 
 ## Escaping Special Characters
 

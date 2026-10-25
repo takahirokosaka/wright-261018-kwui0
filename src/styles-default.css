@@ -67,8 +67,19 @@ h6 {
 .cm-line.md-h5,
 .cm-line.md-h6 {
 	line-height: 1;
-	padding-top: 0.5em; /* Margins interfere with CodeMirror's position recognition. */
-	/* margin-bottom: -0.25em; */
+
+	/* Margins interfere with CodeMirror's position recognition. */
+	padding-top: 0.5em;
+}
+
+/* Make bottom padding only if the sibling above it doesn't have .md-empty-line span */
+.cm-line.md-h1:not(:has(+ .cm-line .md-empty-line)),
+.cm-line.md-h2:not(:has(+ .cm-line .md-empty-line)),
+.cm-line.md-h3:not(:has(+ .cm-line .md-empty-line)),
+.cm-line.md-h4:not(:has(+ .cm-line .md-empty-line)),
+.cm-line.md-h5:not(:has(+ .cm-line .md-empty-line)),
+.cm-line.md-h6:not(:has(+ .cm-line .md-empty-line)) {
+	padding-bottom: 0.5em;
 }
 
 .md-h1,
@@ -107,6 +118,7 @@ h4,
 h5,
 h6 {
 	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 /*
