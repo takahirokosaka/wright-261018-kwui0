@@ -242,7 +242,7 @@ export async function exportHtml(view: EditorView) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>${filename}</title>
+	<title>${filename.replace(/\.(md|markdown)$/, '')}</title>
 	<style>
 		${getLoadedCss()}
 	</style>
