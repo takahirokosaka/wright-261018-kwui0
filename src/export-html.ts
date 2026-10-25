@@ -5,9 +5,9 @@ import type { EditorView } from "@codemirror/view";
 import { marked, Renderer } from "marked";
 
 import { highlightColors } from "./visual/highlight";
-import appCss from "./styles-export.css?inline";
+ import appCss from "./styles-immutable.css?inline"; // Only html and body matter. Marked.js doesn't know CodeMirror styles.
 
-import { getCachedMathSvg } from "./visual/math";
+ import { getCachedMathSvg } from "./visual/math";
 import { getCurrentFileName, getCurrentFilePath } from "./save-file";
 
 declare global {

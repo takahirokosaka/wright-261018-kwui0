@@ -1,22 +1,34 @@
 # Markdown Editor Demo
 
-## Mathematical Expressions
+## Lists
 
-Inline math: $E = mc^2$
+### Unordered List
 
-Block math: Block math (if supported):
+- Apples
+- Bananas
+- Oranges
+- Mandarin oranges
+- Blood oranges
+  - Grapes
+    - Fruit
 
-$$
-\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
-$$
+### Ordered List
 
-## Text Formatting
+1. Plan the project
+  2. Write the code
+    3. Test the application
+4. Release the final version
 
-This is a paragraph with **bold** text, *italic* text, ~~strikethrough~~, and `inline code`.
+The above does not work when exporting HTML. Marked.js treats indentation as list nesting:
 
-You can also combine formatting: ***bold and italic***.
+1. Plan the project
+   1. Write the code
+      1. Test the application
+2. Release the final version
 
-Here is a [link](https://commonmark.org/help) to the Markdown Guide.
+### Task List
+
+Unsupported.
 
 ## Raw HTML
 
@@ -28,6 +40,7 @@ Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
 wef
 weawf
 </pre>
+<p></p>
 
 `<div>`
 
@@ -35,6 +48,92 @@ weawf
  <strong>HTML block</strong>
  <p>This section tests whether your Markdown renderer supports inline HTML.</p>
 </div>
+
+## Mathematical Expressions
+
+Inline math: $E = mc^2$
+
+Block math:
+
+$$
+QoL = \int_{birth}^{death} \frac{Pleasure}{Pain}dt
+$$
+
+## Admonitions
+
+:::note
+This is a note.
+:::
+
+:::tip Custom title
+This is a tip.
+:::
+
+:::danger
+This is a dangerous operation.
+:::
+
+:::warning
+Be careful!
+:::
+
+## Code Blocks
+
+Inline code example: `console.log("Hello, world!");`
+
+```
+text
+```
+
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
+const user: User = {
+  id: 1,
+  name: "Alice",
+  active: true,
+};
+
+function greet(user: User): string {
+  return `Hello, ${user.name}!`;
+}
+
+console.log(greet(user));
+```
+
+
+```shell
+npm install
+npm run dev
+npm run build
+```
+
+## Blockquotes
+
+> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
+
+Nested blockquotes:
+
+> This is the first level.
+>
+>> This is a nested blockquote. To include multiple paragraphs, please use `<span><br></span>` on the next new line and then make a line starting with `>>`.
+>> <span><br></span>
+>>
+>> This is the second paragraph.
+>>> It can contain multiple paragraphs. It can contain multiple paragraphs.
+
+## Text Formatting
+
+This is a paragraph with **bold** text, *italic* text, ~~strikethrough~~, and `inline code`.
+
+You can also combine formatting: ***bold and italic***.
+
+Here is a [link](https://commonmark.org/help) to the Markdown Guide.
 
 ## Link
 
@@ -66,11 +165,11 @@ A paper airplane glided across the room and landed beside the open book.
 
 ##### Heading 5
 
-Unused.
+Every sunrise brings a new opportunity to learn, grow, and make life a little more beautiful.
 
 ###### Heading 6
 
-Unused.
+The stars shine brightest in the darkest skies, reminding us that hope can always be found in difficult times.
 
 ## Font
 
@@ -96,20 +195,6 @@ Unsupported. Simple tables can be drawn using ASCII art. More complex tables and
 
 Gray can be used for collaborative editing (Cmd/Ctrl+Shift+M, M is for mute).
 
-## Blockquotes
-
-> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
-
-Nested blockquotes:
-
-> This is the first level.
->
->> This is a nested blockquote. To include multiple paragraphs, please use `<span>&nbsp;</span>`.
->> <span>&nbsp;</span>
->> This is the second paragraph.
->>
->>> It can contain multiple paragraphs. It can contain multiple paragraphs.
-
 ## Horizontal Rule
 
 Content above the divider.
@@ -117,41 +202,6 @@ Content above the divider.
 ---
 
 Content below the divider.
-
-## Code Blocks
-
-Inline code example: `console.log("Hello, world!");`
-
-```
-text
-```
-
-```ts
-interface User {
-  id: number;
-  name: string;
-  active: boolean;
-}
-
-const user: User = {
-  id: 1,
-  name: "Alice",
-  active: true,
-};
-
-function greet(user: User): string {
-  return `Hello, ${user.name}!`;
-}
-
-console.log(greet(user));
-```
-
-
-```shell
-npm install
-npm run dev
-npm run build
-```
 
 ## Images
 
@@ -165,7 +215,7 @@ A local images of an absolute path:
 
 A local images of a relative path appears when this markdown file is saved on the disk.
 
-![local](<./Untitled.assets/lfs/sample.png>)
+![local](<./Untitled.assets/lfs/paste-2026-10-22T05-29-43.065Z.png>)
 
 Images can also be rendered as block elements.
 
@@ -186,47 +236,6 @@ We use empty lines as margins between paragraphs. An empty line is also used to 
 
 When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
 
-## Admonitions
-
-:::note
-This is a note.
-:::
-
-:::tip Custom title
-This is a tip.
-:::
-
-:::danger
-This is a dangerous operation.
-:::
-
-:::warning
-Be careful!
-:::
-
-## Lists
-
-### Unordered List
-
-- Apples
-- Bananas
-- Oranges
-- Mandarin oranges
-- Blood oranges
-  - Grapes
-    - Fruit
-
-### Ordered List
-
-1. Plan the project
-  2. Write the code
-    3. Test the application
-4. Release the final version
-
-### Task List
-
-Unsupported.
-
 ## Escaping Special Characters
 
 Use a backslash to display Markdown characters literally:
@@ -239,7 +248,7 @@ Use a backslash to display Markdown characters literally:
 
 ## Footnotes
 
-Unsupported.
+Unsupported. The below does not work.
 
 Here is a sentence with a footnote reference.[^1]
 
