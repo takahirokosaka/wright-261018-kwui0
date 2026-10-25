@@ -20,6 +20,7 @@ import { Compartment } from "@codemirror/state";
 import { keymap, lineNumbers } from "@codemirror/view";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 import { searchKeymap } from "@codemirror/search";
+import { search } from "@codemirror/search";
 
 import "./styles-default.css";
 import "./styles-immutable.css";
@@ -148,6 +149,7 @@ const view = new EditorView({
 			history(),
 			titleUpdateExtension,
 			modeCompartment.of(modeExtensions(false)),
+			search({ top: true }),
 		],
 	}),
 	parent: document.body,
