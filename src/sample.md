@@ -1,6 +1,14 @@
 # Markdown Editor Demo
 
+Paragraph one: The sun was setting behind the mountains, painting the sky in shades of orange, pink, and purple. A gentlebreeze moved through the trees as birds returned to their nests, and the quiet village began to glow with the warm light oflanterns.
+
+Paragraph two: Across the river, a small wooden bridge connected the village to a winding path through the forest. Everyevening, a young traveler crossed that bridge, hoping to discover something new beyond the familiar hills and hiddentrails.
+
 ## Lists
+
+Paragraph one: The sun was setting behind the mountains, painting the sky in shades of orange, pink, and purple. A gentlebreeze moved through the trees as birds returned to their nests, and the quiet village began to glow with the warm light oflanterns.
+
+Paragraph two: Across the river, a small wooden bridge connected the village to a winding path through the forest. Everyevening, a young traveler crossed that bridge, hoping to discover something new beyond the familiar hills and hiddentrails.
 
 ### Unordered List
 
