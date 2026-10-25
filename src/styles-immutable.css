@@ -12,11 +12,13 @@ body {
 
 .cm-editor {
 	height: 100%;
+	caret-color: black; /* Without this, the cursor is invisible when the editor is empty. Why? */
 }
 
 .cm-editor .cm-scroller {
 	overflow: auto;
 	font: inherit;
+	background: white;
 }
 
 .cm-editor:not(.md-source-mode) .cm-scroller {
@@ -32,9 +34,9 @@ body {
 	padding-bottom: 0.5em;
 }
 
-/* Make the cursor thicker */
-.cm-cursor {
-	border-left-width: 2px !important;
+.cm-editor .cm-cursorLayer {
+	visibility: visible !important;
+	opacity: 1 !important;
 }
 
 .md-source-mode {
