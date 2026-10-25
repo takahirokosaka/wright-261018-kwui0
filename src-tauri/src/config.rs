@@ -46,7 +46,7 @@ fn load_config() -> AppConfig {
 		return AppConfig::default();
 	};
 
-	let config_path = home.join(".write.conf");
+	let config_path = home.join(".wright.conf");
 
 	let Ok(contents) = fs::read_to_string(&config_path) else {
 		return AppConfig::default();
@@ -67,7 +67,7 @@ pub fn get_window_size() -> (f64, f64) {
 	let height = config.window.height;
 
 	if !width.is_finite() || !height.is_finite() || width < 200.0 || height < 200.0 {
-		eprintln!("Invalid window size in ~/.write.conf");
+		eprintln!("Invalid window size in ~/.wright.conf");
 		return (DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 

@@ -1,8 +1,8 @@
 {
 	"$schema": "https://schema.tauri.app/config/2",
-	"productName": "Write",
+	"productName": "Wright",
 	"version": "0.1.0",
-	"identifier": "com.takahirokosaka.write",
+	"identifier": "com.takahirokosaka.wright",
 	"build": {
 		"beforeDevCommand": "pnpm dev",
 		"devUrl": "http://localhost:1420",
@@ -25,7 +25,7 @@
 		"active": true,
 		"targets": "all",
 		"icon": [
-			"icons/write.icns"
+			"icons/wright.icns"
 		],
 		"macOS": {
 			"minimumSystemVersion": "26.0"

@@ -36,7 +36,7 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 	)?;
 
 	// Tauri has documented issues with intercepting native Cmd+Q through its general application-exit event. Replacing the native Quit item gives your app a predictable menu event to handle. See the Tauri issue on macOS application termination. https://github.com/tauri-apps/tauri/issues/9198
-	let quit = MenuItem::with_id(app, "quit", "Quit Write", true, Some("CmdOrCtrl+Q"))?;
+	let quit = MenuItem::with_id(app, "quit", "Quit Wright", true, Some("CmdOrCtrl+Q"))?;
 
 	let bold = MenuItem::with_id(app, "format-bold", "Bold", true, Some("CmdOrCtrl+B"))?;
 
@@ -94,11 +94,11 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 				}
 
 				#[cfg(target_os = "macos")]
-				if submenu_text == "Write" {
-					// Replace the native Quit Write item with our custom item.
+				if submenu_text == "Wright" {
+					// Replace the native Quit Wright item with our custom item.
 					for (index, app_item) in submenu.items()?.iter().enumerate() {
 						if let Some(predefined) = app_item.as_predefined_menuitem() {
-							if predefined.text()? == "Quit Write" {
+							if predefined.text()? == "Quit Wright" {
 								submenu.remove_at(index)?;
 								submenu.append(&quit)?;
 								break;

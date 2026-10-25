@@ -11,11 +11,11 @@ mod config;
 mod editor_window;
 mod menu;
 
-// Load ~/.write.css as a user-customizable stylesheet at startup.
+// Load ~/.wright.css as a user-customizable stylesheet at startup.
 #[tauri::command]
 fn load_user_css() -> Option<String> {
 	let path: PathBuf = std::env::var_os("HOME")?.into();
-	std::fs::read_to_string(PathBuf::from(path).join(".write.css")).ok()
+	std::fs::read_to_string(PathBuf::from(path).join(".wright.css")).ok()
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -171,7 +171,7 @@ fn handle_files(app: &AppHandle, files: Vec<PathBuf>) {
 	for path in &paths {
 		open_markdown_in_new_window(app.clone(), path.clone()).unwrap_or_else(|_e| {
 			// let message = format!("Failed opening file: {e:?}\n");
-			// let _ = std::fs::write("/tmp/write-debug.log", message);
+			// let _ = std::fs::write("/tmp/wright-debug.log", message);
 		});
 	}
 }
