@@ -1,7 +1,29 @@
-use std::path::Path;
-use tauri::{AppHandle, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
+use std::{
+	collections::HashMap,
+	path::{Path, PathBuf},
+	sync::Mutex,
+};
+
+use tauri::{AppHandle, Manager, WebviewUrl, WebviewWindow, WebviewWindowBuilder, WindowEvent};
 
 use crate::config::get_window_size;
+
+#[derive(Default)]
+pub struct OpenDocuments(Mutex<HashMap<PathBuf, String>>);
+
+// Initialize the tracking state
+pub fn setup_document_tracking(app: &tauri::App) {
+	app.manage(OpenDocuments::default());
+}
+
+pub fn handle_window_event(app: &AppHandle, label: &str, event: &WindowEvent) {
+	if let WindowEvent::Destroyed = event {
+		// remove the entry from OpenDocuments
+		let state = app.state::<OpenDocuments>();
+		let mut documents = state.0.lock().unwrap();
+		documents.retain(|_, window_label| window_label != label);
+	}
+}
 
 pub fn create_editor_window(
 	app: &AppHandle,
@@ -36,13 +58,52 @@ pub fn create_editor_window(
 		builder
 	};
 
-	let result = builder.build()?;
+	// register the path
+	if !open_filechooser_immediately {
+		if let Some(path) = path {
+			if let Ok(canonical_path) = Path::new(path).canonicalize() {
+				let state = app.state::<OpenDocuments>();
+				state.0.lock().unwrap().insert(canonical_path, label);
+			}
+		}
+	}
 
-	Ok(result)
+	let window = builder.build()?;
+
+	Ok(window)
 }
 
 #[tauri::command]
 pub fn open_markdown_in_new_window(app: AppHandle, path: String) -> Result<(), String> {
+	let canonical_path = Path::new(&path).canonicalize().map_err(|e| e.to_string())?;
+
+	// This kills the app silently if app.run() runs before setup_document_tracking() runs. We have moved calling setup_document_tracking() before app.run() and the problem is solved.
+	let state = app.state::<OpenDocuments>();
+
+	let guard = match state.0.lock() {
+		Ok(guard) => guard,
+		Err(e) => {
+			let _ = std::fs::write(
+				"/tmp/wright-lock-debug.log",
+				format!("LOCK ERROR: {:?}\n", e),
+			);
+			return Err(e.to_string());
+		}
+	};
+
+	let existing_label = guard.get(&canonical_path).cloned();
+
+	drop(guard);
+
+	// If the file is already open, focus its associated window.
+	if let Some(label) = existing_label {
+		if let Some(window) = app.get_webview_window(&label) {
+			window.set_focus().map_err(|e| e.to_string())?;
+			return Ok(());
+		}
+	}
+
+	// otherwise, make a new window
 	create_editor_window(&app, Some(&path), false)
 		.map(|_| ())
 		.map_err(|e| e.to_string())

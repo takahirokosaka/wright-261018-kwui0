@@ -62,6 +62,7 @@ pub fn run() {
 		.setup(app_setup)
 		.on_menu_event(menu::handle_event)
 		.on_window_event(|window, event| {
+			editor_window::handle_window_event(&window.app_handle(), window.label(), event);
 			menu::handle_window_event(&window.app_handle(), window.label(), event);
 		})
 		.invoke_handler(tauri::generate_handler![
@@ -73,10 +74,22 @@ pub fn run() {
 		.build(tauri::generate_context!())
 		.expect("error while running tauri application");
 
+	editor_window::setup_document_tracking(&app);
+
+	// The event loop. On macOS, this can run BEFORE app_setup if the user launched the app by double-clicking an .md file.
 	app.run(|app_handle, event| {
 		#[cfg(target_os = "macos")]
 		match event {
 			tauri::RunEvent::Opened { urls } => {
+				// use crate::editor_window::OpenDocuments;
+
+				// let registered = app_handle.try_state::<OpenDocuments>().is_some();
+
+				// let _ = std::fs::write(
+				// 	"/tmp/wright-state-setup.log",
+				// 	format!("event handling: OpenDocuments is registered: {registered}\n"),
+				// );
+
 				let files: Vec<PathBuf> = urls
 					.into_iter()
 					.filter_map(|url| url.to_file_path().ok())
@@ -105,6 +118,11 @@ pub fn run() {
 }
 
 fn app_setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
+	// let _ = std::fs::write("/tmp/wright-app_setup.log", "app_setup entered\n");
+
+	// This doesn't work because app.run() runs before app_setup when double-clicking an .md file before launching the app on macOS.
+	// editor_window::setup_document_tracking(app);
+
 	// Set up the application menus.
 	menu::setup(app)?;
 
