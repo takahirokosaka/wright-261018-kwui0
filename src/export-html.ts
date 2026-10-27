@@ -23,6 +23,34 @@ declare global {
 	}
 }
 
+function getFooterText(markdown: string): string | undefined {
+	const match = markdown.match(
+		/^---[ \t]*\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/,
+	);
+
+	if (!match) return undefined;
+
+	const footerMatch = match[1].match(/^footer:[ \t]*(.*)$/m);
+
+	if (!footerMatch) return undefined;
+
+	return footerMatch[1].trim().replace(/^(['"])(.*)\1$/, "$2");
+}
+
+function escapeCssString(value: string): string {
+	return value
+		.replace(/\\/g, "\\\\")
+		.replace(/"/g, '\\"')
+		.replace(/[\n\r\f]/g, " ");
+}
+
+function stripFrontMatter(markdown: string): string {
+	return markdown.replace(
+		/^---[ \t]*\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/,
+		"",
+	);
+}
+
 async function mathToSvg(formula: string, display: boolean): Promise<string> {
 	const mathJax = window.MathJax;
 
@@ -144,8 +172,18 @@ export async function exportHtml(view: EditorView) {
 
 	const markdown = view.state.doc.toString();
 
+	// get footer text
+	const footerText = getFooterText(markdown);
+	const footerCss =
+		footerText === undefined
+			? ""
+			: `:root { --footer-text: "${escapeCssString(footerText)}"; }`;
+
+	// remove front matter
+	const content = stripFrontMatter(markdown);
+
 	// Render all math, including formulas outside the viewport.
-	const mathSvgs = await preRenderMath(markdown);
+	const mathSvgs = await preRenderMath(content);
 
 	marked.use({
 		extensions: [
@@ -233,7 +271,7 @@ export async function exportHtml(view: EditorView) {
 		},
 	});
 
-	const body = await marked.parse(markdown, { async: true });
+	const body = await marked.parse(content, { async: true });
 
 	const filename = await getCurrentFileName();
 
@@ -242,9 +280,10 @@ export async function exportHtml(view: EditorView) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>${filename.replace(/\.(md|markdown)$/, '')}</title>
+	<title>${filename.replace(/\.(md|markdown)$/, "")}</title>
 	<style>
 		${getLoadedCss()}
+		${footerCss}
 	</style>
 </head>
 <body style="overflow: auto;">

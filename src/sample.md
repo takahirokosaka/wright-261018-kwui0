@@ -1,3 +1,7 @@
+---
+footer: foot foot foot あいうえお
+---
+
 # Markdown Editor Demo
 
 ## Paragraphs

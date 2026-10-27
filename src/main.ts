@@ -22,6 +22,8 @@ import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 import { searchKeymap } from "@codemirror/search";
 import { search } from "@codemirror/search";
 
+import { yamlFrontmatter } from "@codemirror/lang-yaml";
+
 import "./styles-default.css";
 import "./styles-immutable.css";
 
@@ -95,12 +97,14 @@ const sourceModeClass = EditorView.editorAttributes.of({
 });
 
 function modeExtensions(sourceMode: boolean) {
+	const markdownSupport = markdown({
+		base: markdownLanguage, // Language support for GFM plus subscript, superscript, and emoji syntax.
+		extensions: [highlightExtension],
+		codeLanguages: codeBlocklanguages,
+	});
+
 	const common: Extension[] = [
-		markdown({
-			base: markdownLanguage, // Language support for GFM plus subscript, superscript, and emoji syntax.
-			extensions: [highlightExtension],
-			codeLanguages: codeBlocklanguages,
-		}),
+		yamlFrontmatter({ content: markdownSupport }),
 		syntaxHighlighting(defaultHighlightStyle),
 		indentOnInput(),
 		bracketMatching(),

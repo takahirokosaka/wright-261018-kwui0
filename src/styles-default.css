@@ -584,3 +584,10 @@ aside.md-admonition {
 		"opsz" 24;
 	vertical-align: -15%;
 }
+
+.cm-line.md-frontmatter
+{
+	font-size: .8em;
+	font-family: var(--code-font);
+	opacity: .25;
+}

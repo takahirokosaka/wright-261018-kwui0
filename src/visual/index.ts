@@ -24,6 +24,7 @@ import { mathDecorations } from "./math";
 import { emptyLineDecorations } from "./empty-line";
 import { loadSpellChecker, spellCheckDecorations } from "./spell";
 import { admonitionDecorations } from "./admonition";
+import { frontMatterDecorations } from "./front-matter";
 
 type MarkupHandler = (view: EditorView) => DecorationSet;
 
@@ -45,6 +46,7 @@ const handlers: MarkupHandler[] = [
 	emptyLineDecorations,
 	(view) => spellCheckDecorations(view, spell),
 	admonitionDecorations,
+	frontMatterDecorations,
 ];
 
 function buildDecorations(view: EditorView): DecorationSet {
