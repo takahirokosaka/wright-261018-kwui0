@@ -4,6 +4,11 @@ footer: foot foot foot あいうえお
 
 # Markdown Editor Demo
 
+<div class="terminal"><span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(80,250,123); text-decoration: underline;">sudo</span> <span style="color: rgb(80,250,123);">samba-tool</span> domain backup online --server=dc1 --targetdir=/backup/ad
+<span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(241,250,140);">for</span> i in {0..9}; <span style="color: rgb(241,250,140);">do</span> <span style="color: rgb(80,250,123);">echo</span> -n <span style="color: rgb(241,250,140);">&#39;aaaaaaaaaaaaaaaaaaaa &#39;</span>; <span style="color: rgb(241,250,140);">done</span>
+aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa <span style="font-weight: 700; filter: invert(100%);">%</span>                             <span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span>
+</div>
+
 ## Paragraphs
 
 It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him.

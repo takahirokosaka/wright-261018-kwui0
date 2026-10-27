@@ -566,8 +566,12 @@ aside.md-admonition {
  */
 
 .terminal {
-	font-size: 0.726rem;
+	width: 35rem;
+	margin: 0 auto;
+	font-family: var(--code-font);
+	font-size: 0.71rem;
 	overflow-wrap: anywhere;
+	word-break: break-all;
 	white-space: pre-wrap;
 	display: block;
 	box-sizing: border-box;
