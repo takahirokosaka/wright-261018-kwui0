@@ -19,10 +19,20 @@
 	--header-font: "Sofia Sans Condensed", sans-serif;
 }
 
+/* for exported HTML */
+body {
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+	overflow-wrap: anywhere; /* break unbrekable long words */
+	word-break: normal;
+	white-space: normal;
+}
+
 /* Set font size for printing exported HTML */
 @media print {
 	html {
-		font-size: 10pt;
+		font-size: 10pt !important;
 	}
 }
 
@@ -69,7 +79,7 @@ h6 {
 	line-height: 1;
 
 	/* Margins interfere with CodeMirror's position recognition. */
-	padding-top: .5em;
+	padding-top: 0.5em;
 	padding-bottom: 0;
 }
 
