@@ -1,11 +1,11 @@
 :root {
-	font-family: Inter, sans-serif;
+	font-family: Inter, sans-serif, "Noto Emoji";
 	font-size: 18px;
 	line-height: 1.41;
 	color: #212121;
 	background: #fefefe;
 	--link-color: #1976d2;
-	--code-font: "Google Sans Code", monospace;
+	--code-font: "Google Sans Code", monospace, "Noto Emoji";
 	--code-font-size: 0.9em;
 	--code-fence-header-bg: #e8edf3;
 	--code-fence-bg: #f6f7f9;
@@ -16,7 +16,7 @@
 	--blockquote-2-border-color: #569cd6;
 	--blockquote-3-border-color: #c586c0;
 	--html-block-border-color: #9bbcff;
-	--header-font: "Sofia Sans Condensed", sans-serif;
+	--header-font: "Sofia Sans Condensed", sans-serif, "Noto Emoji";
 }
 
 /* for exported HTML */
