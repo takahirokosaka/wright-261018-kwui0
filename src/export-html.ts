@@ -4,6 +4,8 @@ import { writeTextFile } from "@tauri-apps/plugin-fs";
 import type { EditorView } from "@codemirror/view";
 import { marked, Renderer } from "marked";
 
+import postcss from "postcss";
+
 import { highlightColors } from "./visual/highlight";
 import immutableCss from "./styles-immutable.css?inline"; // Only html and body matter. Marked.js doesn't know CodeMirror styles.
 import defaultCss from "./styles-default.css?inline";
@@ -319,5 +321,40 @@ ${body}
 function getLoadedCss(): string {
 	const userCss = document.getElementById("user-styles")?.textContent ?? "";
 
-	return [immutableCss, defaultCss, userCss].join("\n");
+	const css = [immutableCss, defaultCss, userCss].filter(Boolean).join("\n");
+
+	const root = postcss.parse(css);
+	deduplicateCss(root);
+
+	return root.toString();
+}
+
+function deduplicateCss(root: postcss.Root): void {
+	// Remove identical declarations within the same rule.
+	root.walkRules((rule) => {
+		const seenDeclarations = new Set<string>();
+
+		rule.walkDecls((decl) => {
+			const key = `${decl.prop}:${decl.value}:${decl.important}`;
+
+			if (seenDeclarations.has(key)) {
+				decl.remove();
+			} else {
+				seenDeclarations.add(key);
+			}
+		});
+	});
+
+	// Remove identical CSS rules, including repeated blocks.
+	const seenRules = new Set<string>();
+
+	root.walkRules((rule) => {
+		const key = rule.toString();
+
+		if (seenRules.has(key)) {
+			rule.remove();
+		} else {
+			seenRules.add(key);
+		}
+	});
 }
