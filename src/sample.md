@@ -268,7 +268,7 @@ Here is a sentence with a footnote reference.[^1]
 
 Trailing space 
 
-Missspell
+Missspell café あいうえお
 
 <pre class="terminal">
 <span style="color: rgb(255,146,208);">~</span><span style="color: rgb(202,169,255);"> %</span> <span style="color: rgb(80,250,123);">date</span> | <span style="color: rgb(80,250,123);">figlet</span> | <span style="color: rgb(80,250,123);">lolcat</span>

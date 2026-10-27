@@ -13,9 +13,10 @@ const spellError = Decoration.mark({
 export async function loadSpellChecker() {
 	const base = import.meta.env.BASE_URL;
 
+	// https://wordlist.aspell.net/dicts/
 	const [affResponse, dicResponse] = await Promise.all([
-		fetch(`${base}dictionaries/en_US/en_US.aff`),
-		fetch(`${base}dictionaries/en_US/en_US.dic`),
+		fetch(`${base}dictionaries/en_US/en_US-large.aff`),
+		fetch(`${base}dictionaries/en_US/en_US-large.dic`),
 	]);
 
 	if (!affResponse.ok || !dicResponse.ok) {
@@ -36,9 +37,11 @@ export function spellCheckDecorations(
 ): DecorationSet {
 	const decorations: Range<Decoration>[] = [];
 
-	const wordRegex = /[\p{L}\p{M}]+(?:['’][\p{L}\p{M}]+)*/gu;
+	// support English alphabetic characters and accented Latin characters (such as café)
+	const wordRegex =
+		/[\p{Script=Latin}\p{M}]+(?:['’][\p{Script=Latin}\p{M}]+)*/gu;
 
-	const cursorLine = view.state.doc.lineAt(
+		const cursorLine = view.state.doc.lineAt(
 		view.state.selection.main.head,
 	).number;
 
