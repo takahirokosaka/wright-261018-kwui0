@@ -5,7 +5,8 @@ import type { EditorView } from "@codemirror/view";
 import { marked, Renderer } from "marked";
 
 import { highlightColors } from "./visual/highlight";
-import appCss from "./styles-immutable.css?inline"; // Only html and body matter. Marked.js doesn't know CodeMirror styles.
+import immutableCss from "./styles-immutable.css?inline"; // Only html and body matter. Marked.js doesn't know CodeMirror styles.
+import defaultCss from "./styles-default.css?inline";
 
 import { getCurrentFileName, getCurrentFilePath } from "./save-file";
 
@@ -318,5 +319,5 @@ ${body}
 function getLoadedCss(): string {
 	const userCss = document.getElementById("user-styles")?.textContent ?? "";
 
-	return [appCss, userCss].join("\n");
+	return [immutableCss, defaultCss, userCss].join("\n");
 }
