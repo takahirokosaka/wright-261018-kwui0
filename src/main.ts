@@ -17,7 +17,11 @@ import {
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { EditorState, Extension } from "@codemirror/state";
 import { Compartment } from "@codemirror/state";
-import { keymap, lineNumbers } from "@codemirror/view";
+import {
+	keymap,
+	lineNumbers,
+	highlightActiveLineGutter,
+} from "@codemirror/view";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 import { searchKeymap } from "@codemirror/search";
 import { search } from "@codemirror/search";
@@ -115,7 +119,7 @@ function modeExtensions(sourceMode: boolean) {
 	];
 
 	if (sourceMode) {
-		return [lineNumbers(), sourceModeClass, ...common];
+		return [lineNumbers(), highlightActiveLineGutter(), sourceModeClass, ...common];
 	}
 
 	return [

@@ -19,6 +19,12 @@
 	--header-font: "Sofia Sans Condensed", sans-serif, "Noto Emoji";
 }
 
+/* source mode gutter */
+.cm-editor .cm-activeLineGutter {
+	background-color: #2d3748;
+	color: #ffffff;
+}
+
 /* for exported HTML */
 body {
 	max-width: 100%;
@@ -587,9 +593,8 @@ aside.md-admonition {
 	vertical-align: -15%;
 }
 
-.cm-line.md-frontmatter
-{
-	font-size: .8em;
+.cm-line.md-frontmatter {
+	font-size: 0.8em;
 	font-family: var(--code-font);
-	opacity: .25;
+	opacity: 0.25;
 }
