@@ -25,6 +25,7 @@ import {
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 import { searchKeymap } from "@codemirror/search";
 import { search } from "@codemirror/search";
+import { cursorCharBackward, cursorCharForward } from "@codemirror/commands";
 
 import { yamlFrontmatter } from "@codemirror/lang-yaml";
 
@@ -119,7 +120,12 @@ function modeExtensions(sourceMode: boolean) {
 	];
 
 	if (sourceMode) {
-		return [lineNumbers(), highlightActiveLineGutter(), sourceModeClass, ...common];
+		return [
+			lineNumbers(),
+			highlightActiveLineGutter(),
+			sourceModeClass,
+			...common,
+		];
 	}
 
 	return [
@@ -180,6 +186,20 @@ void updateWindowTitle(view.state.doc.toString());
 		const sourceMode = event.payload;
 		view.dispatch({
 			effects: modeCompartment.reconfigure(modeExtensions(sourceMode)),
+		});
+
+		// Trick to scroll to the cursor position.
+		requestAnimationFrame(() => {
+			view.focus();
+			cursorCharBackward(view);
+			cursorCharForward(view);
+		});
+
+		// Center the cursor vertically after switching modes.
+		view.dispatch({
+			effects: EditorView.scrollIntoView(view.state.selection.main.head, {
+				y: "center",
+			}),
 		});
 	},
 );
