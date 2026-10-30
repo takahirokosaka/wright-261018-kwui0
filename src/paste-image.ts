@@ -12,11 +12,16 @@ async function pasteImage(view: EditorView, file: File) {
 	const currentFilePath = getCurrentFilePath();
 
 	if (!currentFilePath) {
-		pasteAltText(view, "![Please save this document first so that your image can be located using a relative file path.]()");
+		pasteAltText(
+			view,
+			"![Please save this document first so that your image can be located using a relative file path.]()",
+		);
 		return true;
 	}
 
 	const assetsSuffix = await invoke<string>("get_assets_suffix");
+
+	// Absolute path for filesystem operations
 	const defaultPath = currentFilePath.replace(/\.[^/.]+$/, assetsSuffix);
 
 	await invoke("allow_document_directory", {
@@ -27,11 +32,26 @@ async function pasteImage(view: EditorView, file: File) {
 		recursive: true,
 	});
 
+	// Save
 	await writeFile(`${defaultPath}/${filename}`, bytes, {
 		baseDir: BaseDirectory.AppData,
 	});
 
-	const markdown = `![Pasted image](<${defaultPath}/${filename}>)`;
+	// Relative path for Markdown
+	const documentDir = currentFilePath.substring(
+		0,
+		Math.max(
+			currentFilePath.lastIndexOf("/"),
+			currentFilePath.lastIndexOf("\\"),
+		),
+	);
+
+	const relativeAssetsPath = defaultPath
+		.slice(documentDir.length)
+		.replace(/^[/\\]/, "./")
+		.replace(/\\/g, "/");
+
+	const markdown = `![Pasted image](<${relativeAssetsPath}/${filename}>)`;
 	const { from, to } = view.state.selection.main;
 
 	view.dispatch({
