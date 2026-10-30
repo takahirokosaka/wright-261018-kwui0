@@ -12,7 +12,7 @@ async function pasteImage(view: EditorView, file: File) {
 	const currentFilePath = getCurrentFilePath();
 
 	if (!currentFilePath) {
-		pasteAltText(view, "![Please save the document first.]()");
+		pasteAltText(view, "![Please save this document first so that your image can be located using a relative file path.]()");
 		return true;
 	}
 
@@ -31,7 +31,7 @@ async function pasteImage(view: EditorView, file: File) {
 		baseDir: BaseDirectory.AppData,
 	});
 
-	const markdown = `![Pasted image](${defaultPath}/${filename})`;
+	const markdown = `![Pasted image](<${defaultPath}/${filename}>)`;
 	const { from, to } = view.state.selection.main;
 
 	view.dispatch({
