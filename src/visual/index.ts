@@ -21,7 +21,6 @@ import { quoteDecorations } from "./quote";
 import { htmlInlineDecorations } from "./html-inline";
 import { imageDecorations } from "./image";
 import { mathDecorations } from "./math";
-import { emptyLineDecorations } from "./empty-line";
 import { loadSpellChecker, spellCheckDecorations } from "./spell";
 import { admonitionDecorations } from "./admonition";
 import { frontMatterDecorations } from "./front-matter";
@@ -43,7 +42,6 @@ const handlers: MarkupHandler[] = [
 	htmlInlineDecorations,
 	imageDecorations,
 	mathDecorations,
-	emptyLineDecorations,
 	(view) => spellCheckDecorations(view, spell),
 	admonitionDecorations,
 	frontMatterDecorations,

@@ -57,6 +57,7 @@ import { pasteMarkdown } from "./paste-markdown";
 import { pasteImageHandler } from "./paste-image";
 
 import sampleMd from "./sample.md?raw";
+import { emptyLineHighlightPlugin } from "./visual/empty-line";
 
 const currentWindow = getCurrentWindow();
 
@@ -117,6 +118,7 @@ function modeExtensions(sourceMode: boolean) {
 		trailingSpaces,
 		pasteMarkdown,
 		pasteImageHandler,
+		emptyLineHighlightPlugin
 	];
 
 	if (sourceMode) {

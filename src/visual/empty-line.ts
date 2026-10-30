@@ -1,48 +1,50 @@
-import { type Range } from "@codemirror/state";
 import {
 	Decoration,
-	type DecorationSet,
-	type EditorView,
-	WidgetType,
+	EditorView,
+	ViewPlugin,
+	ViewUpdate,
 } from "@codemirror/view";
 
-class EmptyLineWidget extends WidgetType {
-	toDOM() {
-		const span = document.createElement("span");
-		span.className = "md-empty-line";
-		span.textContent = "";
-		return span;
-	}
-
-	ignoreEvent() {
-		return true;
-	}
-}
-
-const emptyLineWidget = Decoration.widget({
-	widget: new EmptyLineWidget(),
-	side: -1,
+const emptyLineHighlight = Decoration.line({
+	class: "cm-selected-empty-line",
 });
 
-export function emptyLineDecorations(view: EditorView): DecorationSet {
-	const decorations: Range<Decoration>[] = [];
+export const emptyLineHighlightPlugin = ViewPlugin.fromClass(
+	class {
+		decorations;
 
-	const cursorLine = view.state.doc.lineAt(
-		view.state.selection.main.head,
-	).number;
+		constructor(view: EditorView) {
+			this.decorations = this.buildDecorations(view);
+		}
 
-	for (const { from, to } of view.visibleRanges) {
-		const startLine = view.state.doc.lineAt(from).number;
-		const endLine = view.state.doc.lineAt(to).number;
-
-		for (let i = startLine; i <= endLine; i++) {
-			const line = view.state.doc.line(i);
-
-			if (line.length === 0 && line.number !== cursorLine) {
-				decorations.push(emptyLineWidget.range(line.from));
+		update(update: ViewUpdate) {
+			if (update.selectionSet || update.docChanged) {
+				this.decorations = this.buildDecorations(update.view);
 			}
 		}
-	}
 
-	return Decoration.set(decorations, true);
-}
+		buildDecorations(view: EditorView) {
+			const ranges = [];
+
+			for (const range of view.state.selection.ranges) {
+				if (range.empty) continue;
+
+				const fromLine = view.state.doc.lineAt(range.from);
+				const toLine = view.state.doc.lineAt(range.to);
+
+				for (let n = fromLine.number; n <= toLine.number; n++) {
+					const line = view.state.doc.line(n);
+
+					if (line.text.length === 0) {
+						ranges.push(emptyLineHighlight.range(line.from));
+					}
+				}
+			}
+
+			return Decoration.set(ranges, true);
+		}
+	},
+	{
+		decorations: (plugin) => plugin.decorations,
+	},
+);

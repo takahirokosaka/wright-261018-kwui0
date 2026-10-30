@@ -139,3 +139,7 @@ body {
 	background: #fed7aa;
 	outline: 1px solid #fb923c;
 }
+
+.cm-selected-empty-line {
+	background: rgba(100, 150, 255, 0.2);
+}
