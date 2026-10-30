@@ -95,7 +95,8 @@ This is a dangerous operation.
 :::
 
 :::warning
-Be careful!
+- Be careful!
+- There’s no English translation of this law and other important laws.
 :::
 
 ## Code Blocks

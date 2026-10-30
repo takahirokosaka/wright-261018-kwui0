@@ -60,7 +60,9 @@ function buildDecorations(view: EditorView): DecorationSet {
 		});
 	}
 
-	ranges.sort((a, b) => a.from - b.from || a.to - b.to);
+	ranges.sort(
+		(a, b) => a.from - b.from || a.value.startSide - b.value.startSide,
+	);
 
 	const builder = new RangeSetBuilder<Decoration>();
 
