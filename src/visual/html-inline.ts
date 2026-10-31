@@ -7,6 +7,7 @@ import {
 	WidgetType,
 } from "@codemirror/view";
 import DOMPurify from "dompurify";
+import { resolveHtmlImages } from "./html-block";
 
 class HtmlInlineWidget extends WidgetType {
 	constructor(readonly html: string) {
@@ -21,6 +22,9 @@ class HtmlInlineWidget extends WidgetType {
 		const wrapper = document.createElement("span");
 		wrapper.className = "md-html-inline";
 		wrapper.innerHTML = DOMPurify.sanitize(this.html);
+
+		// Resolve image sources for <img src="./example.png">.
+		void resolveHtmlImages(wrapper);
 		return wrapper;
 	}
 }

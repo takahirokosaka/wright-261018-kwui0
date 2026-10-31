@@ -104,7 +104,7 @@ export function imageDecorations(view: EditorView): DecorationSet {
 	return Decoration.set(decorations, true);
 }
 
-async function resolveImageUrl(
+export async function resolveImageUrl(
 	markdownPath: string,
 	imagePath: string,
 ): Promise<string> {

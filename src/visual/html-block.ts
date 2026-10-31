@@ -5,6 +5,11 @@ import { EditorView, Decoration, WidgetType } from "@codemirror/view";
 import { syntaxTree, ensureSyntaxTree } from "@codemirror/language";
 import DOMPurify from "dompurify";
 
+import { convertFileSrc } from "@tauri-apps/api/core";
+import { isAbsolute } from "@tauri-apps/api/path";
+import { getCurrentFilePath } from "../save-file";
+import { resolveImageUrl } from "./image";
+
 const allowedBlockTags = new Set([
 	"address",
 	"article",
@@ -72,19 +77,22 @@ class HtmlBlockWidget extends WidgetType {
 		super();
 		this.html = html;
 	}
+
 	toDOM() {
 		const el = document.createElement("div");
 		el.className = "md-html-block";
 
+		// Display <br> (<br> is an inline element but CodeMirror displays it as a block element if there's nothing else in the line) literally instead of rendering it as a line break.
 		const sanitized = DOMPurify.sanitize(this.html);
 
-		// Display <br> (<br> is an inline element but CodeMirror displays it as a block element if there's nothing else in the line) literally instead of rendering it as a line break.
-		const html = sanitized.replace(
+		el.innerHTML = sanitized.replace(
 			/<br\b[^>]*\/?>/gi,
 			'<span style="color: gray;">&lt;br&gt;</span>',
 		);
 
-		el.innerHTML = html;
+		// Resolve image sources for <img src="./example.png">.
+		void resolveHtmlImages(el);
+
 		return el;
 	}
 }
@@ -136,3 +144,27 @@ export const htmlBlockField = StateField.define({
 		EditorView.atomicRanges.of((view) => view.state.field(field)),
 	],
 });
+
+export async function resolveHtmlImages(el: HTMLElement) {
+	const markdownPath = getCurrentFilePath();
+
+	const images = el.querySelectorAll("img");
+
+	await Promise.all(
+		Array.from(images).map(async (img) => {
+			const src = img.getAttribute("src");
+
+			if (!src || /^https?:\/\//i.test(src)) return;
+
+			try {
+				if (await isAbsolute(src)) {
+					img.src = convertFileSrc(src);
+				} else if (markdownPath) {
+					img.src = await resolveImageUrl(markdownPath, src);
+				}
+			} catch (error) {
+				console.error("Failed to resolve HTML image:", src, error);
+			}
+		}),
+	);
+}
