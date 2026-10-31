@@ -75,6 +75,28 @@ pub fn create_editor_window(
 
 #[tauri::command]
 pub fn open_markdown_in_new_window(app: AppHandle, path: String) -> Result<(), String> {
+	let path = if path == "demo" {
+
+		// copy the bundled file into the app's data directory, then open that copy.
+
+		let source = app
+			.path()
+			.resolve("sample.md", tauri::path::BaseDirectory::Resource)
+			.map_err(|e| e.to_string())?;
+
+		let demo_dir = app.path().app_data_dir().map_err(|e| e.to_string())?;
+
+		std::fs::create_dir_all(&demo_dir).map_err(|e| e.to_string())?;
+
+		let demo_copy = demo_dir.join("demo.md");
+
+		std::fs::copy(&source, &demo_copy).map_err(|e| e.to_string())?;
+
+		demo_copy.to_string_lossy().into_owned()
+	} else {
+		path
+	};
+
 	let canonical_path = Path::new(&path).canonicalize().map_err(|e| e.to_string())?;
 
 	// This kills the app silently if app.run() runs before setup_document_tracking() runs. We have moved calling setup_document_tracking() before app.run() and the problem is solved.

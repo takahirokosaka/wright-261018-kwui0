@@ -40,7 +40,13 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 	let bold = MenuItem::with_id(app, "format-bold", "Bold", true, Some("CmdOrCtrl+B"))?;
 
-	let italic = MenuItem::with_id(app, "format-italic", "Italic", true, Some("CmdOrCtrl+Shift+I"))?;
+	let italic = MenuItem::with_id(
+		app,
+		"format-italic",
+		"Italic",
+		true,
+		Some("CmdOrCtrl+Shift+I"),
+	)?;
 
 	let highlight = MenuItem::with_id(
 		app,
@@ -68,6 +74,8 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 		false,
 		Some("CmdOrCtrl+;"),
 	)?;
+
+	let help = MenuItem::with_id(app, "help", "Demo", true, None::<&str>)?;
 
 	if let Some(menu) = app.menu() {
 		let items = menu.items()?;
@@ -109,6 +117,10 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 				if submenu_text == "View" {
 					submenu.append(&source_mode)?;
+				}
+
+				if submenu_text == "Help" {
+					submenu.prepend(&help)?;
 				}
 			}
 		}
@@ -354,6 +366,11 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 		"format-underline" => {
 			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "format", "underline");
+			}
+		}
+		"help" => {
+			if let Some(window) = focused {
+				let _ = window.emit_to(window.label(), "help", ());
 			}
 		}
 		_ => {}

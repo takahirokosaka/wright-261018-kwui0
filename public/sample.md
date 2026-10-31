@@ -2,172 +2,23 @@
 footer: foot foot foot あいうえお
 ---
 
-# Markdown Editor Demo
+# Wright Markdown Editor Demo
 
-<div class="terminal"><span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(80,250,123); text-decoration: underline;">sudo</span> <span style="color: rgb(80,250,123);">samba-tool</span> domain backup online --server=dc1 --targetdir=/backup/ad
-<span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(241,250,140);">for</span> i in {0..9}; <span style="color: rgb(241,250,140);">do</span> <span style="color: rgb(80,250,123);">echo</span> -n <span style="color: rgb(241,250,140);">&#39;aaaaaaaaaaaaaaaaaaaa &#39;</span>; <span style="color: rgb(241,250,140);">done</span>
-aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa <span style="font-weight: 700; filter: invert(100%);">%</span>                             <span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span>
-</div>
+Markdown is a lightweight text formatting language. It lets you format plain text using simple symbols instead of HTML. It's commonly used in GitHub, README files, documentation, blogs, and chat applications.
+
+This editor does *not* normalize your markdown source code. Your source is kept as it is.
 
 ## Paragraphs
 
+In Markdown, paragraphs are separated by one blank line (two newline characters).
+
 It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him.
 
-The hallway smelt of boiled cabbage and old rag mats. At one end of it a coloured poster, too large for indoor display, had been tacked to the wall. It depicted simply an enormous face, more than a metre wide: the face of a man of about forty-five, with a heavy black moustache and ruggedly handsome features. Winston made for the stairs. It was no use trying the lift. Even at the best of times it was seldom working, and at present the electric current was cut off during daylight hours. It was part of the economy drive in preparation for Hate Week. The flat was seven flights up, and Winston, who was thirty-nine and had a varicose ulcer above his right ankle, went slowly, resting several times on the way. On each landing, opposite the lift-shaft, the poster with the enormous face gazed from the wall. It was one of those pictures which are so contrived that the eyes follow you about when you move. BIG BROTHER IS WATCHING YOU, the caption beneath it ran.
+The hallway smelt of boiled cabbage and old rag mats. At one end of it a coloured poster, too large for indoor display, had been tacked to the wall. It depicted simply an enormous face, more than a metre wide: the face of a man of about forty-five, with a heavy black moustache and ruggedly handsome features.
 
-## Long URLs
-
-https://www.example.com/products/electronics/computers/laptops/high-performance-gaming-laptop/model-2026/specifications/detailed-technical-information/processor/intel-core-ultra-series/memory/64gb-ddr5-storage/2tb-nvme-ssd/graphics/nvidia-geforce-rtx-series/advanced-display-settings/ultra-high-resolution-4k-oled-screen
-
-https://www.example.com/products_electronics_computers_laptops_highperformancegaminglaptop_model2026_specifications_detailedtechnicalinformation_processordetails_intelcoreultraseries_memoryconfiguration
-
-## Lists
-
-### Unordered List
-
-- Apples
-- Bananas
-- Oranges
-- Mandarin oranges
-- Blood oranges
-  - Grapes
-    - Fruit
-
-### Ordered List
-
-1. Plan the project
-  2. Write the code
-    3. Test the application
-4. Release the final version
-
-The above does not work when exporting HTML. Marked.js treats indentation as list nesting:
-
-1. Plan the project
-   1. Write the code
-      1. Test the application
-2. Release the final version
-
-### Task List
-
-Unsupported.
-
-## Raw HTML
-
-Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
-
-`<pre>`
-
-<pre>abc edt
-wef
-weawf
-</pre>
-<p></p>
-
-`<div>`
-
-<div style="padding: 12px; border: 1px solid #888; border-radius: 4px;">
- <strong>HTML block</strong>
- <p>This section tests whether your Markdown renderer supports inline HTML.</p>
-</div>
-
-## Mathematical Expressions
-
-Inline math: $E = mc^2$
-
-Block math:
-
-$$
-QoL = \int_{birth}^{death} \frac{Pleasure}{Pain}dt
-$$
-
-## Admonitions
-
-:::note
-This is a note.
+:::info
+You can learn Markdown by switching to Source Mode with `Cmd/Ctrl+;`.
 :::
-
-:::tip Custom title
-This is a tip.
-:::
-
-:::danger
-This is a dangerous operation.
-:::
-
-:::warning
-- Be careful!
-- There’s no English translation of this law and other important laws.
-:::
-
-## Code Blocks
-
-Inline code example: `console.log("Hello, world!");`
-
-```
-text
-```
-
-
-```ts
-interface User {
-  id: number;
-  name: string;
-  active: boolean;
-}
-
-const user: User = {
-  id: 1,
-  name: "Alice",
-  active: true,
-};
-
-function greet(user: User): string {
-  return `Hello, ${user.name}!`;
-}
-
-console.log(greet(user));
-```
-
-
-```shell
-npm install
-npm run dev
-npm run build
-```
-
-## Blockquotes
-
-> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
-
-Nested blockquotes:
-
-> This is the first level.
->
->> This is a nested blockquote. To include multiple paragraphs, please use `<span><br></span>` on the next new line and then make a line starting with `>>`.
->> <span><br></span>
->>
->> This is the second paragraph.
->>> It can contain multiple paragraphs. It can contain multiple paragraphs.
-
-## Text Formatting
-
-This is a paragraph with **bold** text, *italic* text, ~~strikethrough~~, and `inline code`.
-
-You can also combine formatting: ***bold and italic***.
-
-Here is a [link](https://commonmark.org/help) to the Markdown Guide.
-
-## Link
-
-[Google](https://example.com)
-
-Image link <a href="https://placehold.co/18"><img src="https://placehold.co/18"></a>
-
-[Local file of an absolute path](</Library/WebServer/share/httpd/manual/images/build_a_mod_3.png>) is clickable.
-
-[Local file of a relative path](<./Untitled2.md>) is clickable when this markdown file is saved on the disk.
-
-This does not work in CodeMirror \[![Alt text](https://placehold.co/300x200)](https://google.com). Check https://codemirror-live-markdown.vercel.app.
 
 # Heading 1
 
@@ -192,6 +43,97 @@ Every sunrise brings a new opportunity to learn, grow, and make life a little mo
 ###### Heading 6
 
 The stars shine brightest in the darkest skies, reminding us that hope can always be found in difficult times.
+
+## Lists
+
+### Unordered List
+
+- Apples
+- Bananas
+- Oranges
+- Mandarin oranges
+- Blood oranges
+  - Grapes
+    - Fruit
+
+### Ordered List
+
+1. Plan the project
+  2. Write the code
+    3. Test the application
+4. Release the final version
+
+The above isn't a proper nesting and does not work when exporting HTML. This editor uses [`marked`](https://github.com/markedjs/marked) internally for exporting HTML, and `marked` treats indentation as list nesting. The below works:
+
+1. Plan the project
+   1. Write the code
+      1. Test the application
+2. Release the final version
+
+### Exporting HTML (Shift-Cmd/Ctrl-E)
+
+The exported HTML contains a style sheet in the `<head>` tag. This style sheet makes the exported HTML look similar to this editor's screen.
+
+This editor does not support printing or exporting to other formats, because when exporting/printing, you would probably need formatting or preprocessing that is beyond the scope of this editor (such as adding a footer to each page.) For converting your writing to a PDF file, the easiest way is opening the resultant HTML in a Chrome-based browser and printing the page. On Mac, Safari cannot handle paged media properly. If you are a more advanced user, use [WeasyPrint](https://weasyprint.org), which can convert HTML to PDF more properly than browsers.
+
+## Admonitions
+
+:::note
+This is a note.
+:::
+
+:::tip Custom title
+This is a tip.
+:::
+
+:::danger
+This is a dangerous operation.
+:::
+
+:::warning
+- Be careful!
+- Keep calm!
+:::
+
+## Long URLs
+
+Long URLs are line-wrapped.
+
+https://www.example.com/products/electronics/computers/laptops/high-performance-gaming-laptop/model-2026/specifications/detailed-technical-information/processor/intel-core-ultra-series/memory/64gb-ddr5-storage/2tb-nvme-ssd/graphics/nvidia-geforce-rtx-series/advanced-display-settings/ultra-high-resolution-4k-oled-screen
+
+https://www.example.com/products_electronics_computers_laptops_highperformancegaminglaptop_model2026_specifications_detailedtechnicalinformation_processordetails_intelcoreultraseries_memoryconfiguration
+
+### Task List
+
+- [ ] Unsupported.
+
+## Text Formatting
+
+This is a paragraph with **bold** text, *italic* text, ~~strikethrough~~, and `inline code`.
+
+You can also combine formatting: ***bold and italic***.
+
+## Link
+
+Here is a [link](https://commonmark.org/help) to the Markdown Guide. To open a link `Cmd/Ctrl+Click`.
+
+[Local file of an absolute path](</Library/WebServer/share/httpd/manual/images/build_a_mod_3.png>) is clickable. If you drag & drop a file from Finder (macOS) when the current document is not saved on disk, an absolute path is embedded.
+
+[Local file of a relative path](<./Untitled2.md>) is clickable when this markdown file is saved on the disk. If the current file is saved on disk, you'll see a relative link.
+
+## Blockquotes
+
+> Markdown is a lightweight markup language that you can use to add formatting elements to plaintext documents.
+
+Nested blockquotes:
+
+> This is the first level.
+>
+>> This is a nested blockquote. To include multiple paragraphs, please use `<span><br></span>` on the next new line and then make a line starting with `>>`.
+>> <span><br></span>
+>>
+>> This is the second paragraph.
+>>> It can contain multiple paragraphs. It can contain multiple paragraphs.
 
 ## Font
 
@@ -235,7 +177,7 @@ A local images of an absolute path:
 
 ![Local aboluste](</Library/WebServer/share/httpd/manual/images/build_a_mod_3.png>)
 
-A local images of a relative path appears when this markdown file is saved on the disk.
+Drag & drop an image file from Finder. As below, a relative path appears if this markdown file is saved on the disk. Put `!` just before the image tag to make the image appear.
 
 ![local](<./Untitled.assets/lfs/paste-2026-10-22T05-29-43.065Z.png>)
 
@@ -245,7 +187,7 @@ Images can also be rendered as block elements.
 
 ## Empty Line
 
-Empty lines are rendered with a half line height. You can make a vertical space by pressing Enter key many times.
+You can make a vertical space by pressing Enter key many times.
 
 
 
@@ -254,7 +196,7 @@ Empty lines are rendered with a half line height. You can make a vertical space 
 
 
 
-Empty lines are used as margins between paragraphs. When exporting HTML, contiguous empty lines are handled as one empty line, which is a paragraph separator.
+Outside this editor, however, contiguous empty lines are handled as one empty line in markdown. Do not rely on this style of making a space!
 
 ## Escaping Special Characters
 
@@ -273,6 +215,80 @@ Unsupported. The below does not work.
 Here is a sentence with a footnote reference.[^1]
 
 [^1]: This is the footnote content.
+
+## Raw HTML
+
+Raw HTML elements are rendered. Mouse-over to see their borders. Examples:
+
+Image link: <a href="https://placehold.co/18"><img src="https://placehold.co/18"></a>
+
+`<pre>`:
+
+<pre>abc edt
+wef
+weawf
+</pre>
+
+`<div>`:
+
+<div style="padding: 12px; border: 1px solid #888; border-radius: .1rem;">
+ <strong>HTML block</strong>
+ <p>This section tests whether your Markdown renderer supports inline HTML.</p>
+</div>
+
+## Mathematical Expressions
+
+This editor uses MathJax (because it can export math expressions to SVGs. Rendered SVGs are cached and the editor doesn't repeat rendering on every key typing somewhere else. TODO: Clean up the cache.) Exported HTMLs have these SVGs embedded.
+
+Inline math: $E = mc^2$
+
+Block math:
+
+$$
+QoL = \int_{birth}^{death} \frac{Pleasure}{Pain}dt
+$$
+
+## Code Blocks
+
+Inline code example: `console.log("Hello, world!");`
+
+```
+text
+```
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
+const user: User = {
+  id: 1,
+  name: "Alice",
+  active: true,
+};
+
+function greet(user: User): string {
+  return `Hello, ${user.name}!`;
+}
+
+console.log(greet(user));
+```
+
+```shell
+pnpm install
+pnpm run dev
+```
+
+<div class="terminal"><span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(80,250,123); text-decoration: underline;">sudo</span> <span style="color: rgb(80,250,123);">samba-tool</span> domain backup online --server=dc1 --targetdir=/backup/ad
+<span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(241,250,140);">for</span> i in {0..9}; <span style="color: rgb(241,250,140);">do</span> <span style="color: rgb(80,250,123);">echo</span> -n <span style="color: rgb(241,250,140);">&#39;aaaaaaaaaaaaaaaaaaaa &#39;</span>; <span style="color: rgb(241,250,140);">done</span>
+aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa <span style="font-weight: 700; filter: invert(100%);">%</span>                             <span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span>
+</div>
+
+## Front Matter
+
+`footer` is embedded in an exported HTML as a CSS variable, so that it can be used by an HTML-to-PDF converter. Other attributes are unsupported for now.
 
 ## Extra
 
@@ -298,7 +314,7 @@ Missspell café あいうえお
 </pre>
 
 
-End of sample document.
+The End.
 
 Happy writing! ✍️
 

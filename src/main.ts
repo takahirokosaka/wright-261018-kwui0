@@ -56,7 +56,7 @@ import { setupFileDrop } from "./file-drop";
 import { pasteMarkdown } from "./paste-markdown";
 import { pasteImageHandler } from "./paste-image";
 
-import sampleMd from "./sample.md?raw";
+const sampleMd = await fetch("/sample.md").then(r => r.text());
 import { emptyLineHighlightPlugin } from "./visual/empty-line";
 
 const currentWindow = getCurrentWindow();

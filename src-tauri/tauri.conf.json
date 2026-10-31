@@ -24,9 +24,7 @@
 	"bundle": {
 		"active": true,
 		"targets": "all",
-		"icon": [
-			"icons/wright.icns"
-		],
+		"icon": ["icons/wright.icns"],
 		"macOS": {
 			"minimumSystemVersion": "26.0"
 		},
@@ -38,6 +36,9 @@
 				"description": "Markdown document",
 				"mimeType": "text/markdown"
 			}
-		]
+		],
+		"resources": {
+			"../public/sample.md": "sample.md"
+		}
 	}
 }

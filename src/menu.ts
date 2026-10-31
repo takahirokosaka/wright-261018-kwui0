@@ -96,11 +96,16 @@ export async function registerMenuEvents(view: EditorView) {
 		}
 	});
 
+	const unlistenHelp = await window.listen("help", async () => {
+		await invoke("open_markdown_in_new_window", { path: "demo" });
+	});
+
 	// Return cleanup callbacks for when the editor is disposed. This is optional if your editor lives for the entire lifetime of its window, but it is useful if we recreate the editor view.
 	return () => {
 		unlistenSave();
 		unlistenSaveAs();
 		unlistenOpen();
 		unlistenFormat();
+		unlistenHelp();
 	};
 }
