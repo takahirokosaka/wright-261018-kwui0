@@ -10,6 +10,7 @@ import {
 	WidgetType,
 	type DecorationSet,
 } from "@codemirror/view";
+import { syntaxTree } from "@codemirror/language";
 
 declare global {
 	interface Window {
@@ -95,6 +96,26 @@ class MathWidget extends WidgetType {
 	}
 }
 
+const CODE_NODE_NAMES = new Set(["FencedCode", "InlineCode", "CodeBlock"]);
+
+function isInsideCode(state: EditorState, from: number, to: number): boolean {
+	const tree = syntaxTree(state);
+	let isCode = false;
+
+	tree.iterate({
+		from,
+		to,
+		enter(node) {
+			if (CODE_NODE_NAMES.has(node.name)) {
+				isCode = true;
+				return false;
+			}
+		},
+	});
+
+	return isCode;
+}
+
 // For inline math
 export function mathDecorations(view: EditorView): DecorationSet {
 	const decorations: Range<Decoration>[] = [];
@@ -103,13 +124,17 @@ export function mathDecorations(view: EditorView): DecorationSet {
 
 	for (const { from, to } of view.visibleRanges) {
 		const text = state.doc.sliceString(from, to);
-		const regex = /(?<!\$)\$([^$\n]+?)\$(?!\$)/g;
+		const regex = /(?<![\\$])\$([^$\n]+?)(?<!\\)\$(?!\$)/g;
 
 		let match: RegExpExecArray | null;
 
 		while ((match = regex.exec(text)) !== null) {
 			const start = from + match.index;
 			const end = start + match[0].length;
+
+			if (isInsideCode(state, start, end)) {
+				continue;
+			}
 
 			if (selection.from <= end && selection.to >= start) {
 				continue;
@@ -138,6 +163,10 @@ function buildDisplayMathDecorations(state: EditorState): DecorationSet {
 	while ((match = regex.exec(text)) !== null) {
 		const start = match.index;
 		const end = start + match[0].length;
+
+		if (isInsideCode(state, start, end)) {
+			continue;
+		}
 
 		// Keep the source editable when the selection touches it.
 		if (selection.from <= end && selection.to >= start) {

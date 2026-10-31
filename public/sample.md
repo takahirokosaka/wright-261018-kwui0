@@ -208,6 +208,12 @@ Use a backslash to display Markdown characters literally:
 
 \`This is not inline code.\`
 
+\$This is not a math expression.\$ In code fences there's no need to escape \$:
+
+```shell
+$1 $2
+```
+
 ## Footnotes
 
 Unsupported. The below does not work.
