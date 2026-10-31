@@ -239,7 +239,7 @@ weawf
 
 <div style="padding: 12px; border: 1px solid #888; border-radius: .1rem;">
  <strong>HTML block</strong>
- <p>This section tests whether your Markdown renderer supports inline HTML.</p>
+ <p>This section tests whether your Markdown renderer supports inline HTML. HTML blocks are not editable in the visual mode. Please switch to the source mode to edit them.</p>
 </div>
 
 An empty line after `<div>` can be used to prevent rendering `<div>`. This is useful if you want to add special attributes in exported HTML.
@@ -262,7 +262,7 @@ This editor uses MathJax (because it can export math expressions to SVGs. Render
 
 Inline math: $E = mc^2$
 
-Block math:
+Block math (use left/right arrow keys to navigate):
 
 $$
 QoL = \int_{birth}^{death} \frac{Pleasure}{Pain}dt
