@@ -242,6 +242,20 @@ weawf
  <p>This section tests whether your Markdown renderer supports inline HTML.</p>
 </div>
 
+An empty line after `<div>` can be used to prevent rendering `<div>`. This is useful if you want to add special attributes in exported HTML.
+
+```html
+<div class="two-columns">
+
+abc
+</div>
+```
+
+<div class="two-columns">
+
+See the source (`Cmd/Ctrl+;`) of this line.
+</div>
+
 ## Mathematical Expressions
 
 This editor uses MathJax (because it can export math expressions to SVGs. Rendered SVGs are cached and the editor doesn't repeat rendering on every key typing somewhere else. TODO: Clean up the cache.) Exported HTMLs have these SVGs embedded.
