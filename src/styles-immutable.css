@@ -140,6 +140,6 @@ body {
 	outline: 1px solid #fb923c;
 }
 
-.cm-selected-empty-line {
-	background: rgba(100, 150, 255, 0.2);
+.cm-selectionBackground, .cm-selected-empty-line {
+  background: rgb(179,215,254);
 }
