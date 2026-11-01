@@ -602,3 +602,17 @@ aside.md-admonition {
 	font-family: var(--code-font);
 	opacity: 0.25;
 }
+
+.md-single-quote-close,
+.md-double-quote-close {
+	color: #16a34a;
+	font-weight: 900;
+	background: rgba(22, 163, 74, 0.12);
+}
+
+.md-single-quote-open,
+.md-double-quote-open {
+	color: #dc2626;
+	font-weight: 900;
+	background: rgba(220, 38, 38, 0.12);
+}
