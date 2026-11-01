@@ -256,6 +256,10 @@ abc
 See the source (`Cmd/Ctrl+;`) of this line.
 </div>
 
+:::danger ⚠️ Important
+Executing arbitrary JavaScript code is not allowed. Allowing remote JavaScript execution in this application is particularly dangerous because compromised scripts could expose your documents and potentially access, modify, or delete files on your computer.
+:::
+
 ## Mathematical Expressions
 
 This editor uses MathJax (because it can export math expressions to SVGs. Rendered SVGs are cached and the editor doesn't repeat rendering on every key typing somewhere else. TODO: Clean up the cache.) Exported HTMLs have these SVGs embedded.
