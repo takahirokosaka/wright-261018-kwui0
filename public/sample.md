@@ -139,6 +139,8 @@ Nested blockquotes:
 
 Fonts you want to use must be installed on your operating system. You can also render Material Symbols icons if you install them: <span class="material-symbols-outlined" >search</span>.
 
+By default, this editor uses [Inter](https://fonts.google.com/?query=Inter), [Sofia Sans Condensed](https://fonts.google.com/specimen/Sofia+Sans+Condensed), [Google Sans Code](https://fonts.google.com/specimen/Google+Sans+Code?preview.script=Latn), and [Noto Emoji](https://fonts.google.com/noto/specimen/Noto+Emoji). You can use your favorite fonts by editing `~/.wright.css` (a hidden CSS file in your home directory, described later).
+
 ## Table
 
 Unsupported. Simple tables can be drawn using ASCII art. More complex tables and formatting usually require a spreadsheet. Paste them as an SVG.
@@ -333,11 +335,11 @@ height = 1082
 assets_suffix = &quot;.assets/lfs&quot;
 </div>
 
-## Custom style sheet
+## Custom Style Sheet
 
 `~/.wright.css`
 
-JavaScript development console is enabled in the production build so that you can inspect elements and stylize them.
+JavaScript development console is enabled in the production build so that you can inspect elements and stylize them. The default css (`styles-default.css`) can be found in the git repository of this editor. Start by copying it as `~/.wright.css` then edit it as you like.
 
 
 
