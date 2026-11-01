@@ -329,7 +329,7 @@ ol {
  * Block quote
  */
 
-.cm-line.md-blockquote-1,
+.cm-editor .cm-line.md-blockquote-1,
 blockquote:not(blockquote blockquote) {
 	border-left: 0.1rem solid var(--blockquote-1-border-color);
 	padding-left: 0.6em;
@@ -341,7 +341,7 @@ blockquote {
 	padding-left: 0.6em;
 }
 
-.cm-line.md-blockquote-2 {
+.cm-editor .cm-line.md-blockquote-2 {
 	border-left: 0.1rem solid var(--blockquote-1-border-color);
 	padding-left: 1.2em;
 
@@ -358,7 +358,7 @@ blockquote > blockquote {
 	border-left: 0.1rem solid var(--blockquote-2-border-color);
 }
 
-.cm-line.md-blockquote-3 {
+.cm-editor .cm-line.md-blockquote-3 {
 	border-left: 0.1rem solid var(--blockquote-1-border-color);
 	padding-left: 1.8em;
 

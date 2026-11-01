@@ -1,6 +1,6 @@
 [package]
 name = "Wright"
-version = "0.1.0"
+version = "0.1.1"
 description = "Yet another markdown editor"
 authors = ["Takahiro Kosaka"]
 edition = "2024"
