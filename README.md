@@ -1,7 +1,9 @@
-# Tauri + Vanilla TS
+# TODO
 
-This template should help get you started developing with Tauri in vanilla HTML, CSS and Typescript.
+Testing
 
-## Recommended IDE Setup
+Someday soon we'll be doing it like this:
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+> Explore this Markdown editor. Find usability problems, visual defects, broken interactions, crashes, and unexpected behavior. Explore freely without a predefined test script.
+
+rather than manually preparing scripts.
