@@ -322,6 +322,22 @@ Missspell café あいうえお
 
 “Curly” ‘Quote’ highlighted
 
+## Editor Config
+
+<div class="terminal"><span style="color: rgb(255,146,208);">~</span><span style="color: rgb(202,169,255);"> %</span> <span style="color: rgb(80,250,123);">cat</span> <span style="text-decoration: underline;">~/.wright.conf</span>
+[window]
+width = 684
+height = 1082
+&nbsp;
+[editor]
+assets_suffix = &quot;.assets/lfs&quot;
+</div>
+
+## Custom style sheet
+
+`~/.wright.css`
+
+JavaScript development console is enabled in the production build so that you can inspect elements and stylize them.
 
 
 
