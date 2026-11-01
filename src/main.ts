@@ -15,8 +15,8 @@ import {
 	bracketMatching,
 } from "@codemirror/language";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { EditorState, Extension } from "@codemirror/state";
-import { Compartment } from "@codemirror/state";
+import { EditorState, Extension, EditorSelection } from "@codemirror/state";
+import { Compartment, Prec } from "@codemirror/state";
 import {
 	keymap,
 	lineNumbers,
@@ -56,7 +56,7 @@ import { setupFileDrop } from "./file-drop";
 import { pasteMarkdown } from "./paste-markdown";
 import { pasteImageHandler } from "./paste-image";
 
-const sampleMd = await fetch("/sample.md").then(r => r.text());
+const sampleMd = await fetch("/sample.md").then((r) => r.text());
 import { emptyLineHighlightPlugin } from "./visual/empty-line";
 
 const currentWindow = getCurrentWindow();
@@ -102,6 +102,32 @@ const sourceModeClass = EditorView.editorAttributes.of({
 	class: "md-source-mode",
 });
 
+// Home/End moves the cursor to the start/end of the document.
+export const homeEndNavigation = Prec.highest(
+	keymap.of([
+		{
+			key: "Home",
+			run: (view) => {
+				view.dispatch({
+					selection: EditorSelection.cursor(0),
+					scrollIntoView: true,
+				});
+				return true;
+			},
+		},
+		{
+			key: "End",
+			run: (view) => {
+				view.dispatch({
+					selection: EditorSelection.cursor(view.state.doc.length),
+					scrollIntoView: true,
+				});
+				return true;
+			},
+		},
+	]),
+);
+
 function modeExtensions(sourceMode: boolean) {
 	const markdownSupport = markdown({
 		base: markdownLanguage, // Language support for GFM plus subscript, superscript, and emoji syntax.
@@ -118,7 +144,8 @@ function modeExtensions(sourceMode: boolean) {
 		trailingSpaces,
 		pasteMarkdown,
 		pasteImageHandler,
-		emptyLineHighlightPlugin
+		emptyLineHighlightPlugin,
+		homeEndNavigation,
 	];
 
 	if (sourceMode) {
