@@ -583,6 +583,49 @@ aside.md-admonition {
 	color: #eaeaea; /* Default text color */
 	-webkit-print-color-adjust: exact;
 	print-color-adjust: exact;
+
+	--ansi-black: #21222c;
+	--ansi-red: #ff5555;
+	--ansi-green: #50fa7b;
+	--ansi-yellow: #f1fa8c;
+	--ansi-blue: #bd93f9;
+	--ansi-magenta: #ff79c6;
+	--ansi-cyan: #8be9fd;
+	--ansi-white: #bbbbbb;
+
+	--ansi-bright-black: #21222c;
+	--ansi-bright-red: #ff6e6e;
+	--ansi-bright-green: #69ff94;
+	--ansi-bright-yellow: #ffffa5;
+	--ansi-bright-blue: #caa9ff;
+	--ansi-bright-magenta: #ff92d0;
+	--ansi-bright-cyan: #9bf0ff;
+	--ansi-bright-white: #ffffff;
+
+	@media print {
+		/* Ifilter: invert(1); Not good enough */
+
+		background: white !important;
+		color: black !important;
+
+		--ansi-black: #000000;
+		--ansi-red: #c00020;
+		--ansi-green: #16803c;
+		--ansi-yellow: #827000;
+		--ansi-blue: #7040a0;
+		--ansi-magenta: #b00065;
+		--ansi-cyan: #007c91;
+		--ansi-white: #444444;
+
+		--ansi-bright-black: #21222c;
+		--ansi-bright-red: #b52b2b;
+		--ansi-bright-green: #167a3b;
+		--ansi-bright-yellow: #777000;
+		--ansi-bright-blue: #7040a0;
+		--ansi-bright-magenta: #a52b79;
+		--ansi-bright-cyan: #007777;
+		--ansi-bright-white: #282a36;
+	}
 }
 
 /* Fonts need to be installed on your operating system. */

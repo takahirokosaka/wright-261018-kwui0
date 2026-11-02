@@ -307,11 +307,6 @@ pnpm install
 pnpm run dev
 ```
 
-<div class="terminal"><span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(80,250,123); text-decoration: underline;">sudo</span> <span style="color: rgb(80,250,123);">samba-tool</span> domain backup online --server=dc1 --targetdir=/backup/ad
-<span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span> <span style="color: rgb(241,250,140);">for</span> i in {0..9}; <span style="color: rgb(241,250,140);">do</span> <span style="color: rgb(80,250,123);">echo</span> -n <span style="color: rgb(241,250,140);">&#39;aaaaaaaaaaaaaaaaaaaa &#39;</span>; <span style="color: rgb(241,250,140);">done</span>
-aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa <span style="font-weight: 700; filter: invert(100%);">%</span>                             <span style="color: rgb(255,95,215); font-weight: 700;">takahiro</span><span style="font-weight: 700;">@</span><span style="color: rgb(80,250,123); font-weight: 700;">dc1</span><span style="font-weight: 700;">:~ </span><span style="color: rgb(189,147,249); font-weight: 700;">%</span>
-</div>
-
 ## Front Matter
 
 `footer` is embedded in an exported HTML as a CSS variable, so that it can be used by an HTML-to-PDF converter. Other attributes are unsupported for now.
@@ -326,7 +321,7 @@ Missspell café あいうえお
 
 ## Editor Config
 
-<div class="terminal"><span style="color: rgb(255,146,208);">~</span><span style="color: rgb(202,169,255);"> %</span> <span style="color: rgb(80,250,123);">cat</span> <span style="text-decoration: underline;">~/.wright.conf</span>
+<div class="terminal"><span style="color: var(--ansi-bright-magenta);">~</span><span style="color: var(--ansi-bright-blue);"> %</span> <span style="color: var(--ansi-green);">cat</span> <span style="text-decoration: underline;">~/.wright.conf</span>
 [window]
 width = 684
 height = 1082
