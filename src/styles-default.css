@@ -297,14 +297,10 @@ pre:has(code) {
 	transform: translateY(-0.1em);
 }
 
-ul,
-ol {
-	margin-block: 0;
-	padding-inline-start: 0.5em;
-	margin-bottom: 1em;
-}
-
 ul {
+	margin-block: 0;
+	padding-inline-start: 1em;
+	margin-bottom: 1em;
 	list-style: none;
 }
 
@@ -321,8 +317,8 @@ ul > li::before {
 }
 
 ol {
-	padding-inline-start: 1.5em;
-	list-style: decimal;
+	list-style-position: inside;
+	padding-left: 1em;
 }
 
 /*
