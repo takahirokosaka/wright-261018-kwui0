@@ -103,6 +103,10 @@ https://www.example.com/products/electronics/computers/laptops/high-performance-
 
 https://www.example.com/products_electronics_computers_laptops_highperformancegaminglaptop_model2026_specifications_detailedtechnicalinformation_processordetails_intelcoreultraseries_memoryconfiguration
 
+## Word Counting
+
+The window title shows word counting. It is based on rendered HTML, not the markdown source. URLs count as one word.
+
 ### Task List
 
 - [ ] Unsupported.

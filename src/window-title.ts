@@ -26,6 +26,12 @@ function countRenderedWords(markdown: string): number {
 
 	const text = element.textContent ?? "";
 
+	// Match https? URLs as single words.
+	const normalized = text.replace(
+		/https?:\/\/[^\s]+/gi,
+		" URL "
+	);
+
 	// Counts sequences of letters. "Don't Stop" -> 2, not 3.
-	return text.match(/\b[\p{L}\p{N}]+(?:['’][\p{L}]+)*/gu)?.length ?? 0;
+	return normalized.match(/\b[\p{L}\p{N}]+(?:['’][\p{L}]+)*/gu)?.length ?? 0;
 }
