@@ -128,6 +128,23 @@ export const homeEndNavigation = Prec.highest(
 	]),
 );
 
+// Plain text should be pasted without Markdown escaping (-, *, _, etc.)
+const pastePlainTextHandler = EditorView.domEventHandlers({
+  paste(event, view) {
+    const text = event.clipboardData?.getData("text/plain");
+
+    if (text == null) return false;
+
+    event.preventDefault();
+
+    view.dispatch(
+      view.state.replaceSelection(text)
+    );
+
+    return true;
+  }
+});
+
 function modeExtensions(sourceMode: boolean) {
 	const markdownSupport = markdown({
 		base: markdownLanguage, // Language support for GFM plus subscript, superscript, and emoji syntax.
@@ -146,6 +163,7 @@ function modeExtensions(sourceMode: boolean) {
 		pasteImageHandler,
 		emptyLineHighlightPlugin,
 		homeEndNavigation,
+		pastePlainTextHandler
 	];
 
 	if (sourceMode) {
