@@ -208,7 +208,9 @@ Drag & drop an image file from Finder. As below, a relative path appears if this
 
 ![local](<./Untitled.assets/lfs/paste-2026-10-22T05-29-43.065Z.png>)
 
-Images can also be rendered as block elements.
+If you copy an image file in Finder and paste it on this editor, the image is copied to the asset folder of the current markdown document. This asset folder can be configured in `~/.wright.conf`.
+
+Images can also be rendered as block elements:
 
 <a href="https://placehold.co/100"><img src="https://placehold.co/100" style="display:block;"></a>
 
