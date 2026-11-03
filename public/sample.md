@@ -2,6 +2,8 @@
 footer: foot foot foot あいうえお
 ---
 
+<div class="two-columns">
+
 # Wright Markdown Editor Demo
 
 Markdown is a lightweight text formatting language. It lets you format plain text using simple symbols instead of HTML. It's commonly used in GitHub, README files, documentation, blogs, and chat applications.
@@ -158,6 +160,8 @@ By default, this editor uses [Inter](https://fonts.google.com/?query=Inter), [So
 
 Unsupported. Simple tables can be drawn using ASCII art. More complex tables and formatting usually require a spreadsheet. Paste them as an SVG.
 
+<div class="page-break"></div>
+
 <pre>
 ┌───────┬─────┬────────┐
 │ Name  │ Age │ City   │
@@ -167,6 +171,11 @@ Unsupported. Simple tables can be drawn using ASCII art. More complex tables and
 │ Carol │  28 │ Nagoya │
 └───────┴─────┴────────┘
 </pre>
+
+<div class="page-break"></div>
+
+</div>
+<div class="full-width">
 
 ## Highlight
 
@@ -181,6 +190,9 @@ Content above the divider.
 ---
 
 Content below the divider.
+
+</div>
+<div class="two-columns">
 
 ## Images
 
@@ -358,3 +370,5 @@ Happy writing! ✍️
 
 
 012345678901234567890123456789012345678901234567890123456789
+
+</div>

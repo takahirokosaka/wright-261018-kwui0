@@ -290,7 +290,9 @@ export async function exportHtml(view: EditorView) {
 	</style>
 </head>
 <body style="overflow: auto;">
+<article>
 ${body}
+</article>
 </body>
 </html>`;
 

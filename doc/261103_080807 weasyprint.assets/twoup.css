@@ -1,0 +1,51 @@
+/* PAGE SETUP */
+@page {
+	size: A4 landscape;
+
+	margin-top: 10.6mm; /* 12 - 1.4: weasyprint needs empirical adjustment */
+	margin-left: 15mm;
+	margin-right: 15mm;
+	margin-bottom: 18mm;
+
+	/* Footer: 15mm from left, 10mm from bottom */
+	@bottom-left {
+		content: counter(page) "/" counter(pages) " " var(--footer-text);
+		font-size: 7pt;
+		font-family: "Google Sans Code";
+		margin-bottom: 4mm;
+	}
+}
+
+article {
+	width: 100% !important;
+	padding: 0 !important;
+}
+
+.two-columns {
+	column-count: 2;
+	column-gap: 15mm;
+}
+
+.full-width {
+	width: 100%;
+	column-span: none;
+	break-inside: avoid;
+	break-after: page;
+}
+
+.page-break {
+	break-before: page;
+}
+
+img {
+	max-width: 100% !important;
+	max-height: 180mm;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+}
+
+/* Weasyprint ignores color-mix. A workaround. */
+aside.md-admonition {
+	border: 0.25mm solid var(--admonition-color);
+}

@@ -25,14 +25,22 @@
 	color: #ffffff;
 }
 
-/* for exported HTML */
 body {
+	margin: 0;
+}
+
+/* for exported HTML */
+article {
+	width: min(634px, 100%);
 	max-width: 100%;
 	min-width: 0;
 	box-sizing: border-box;
+	padding-left: 1em;
+	padding-right: 1em;
 	overflow-wrap: anywhere; /* break unbrekable long words */
 	word-break: normal;
 	white-space: normal;
+	margin-inline: auto;
 }
 
 /* Set font size for printing exported HTML */
