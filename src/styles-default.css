@@ -193,7 +193,7 @@ code {
 	padding-right: 0.4rem;
 }
 
-/* Fake a bottom padding */
+/* Fake bottom padding */
 .cm-line.md-code-fence-line:has(+ .cm-line img.cm-widgetBuffer) {
 	padding-bottom: 0.2rem;
 	background-color: var(--code-fence-bg);
@@ -208,13 +208,19 @@ code {
 	tab-size: 3;
 	background-color: var(--code-fence-bg);
 	padding-left: 0.2rem;
+	overflow-wrap: anywhere;
+	word-break: break-all;
+	white-space: pre-wrap;
 }
 
 .md-inline-code,
 code {
 	border-radius: 0.2rem;
 	font-family: var(--code-font);
+	overflow-wrap: anywhere;
 	font-size: var(--code-font-size);
+	word-break: break-all;
+	white-space: pre-wrap;
 }
 
 .md-inline-code {
