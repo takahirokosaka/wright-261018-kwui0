@@ -172,8 +172,11 @@ fn app_setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn is_markdown_file(path: &PathBuf) -> bool {
-	path.extension()
-		.is_some_and(|ext| ext.eq_ignore_ascii_case("md") || ext.eq_ignore_ascii_case("markdown"))
+	path.extension().is_some_and(|ext| {
+		ext.eq_ignore_ascii_case("md")
+			|| ext.eq_ignore_ascii_case("markdown")
+			|| ext.eq_ignore_ascii_case("mdx")
+	})
 }
 
 fn handle_files(app: &AppHandle, files: Vec<PathBuf>) {

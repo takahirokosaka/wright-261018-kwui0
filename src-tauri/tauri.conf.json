@@ -31,7 +31,7 @@
 		"copyright": "Written by Takahiro Kosaka",
 		"fileAssociations": [
 			{
-				"ext": ["md", "markdown"],
+				"ext": ["md", "markdown", "mdx"],
 				"name": "Markdown Document",
 				"description": "Markdown document",
 				"mimeType": "text/markdown"
