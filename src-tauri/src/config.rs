@@ -68,7 +68,7 @@ pub fn get_window_size(app: &AppHandle) -> (f64, f64) {
 	let height = config.window.height;
 
 	if !width.is_finite() || !height.is_finite() || width < 200.0 || height < 200.0 {
-		eprintln!("Invalid window size in ~/.wright.conf");
+		eprintln!("Invalid window size in config.toml");
 		return (DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 
