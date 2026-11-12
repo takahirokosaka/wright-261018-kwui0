@@ -42,7 +42,7 @@ pub fn create_editor_window(
 		.and_then(|name| name.to_str())
 		.unwrap_or("Untitled.md");
 
-	let (width, height) = get_window_size();
+	let (width, height) = get_window_size(&app);
 
 	let builder = WebviewWindowBuilder::new(app, &label, WebviewUrl::App("index.html".into()))
 		.title(title)

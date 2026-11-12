@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use std::fs;
+use tauri::{AppHandle,Manager};
 
 #[derive(Deserialize, Default)]
 #[serde(default)]
@@ -41,12 +42,12 @@ impl Default for EditorConfig {
 	}
 }
 
-fn load_config() -> AppConfig {
-	let Some(home) = dirs::home_dir() else {
+fn load_config(app: &AppHandle) -> AppConfig {
+	let Ok(data_dir) = app.path().app_data_dir() else {
 		return AppConfig::default();
 	};
 
-	let config_path = home.join(".wright.conf");
+	let config_path = data_dir.join("config.toml");
 
 	let Ok(contents) = fs::read_to_string(&config_path) else {
 		return AppConfig::default();
@@ -61,8 +62,8 @@ fn load_config() -> AppConfig {
 	}
 }
 
-pub fn get_window_size() -> (f64, f64) {
-	let config = load_config();
+pub fn get_window_size(app: &AppHandle) -> (f64, f64) {
+	let config = load_config(app);
 	let width = config.window.width;
 	let height = config.window.height;
 
@@ -76,8 +77,8 @@ pub fn get_window_size() -> (f64, f64) {
 
 // Allow nested directories such as .assets/lfs
 #[tauri::command]
-pub fn get_assets_suffix() -> String {
-	let suffix = load_config().editor.assets_suffix;
+pub fn get_assets_suffix(app: AppHandle) -> String {
+	let suffix = load_config(&app).editor.assets_suffix;
 
 	if suffix.starts_with('.')
 		&& suffix.len() > 1
