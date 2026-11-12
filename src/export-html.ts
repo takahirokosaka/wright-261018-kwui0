@@ -8,7 +8,6 @@ import { marked, Renderer } from "marked";
 import postcss from "postcss";
 
 import { highlightColors } from "./visual/highlight";
-import immutableCss from "./styles-immutable.css?inline"; // Only html and body matter. Marked.js doesn't know CodeMirror styles.
 import defaultCss from "./styles-default.css?inline";
 
 import { getCurrentFileName, getCurrentFilePath } from "./save-file";
@@ -336,7 +335,7 @@ ${body}
 function getLoadedCss(): { css: string; fonts: string[] } {
 	const userCss = document.getElementById("user-styles")?.textContent ?? "";
 
-	const css = [immutableCss, defaultCss, userCss].filter(Boolean).join("\n");
+	const css = [defaultCss, userCss].filter(Boolean).join("\n");
 
 	const fonts = Array.from(
 		css.matchAll(/wright:\/\/font\/([^"'()\s]+)/g),
