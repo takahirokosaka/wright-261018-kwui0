@@ -1,5 +1,5 @@
 import { save } from "@tauri-apps/plugin-dialog";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { writeTextFile, mkdir } from "@tauri-apps/plugin-fs";
 import { invoke } from "@tauri-apps/api/core";
 
 import type { EditorView } from "@codemirror/view";
@@ -279,26 +279,7 @@ export async function exportHtml(view: EditorView) {
 
 	const filename = await getCurrentFileName();
 
-	const loadedCss = getLoadedCss(filename);
-
-	// TODO: <title>
-	const html = `<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>${filename.replace(/\.(mdx?|markdown)$/, "")}</title>
-	<style>
-		${loadedCss.css}
-		${footerCss}
-	</style>
-</head>
-<body style="overflow: auto;">
-<article>
-${body}
-</article>
-</body>
-</html>`;
+	const loadedCss = getLoadedCss();
 
 	const currentFilePath = getCurrentFilePath();
 
@@ -319,6 +300,28 @@ ${body}
 	// User cancelled the dialog.
 	if (!path) return;
 
+	// Generate companion asset paths.
+	const assetsDir = path.replace(/\.[^/.]+$/, ".assets");
+	const sylesPath = `${assetsDir}/styles.css`;
+	const cssHref = `./${assetsDir.split(/[\\/]/).pop()}/styles.css`;
+
+	const html = `<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>${path.split(/[\\/]/).pop()!}</title>
+	<link rel="stylesheet" href="${cssHref}">
+</head>
+<body style="overflow: auto;">
+<article>
+${body}
+</article>
+</body>
+</html>`;
+
+	await mkdir(assetsDir, { recursive: true });
+	await writeTextFile(sylesPath, `${loadedCss.css}\n${footerCss}`);
 	await writeTextFile(path, html);
 
 	// Copy fonts from the app's data dir to .assets/fonts
@@ -330,10 +333,8 @@ ${body}
 	return html;
 }
 
-function getLoadedCss(filename: string): { css: string; fonts: string[] } {
+function getLoadedCss(): { css: string; fonts: string[] } {
 	const userCss = document.getElementById("user-styles")?.textContent ?? "";
-
-	const fontPath = `./${filename.replace(/\.[^/.]+$/, ".assets/fonts")}`;
 
 	const css = [immutableCss, defaultCss, userCss].filter(Boolean).join("\n");
 
@@ -342,7 +343,7 @@ function getLoadedCss(filename: string): { css: string; fonts: string[] } {
 		(match) => match[1],
 	);
 
-	const processedCss = css.replace(/wright:\/\/font\//g, `${fontPath}/`);
+	const processedCss = css.replace(/wright:\/\/font\//g, "./fonts/");
 
 	const root = postcss.parse(processedCss);
 	deduplicateCss(root);
