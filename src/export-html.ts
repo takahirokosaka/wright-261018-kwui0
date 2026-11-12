@@ -1,5 +1,6 @@
 import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { invoke } from "@tauri-apps/api/core";
 
 import type { EditorView } from "@codemirror/view";
 import { marked, Renderer } from "marked";
@@ -278,14 +279,17 @@ export async function exportHtml(view: EditorView) {
 
 	const filename = await getCurrentFileName();
 
+	const loadedCss = getLoadedCss(filename);
+
+	// TODO: <title>
 	const html = `<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>${filename.replace(/\.(md|markdown)$/, "")}</title>
+	<title>${filename.replace(/\.(mdx?|markdown)$/, "")}</title>
 	<style>
-		${getLoadedCss()}
+		${loadedCss.css}
 		${footerCss}
 	</style>
 </head>
@@ -317,18 +321,36 @@ ${body}
 
 	await writeTextFile(path, html);
 
+	// Copy fonts from the app's data dir to .assets/fonts
+	await invoke("copy_fonts", {
+		path,
+		fonts: loadedCss.fonts,
+	});
+
 	return html;
 }
 
-function getLoadedCss(): string {
+function getLoadedCss(filename: string): { css: string; fonts: string[] } {
 	const userCss = document.getElementById("user-styles")?.textContent ?? "";
+
+	const fontPath = `./${filename.replace(/\.[^/.]+$/, ".assets/fonts")}`;
 
 	const css = [immutableCss, defaultCss, userCss].filter(Boolean).join("\n");
 
-	const root = postcss.parse(css);
+	const fonts = Array.from(
+		css.matchAll(/wright:\/\/font\/([^"'()\s]+)/g),
+		(match) => match[1],
+	);
+
+	const processedCss = css.replace(/wright:\/\/font\//g, `${fontPath}/`);
+
+	const root = postcss.parse(processedCss);
 	deduplicateCss(root);
 
-	return root.toString();
+	return {
+		css: root.toString(),
+		fonts: [...new Set(fonts)],
+	};
 }
 
 function deduplicateCss(root: postcss.Root): void {

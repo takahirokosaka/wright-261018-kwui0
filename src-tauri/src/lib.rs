@@ -11,6 +11,7 @@ mod config;
 mod editor_window;
 mod asset;
 mod menu;
+mod copy_fonts;
 
 // Load custom.css at startup from the app's data directory.
 #[tauri::command]
@@ -80,6 +81,7 @@ pub fn run() {
 			load_user_css,
 			editor_window::open_markdown_in_new_window,
 			allow_directory::allow_document_directory,
+			copy_fonts::copy_fonts,
 			config::get_assets_suffix
 		])
 		.build(tauri::generate_context!())
