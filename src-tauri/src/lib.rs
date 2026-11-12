@@ -11,11 +11,12 @@ mod config;
 mod editor_window;
 mod menu;
 
-// Load ~/.wright.css as a user-customizable stylesheet at startup.
+// Load custom.css at startup from the app's data directory.
 #[tauri::command]
-fn load_user_css() -> Option<String> {
-	let path: PathBuf = std::env::var_os("HOME")?.into();
-	std::fs::read_to_string(PathBuf::from(path).join(".wright.css")).ok()
+fn load_user_css(app: AppHandle) -> Option<String> {
+	let dir = app.path().app_data_dir().ok()?;
+	std::fs::create_dir_all(&dir).ok()?;
+	std::fs::read_to_string(dir.join("custom.css")).ok()
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
