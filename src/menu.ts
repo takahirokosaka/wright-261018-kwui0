@@ -10,6 +10,7 @@ import { saveMarkdown, saveMarkdownAs, setOpenedFile } from "./save-file";
 import { updateWindowTitle } from "./window-title";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { format, isFormatType } from "./format";
+import { loadDocumentStylesheet } from "./document-styles";
 
 export async function registerMenuEvents(view: EditorView) {
 	// If we simply listen (import { listen } from "@tauri-apps/api/event";), all editor windows respond to the event, even if window.emit_to is used. We don't know why.
@@ -74,6 +75,8 @@ export async function registerMenuEvents(view: EditorView) {
 				const content = await readTextFile(path);
 
 				setOpenedFile(path, content);
+
+				await loadDocumentStylesheet(path);
 
 				view.dispatch({
 					changes: {

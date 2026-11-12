@@ -55,6 +55,17 @@ import { visualNewlineKeymap } from "./visual/newline";
 import { setupFileDrop } from "./file-drop";
 import { pasteMarkdown } from "./paste-markdown";
 import { pasteImageHandler } from "./paste-image";
+import { loadDocumentStylesheet } from "./document-styles";
+
+if (window.__INITIAL_FILE_PATH__) {
+	void loadDocumentStylesheet(window.__INITIAL_FILE_PATH__);
+}
+
+declare global {
+	interface Window {
+		__INITIAL_FILE_PATH__?: string;
+	}
+}
 
 const sampleMd = await fetch("/sample.md").then((r) => r.text());
 import { emptyLineHighlightPlugin } from "./visual/empty-line";
@@ -71,7 +82,14 @@ async function loadUserCss() {
 			const style = document.createElement("style");
 			style.id = "user-styles";
 			style.textContent = css;
-			document.head.appendChild(style);
+
+			const documentStyles = document.getElementById("document-styles");
+
+			if (documentStyles) {
+				documentStyles.before(style);
+			} else {
+				document.head.appendChild(style);
+			}
 		}
 	} catch (error) {
 		console.error("Failed to load user CSS:", error);
@@ -130,19 +148,17 @@ export const homeEndNavigation = Prec.highest(
 
 // Plain text should be pasted without Markdown escaping (-, *, _, etc.)
 const pastePlainTextHandler = EditorView.domEventHandlers({
-  paste(event, view) {
-    const text = event.clipboardData?.getData("text/plain");
+	paste(event, view) {
+		const text = event.clipboardData?.getData("text/plain");
 
-    if (text == null) return false;
+		if (text == null) return false;
 
-    event.preventDefault();
+		event.preventDefault();
 
-    view.dispatch(
-      view.state.replaceSelection(text)
-    );
+		view.dispatch(view.state.replaceSelection(text));
 
-    return true;
-  }
+		return true;
+	},
 });
 
 function modeExtensions(sourceMode: boolean) {
@@ -163,7 +179,7 @@ function modeExtensions(sourceMode: boolean) {
 		pasteImageHandler,
 		emptyLineHighlightPlugin,
 		homeEndNavigation,
-		pastePlainTextHandler
+		pastePlainTextHandler,
 	];
 
 	if (sourceMode) {

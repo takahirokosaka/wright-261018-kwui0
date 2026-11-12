@@ -1,4 +1,3 @@
-import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile, mkdir } from "@tauri-apps/plugin-fs";
 import { invoke } from "@tauri-apps/api/core";
 
@@ -10,7 +9,9 @@ import postcss from "postcss";
 import { highlightColors } from "./visual/highlight";
 import defaultCss from "./styles-default.css?inline";
 
-import { getCurrentFileName, getCurrentFilePath } from "./save-file";
+import { getCurrentFilePath } from "./save-file";
+
+import { getOriginalDocumentCss } from "./document-styles";
 
 declare global {
 	interface Window {
@@ -276,31 +277,20 @@ export async function exportHtml(view: EditorView) {
 
 	const body = await marked.parse(content, { async: true });
 
-	const filename = await getCurrentFileName();
-
 	const loadedCss = getLoadedCss();
 
 	const currentFilePath = getCurrentFilePath();
 
-	const defaultPath = currentFilePath
-		? currentFilePath.replace(/\.[^/.]+$/, ".html")
-		: filename.replace(/\.[^/.]+$/, ".html");
+	if (!currentFilePath) {
+		alert("Save the Markdown document before exporting to HTML.");
+		return;
+	}
 
-	const path = await save({
-		defaultPath,
-		filters: [
-			{
-				name: "HTML",
-				extensions: ["html"],
-			},
-		],
-	});
-
-	// User cancelled the dialog.
-	if (!path) return;
+	const htmlPath = currentFilePath.replace(/\.[^/.]+$/, ".html");
 
 	// Generate companion asset paths.
-	const assetsDir = path.replace(/\.[^/.]+$/, ".assets");
+	const assetsDir = currentFilePath.replace(/\.[^/.]+$/, ".assets");
+
 	const sylesPath = `${assetsDir}/styles.css`;
 	const cssHref = `./${assetsDir.split(/[\\/]/).pop()}/styles.css`;
 
@@ -309,7 +299,7 @@ export async function exportHtml(view: EditorView) {
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>${path.split(/[\\/]/).pop()!}</title>
+   <title>${htmlPath.split(/[\\/]/).pop()!}</title>
 	<link rel="stylesheet" href="${cssHref}">
 </head>
 <body style="overflow: auto;">
@@ -320,22 +310,35 @@ ${body}
 </html>`;
 
 	await mkdir(assetsDir, { recursive: true });
-	await writeTextFile(sylesPath, `${loadedCss.css}\n${footerCss}`);
-	await writeTextFile(path, html);
+	await writeTextFile(
+		sylesPath,
+		`${loadedCss.css}\n\n/* footer css (generated from the front matter) */\n${footerCss}`,
+	);
+	await writeTextFile(htmlPath, html);
 
 	// Copy fonts from the app's data dir to .assets/fonts
 	await invoke("copy_fonts", {
-		path,
+		path: htmlPath,
 		fonts: loadedCss.fonts,
 	});
+
+	alert("Exported html!");
 
 	return html;
 }
 
 function getLoadedCss(): { css: string; fonts: string[] } {
 	const userCss = document.getElementById("user-styles")?.textContent ?? "";
+	const documentCss = getOriginalDocumentCss();
 
-	const css = [defaultCss, userCss].filter(Boolean).join("\n");
+	const css = [
+		["/* default css */", defaultCss],
+		["/* user custom css */", userCss],
+		["/* document css */", documentCss],
+	]
+		.filter(([, content]) => content)
+		.map(([comment, content]) => `${comment}\n${content}`)
+		.join("\n\n");
 
 	const fonts = Array.from(
 		css.matchAll(/wright:\/\/font\/([^"'()\s]+)/g),
