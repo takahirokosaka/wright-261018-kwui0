@@ -9,6 +9,7 @@ use crate::editor_window::open_markdown_in_new_window;
 mod allow_directory;
 mod config;
 mod editor_window;
+mod asset;
 mod menu;
 
 // Load custom.css at startup from the app's data directory.
@@ -60,6 +61,15 @@ pub fn run() {
 		)
 		.plugin(tauri_plugin_fs::init())
 		.plugin(tauri_plugin_clipboard_x::init())
+		.register_asynchronous_uri_scheme_protocol("wright", |ctx, request, responder| {
+			// Our custom asset provider enables the user to specify src: url("wright://font/Favorite.ttf") format("truetype"); in custom.css.
+			let app = ctx.app_handle().clone();
+			let uri = request.uri().clone();
+
+			tauri::async_runtime::spawn(async move {
+				responder.respond(asset::serve(&app, &uri));
+			});
+		})
 		.setup(app_setup)
 		.on_menu_event(menu::handle_event)
 		.on_window_event(|window, event| {

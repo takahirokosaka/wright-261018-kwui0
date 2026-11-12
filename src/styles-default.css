@@ -1,11 +1,11 @@
 :root {
-	font-family: Inter, sans-serif, "Noto Emoji";
+	font-family: system-ui;
 	font-size: 18px;
 	line-height: 1.41;
 	color: #212121;
 	background: #fefefe;
 	--link-color: #1976d2;
-	--code-font: "Google Sans Code", monospace, "Noto Emoji";
+	--code-font: ui-monospace;
 	--code-font-size: 0.9em;
 	--code-fence-header-bg: #e8edf3;
 	--code-fence-bg: #f6f7f9;
@@ -16,7 +16,6 @@
 	--blockquote-2-border-color: #569cd6;
 	--blockquote-3-border-color: #c586c0;
 	--html-block-border-color: #9bbcff;
-	--header-font: "Sofia Sans Condensed", sans-serif, "Noto Emoji";
 }
 
 /* source mode gutter */
@@ -636,18 +635,6 @@ aside.md-admonition {
 		--ansi-bright-cyan: #007777;
 		--ansi-bright-white: #282a36;
 	}
-}
-
-/* Fonts need to be installed on your operating system. */
-.material-symbols-outlined {
-	font-family: "Material Symbols Outlined";
-	font-weight: normal;
-	font-variation-settings:
-		"FILL" 0,
-		"wght" 400,
-		"GRAD" 0,
-		"opsz" 24;
-	vertical-align: -15%;
 }
 
 .cm-line.md-frontmatter {

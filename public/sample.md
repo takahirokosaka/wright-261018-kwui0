@@ -152,9 +152,27 @@ Nested blockquotes:
 
 ## Font
 
-Fonts you want to use must be installed on your operating system. You can also render Material Symbols icons if you install them: <span class="material-symbols-outlined" >search</span>.
+You can use your favorite fonts by installing them in `~/Library/Application Support/com.takahirokosaka.wright/fonts`. You also need to write `~/Library/Application Support/com.takahirokosaka.wright/custom.css`:
 
-By default, this editor uses [Inter](https://fonts.google.com/?query=Inter), [Sofia Sans Condensed](https://fonts.google.com/specimen/Sofia+Sans+Condensed), [Google Sans Code](https://fonts.google.com/specimen/Google+Sans+Code?preview.script=Latn), and [Noto Emoji](https://fonts.google.com/noto/specimen/Noto+Emoji). You can use your favorite fonts by editing `~/.wright.css` (a hidden CSS file in your home directory, described later).
+```css
+@font-face {
+    font-family: "Inter";
+    src: url("wright://font/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+    font-weight: 100 900;
+	 font-style: normal;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("wright://font/GoogleSansCode-Italic-VariableFont_MONO,wght.ttf") format("truetype");
+    font-weight: 100 900;
+	 font-style: italic;
+}
+
+:root {
+	font-family: "Inter", sans-serif;
+}
+```
 
 ## Table
 
