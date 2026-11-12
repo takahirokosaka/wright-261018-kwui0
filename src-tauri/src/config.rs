@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use std::fs;
-use tauri::{AppHandle,Manager};
+use tauri::{AppHandle, Manager};
 
 #[derive(Deserialize, Default)]
 #[serde(default)]
@@ -31,13 +31,13 @@ impl Default for WindowConfig {
 #[derive(Deserialize)]
 #[serde(default)]
 struct EditorConfig {
-	assets_suffix: String,
+	media_suffix: String,
 }
 
 impl Default for EditorConfig {
 	fn default() -> Self {
 		Self {
-			assets_suffix: ".assets".to_string(),
+			media_suffix: "media".to_string(),
 		}
 	}
 }
@@ -75,20 +75,20 @@ pub fn get_window_size(app: &AppHandle) -> (f64, f64) {
 	(width, height)
 }
 
-// Allow nested directories such as .assets/lfs
+// Allow nested directories such as media/lfs
 #[tauri::command]
-pub fn get_assets_suffix(app: AppHandle) -> String {
-	let suffix = load_config(&app).editor.assets_suffix;
+pub fn get_media_suffix(app: AppHandle) -> String {
+	let suffix = load_config(&app).editor.media_suffix;
 
-	if suffix.starts_with('.')
-		&& suffix.len() > 1
+	if !suffix.is_empty()
+		&& !suffix.starts_with('/')
 		&& !suffix.contains('\\')
 		&& !suffix
 			.split('/')
 			.any(|part| part == ".." || part.is_empty())
 	{
-		suffix
+		std::path::Path::new(".assets").join(&suffix).to_string_lossy().to_string()
 	} else {
-		".assets".to_string()
+		".assets/media".to_string()
 	}
 }

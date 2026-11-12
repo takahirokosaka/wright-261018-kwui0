@@ -19,10 +19,10 @@ async function pasteImage(view: EditorView, file: File) {
 		return true;
 	}
 
-	const assetsSuffix = await invoke<string>("get_assets_suffix");
+	const mediaSuffix = await invoke<string>("get_media_suffix");
 
 	// Absolute path for filesystem operations
-	const defaultPath = currentFilePath.replace(/\.[^/.]+$/, assetsSuffix);
+	const defaultPath = currentFilePath.replace(/\.[^/.]+$/, mediaSuffix);
 
 	await invoke("allow_document_directory", {
 		filePath: currentFilePath,

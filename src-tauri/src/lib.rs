@@ -82,7 +82,7 @@ pub fn run() {
 			editor_window::open_markdown_in_new_window,
 			allow_directory::allow_document_directory,
 			copy_fonts::copy_fonts,
-			config::get_assets_suffix
+			config::get_media_suffix
 		])
 		.build(tauri::generate_context!())
 		.expect("error while running tauri application");
