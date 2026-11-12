@@ -50,7 +50,7 @@ export async function registerMenuEvents(view: EditorView) {
 					filters: [
 						{
 							name: "Markdown",
-							extensions: ["md", "markdown"],
+							extensions: ["md", "mdx", "markdown"],
 						},
 					],
 				});
