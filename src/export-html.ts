@@ -1,5 +1,6 @@
-import { writeTextFile, mkdir } from "@tauri-apps/plugin-fs";
+import { writeTextFile, mkdir, exists } from "@tauri-apps/plugin-fs";
 import { invoke } from "@tauri-apps/api/core";
+import { confirm } from "@tauri-apps/plugin-dialog";
 
 import type { EditorView } from "@codemirror/view";
 import { marked, Renderer } from "marked";
@@ -310,6 +311,25 @@ ${body}
 </html>`;
 
 	await mkdir(assetsDir, { recursive: true });
+
+	let confirmedOverwriting = false;
+
+	if (await exists(htmlPath)) {
+		const shouldOverwrite = await confirm(
+			"The HTML file already exists. Do you want to overwrite it?",
+			{
+				title: "Confirm overwrite",
+				kind: "warning",
+			},
+		);
+
+		if (!shouldOverwrite) {
+			return;
+		}
+
+		confirmedOverwriting = true;
+	}
+
 	await writeTextFile(
 		sylesPath,
 		`${loadedCss.css}\n\n/* footer css (generated from the front matter) */\n${footerCss}`,
@@ -322,7 +342,9 @@ ${body}
 		fonts: loadedCss.fonts,
 	});
 
-	alert("Exported html!");
+	if (!confirmedOverwriting) {
+		alert("Exported html!");
+	}
 
 	return html;
 }

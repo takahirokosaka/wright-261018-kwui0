@@ -26,6 +26,7 @@
 		"fs:allow-mkdir",
 		"fs:allow-write-file",
 		"fs:allow-open",
+		"fs:allow-exists",
 		"fs:scope",
 		{
 			"identifier": "fs:scope",
