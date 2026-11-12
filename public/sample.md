@@ -377,9 +377,9 @@ assets_suffix = &quot;.assets/lfs&quot;
 
 ## Custom Style Sheet
 
-`~/.wright.css`
+`~/Library/Application Support/com.takahirokosaka.wright/custom.css`
 
-JavaScript development console is enabled in the production build so that you can inspect elements and stylize them. The default css (`styles-default.css`) can be found in the git repository of this editor. Start by copying it as `~/.wright.css` then edit it as you like.
+JavaScript development console is enabled in the production build so that you can inspect elements and stylize them. The default css (`styles-default.css`) can be found in the git repository of this editor. Start by copying it as `custom.css` then edit it as you like.
 
 
 
