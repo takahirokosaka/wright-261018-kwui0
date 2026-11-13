@@ -9,6 +9,8 @@ use tauri::{
 	menu::{CheckMenuItem, MenuItem},
 };
 
+use tauri_plugin_opener::OpenerExt;
+
 pub struct MenuState {
 	save: MenuItem<tauri::Wry>,
 	save_as: MenuItem<tauri::Wry>,
@@ -19,6 +21,8 @@ pub struct MenuState {
 }
 
 pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
+	let settings = MenuItem::with_id(app, "settings", "Settings…", true, Some("CmdOrCtrl+,"))?;
+
 	let open = MenuItem::with_id(app, "open", "Open…", true, Some("CmdOrCtrl+O"))?;
 
 	let new_window = MenuItem::with_id(app, "new-editor", "New", true, Some("CmdOrCtrl+N"))?;
@@ -103,9 +107,13 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 				#[cfg(target_os = "macos")]
 				if submenu_text == "Wright" {
-					// Replace the native Quit Wright item with our custom item.
 					for (index, app_item) in submenu.items()?.iter().enumerate() {
 						if let Some(predefined) = app_item.as_predefined_menuitem() {
+							if predefined.text()? == "About Wright" {
+								submenu.insert(&settings, index + 1)?;
+								break;
+							}
+
 							if predefined.text()? == "Quit Wright" {
 								submenu.remove_at(index)?;
 								submenu.append(&quit)?;
@@ -233,6 +241,35 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 		.find(|window| window.is_focused().unwrap_or(false));
 
 	match event.id().as_ref() {
+		"settings" => {
+			let path = app
+				.path()
+				.app_data_dir()
+				.expect("Failed to get app data directory");
+
+			std::fs::create_dir_all(&path).expect("Failed to create app data directory");
+
+			// Create an empty config.toml only if it doesn't exist. If it does, create_new(true) returns an Err with ErrorKind::AlreadyExists, but we ignore it.
+			let config_path = path.join("config.toml");
+			let _ = std::fs::OpenOptions::new()
+				.write(true)
+				.create_new(true)
+				.open(&config_path);
+
+			// custom.css
+			let custom_css_path = path.join("custom.css");
+			let _ = std::fs::OpenOptions::new()
+				.write(true)
+				.create_new(true)
+				.open(&custom_css_path);
+
+			let fonts_dir_path = path.join("fonts");
+			let _ = std::fs::create_dir_all(fonts_dir_path);
+
+			let _ = app
+				.opener()
+				.open_path(path.to_string_lossy().to_string(), None::<&str>);
+		}
 		"open" => {
 			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "menu-open", true);
