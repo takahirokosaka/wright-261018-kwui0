@@ -8,7 +8,7 @@ import { marked, Renderer } from "marked";
 import postcss from "postcss";
 
 import { highlightColors } from "./visual/highlight";
-import defaultCss from "./styles-default.css?inline";
+import defaultCss from "./styles-default.css?raw";
 
 import { getCurrentFilePath } from "./save-file";
 
@@ -330,10 +330,17 @@ ${body}
 		confirmedOverwriting = true;
 	}
 
+	// Export CSS
 	await writeTextFile(
 		sylesPath,
-		`${loadedCss.css}\n\n/* footer css (generated from the front matter) */\n${footerCss}`,
+		`${loadedCss.css}\n\n/* ==========================================
+ * FOOTER STYLES (GENERATED FROM FRONT MATTER)
+ * ========================================== */
+
+${footerCss}`,
 	);
+
+	// Export HTML
 	await writeTextFile(htmlPath, html);
 
 	// Copy fonts from the app's data dir to .assets/fonts
@@ -354,12 +361,21 @@ function getLoadedCss(): { css: string; fonts: string[] } {
 	const documentCss = getOriginalDocumentCss();
 
 	const css = [
-		["/* default css */", defaultCss],
-		["/* user custom css */", userCss],
-		["/* document css */", documentCss],
+		[
+			"/* ==========================================\n * DEFAULT STYLES\n * ========================================== */",
+			defaultCss,
+		],
+		[
+			"/* ==========================================\n * USER CUSTOM STYLES\n * ========================================== */",
+			userCss,
+		],
+		[
+			"/* ==========================================\n * DOCUMENT-SPECIFIC STYLES\n * ========================================== */",
+			documentCss,
+		],
 	]
 		.filter(([, content]) => content)
-		.map(([comment, content]) => `${comment}\n${content}`)
+		.map(([comment, content]) => `${comment}\n\n${content}`)
 		.join("\n\n");
 
 	const fonts = Array.from(
@@ -373,7 +389,7 @@ function getLoadedCss(): { css: string; fonts: string[] } {
 	deduplicateCss(root);
 
 	return {
-		css: root.toString(),
+		css: "/* DO NOT EDIT - OVERWRITTEN ON HTML EXPORT */\n\n" + root.toString(),
 		fonts: [...new Set(fonts)],
 	};
 }
