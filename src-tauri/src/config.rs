@@ -16,8 +16,8 @@ struct WindowConfig {
 	height: f64,
 }
 
-const DEFAULT_WIDTH: f64 = 620.0;
-const DEFAULT_HEIGHT: f64 = 1000.0;
+const DEFAULT_WIDTH: f64 = 684.0;
+const DEFAULT_HEIGHT: f64 = 1082.0;
 
 impl Default for WindowConfig {
 	fn default() -> Self {
