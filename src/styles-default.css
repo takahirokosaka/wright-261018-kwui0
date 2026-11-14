@@ -181,7 +181,7 @@ a {
 
 .md-code-fence-label,
 .cm-line.md-code-fence-line,
-code {
+code:not(pre.terminal > code) {
 	font-family: var(--code-font);
 	font-size: var(--code-font-size);
 }
@@ -213,7 +213,7 @@ code {
 }
 
 .md-inline-code,
-code {
+code:not(pre.terminal > code) {
 	border-radius: 0.2rem;
 	font-family: var(--code-font);
 	overflow-wrap: anywhere;
@@ -574,7 +574,7 @@ aside.md-admonition {
  * Miscellaneous
  */
 
-.terminal {
+pre.terminal {
 	width: 35rem;
 	margin: 0 auto;
 	font-family: var(--code-font);
