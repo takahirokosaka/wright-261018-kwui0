@@ -107,20 +107,31 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
 				#[cfg(target_os = "macos")]
 				if submenu_text == "Wright" {
-					for (index, app_item) in submenu.items()?.iter().enumerate() {
-						if let Some(predefined) = app_item.as_predefined_menuitem() {
-							if predefined.text()? == "About Wright" {
-								submenu.insert(&settings, index + 1)?;
-								break;
-							}
+					let items = submenu.items()?;
 
-							if predefined.text()? == "Quit Wright" {
-								submenu.remove_at(index)?;
-								submenu.append(&quit)?;
-								break;
+					let mut about_index = None;
+					let mut quit_index = None;
+
+					// Don't modify while looping. Find both indices first, then modify.
+					for (index, item) in items.iter().enumerate() {
+						if let Some(predefined) = item.as_predefined_menuitem() {
+							match predefined.text()?.as_str() {
+								"About Wright" => about_index = Some(index),
+								"Quit Wright" => quit_index = Some(index),
+								_ => {}
 							}
 						}
 					}
+
+					if let Some(index) = quit_index {
+						submenu.remove_at(index)?;
+					}
+
+					if let Some(index) = about_index {
+						submenu.insert(&settings, index + 1)?;
+					}
+
+					submenu.append(&quit)?;
 				}
 
 				if submenu_text == "View" {
@@ -343,6 +354,7 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 			}
 		}
 		"quit" => {
+			eprintln!("quit");
 			let windows = app.webview_windows();
 
 			if windows.is_empty() {

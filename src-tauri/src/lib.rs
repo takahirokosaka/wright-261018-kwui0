@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 use tauri::AppHandle;
+// use tauri::Emitter;
 use tauri::Manager;
 use tauri::plugin::Builder;
 use tauri_plugin_opener::OpenerExt;
@@ -7,11 +8,11 @@ use tauri_plugin_opener::OpenerExt;
 use crate::editor_window::open_markdown_in_new_window;
 
 mod allow_directory;
-mod config;
-mod editor_window;
 mod asset;
-mod menu;
+mod config;
 mod copy_fonts;
+mod editor_window;
+mod menu;
 
 // Load custom.css at startup from the app's data directory.
 #[tauri::command]
@@ -117,9 +118,15 @@ pub fn run() {
 				}
 			}
 			tauri::RunEvent::ExitRequested {
-				api, code: None, ..
+				api, code: None,
+				..
 			} => {
+				// This isn't fired on macOS. Thus api.prevent_exit() does not work. https://github.com/tauri-apps/tauri/issues/9198#issuecomment-3592029440
 				api.prevent_exit();
+				// let _ = app_handle.emit("confirm-quit", ()); // use tauri::Emitter;
+			}
+			tauri::RunEvent::Exit { .. } => {
+				// eprintln!("Exit. you cannot prevent this.");
 			}
 			_ => {}
 		}
