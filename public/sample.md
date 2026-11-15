@@ -304,7 +304,7 @@ See the source (`Cmd/Ctrl+;`) of this line.
 </div>
 
 :::danger ⚠️ Important
-Executing arbitrary JavaScript code is not allowed. Allowing remote JavaScript execution in this application is particularly dangerous because compromised scripts could expose your documents and potentially access, modify, or delete files on your computer.
+Executing arbitrary JavaScript code is not allowed. Allowing it in this application is particularly dangerous because compromised scripts could not only expose your documents but also access, transfer, modify, or delete files on your computer. 
 :::
 
 ## Mathematical Expressions
@@ -358,9 +358,11 @@ pnpm run dev
 
 ## Sharing
 
-File > Export HTML generates `<filename>.html` and `<filename>.assets/styles.css`. Select `<filename>.html`, `<filename>.md`, and `<filename>.assets` on Finder, right-click, then choose Compress. Now you have a single archive file. If you want to sign on it, you can (using an external tool such as [GPG Suite](https://gpgtools.org/)).
+**File > Export HTML** generates `<filename>.html` and a companion `<filename>.assets` directory containing all the styles and fonts used in the document.
 
-`<filename>.assets` contains all styles and fonts used in the document, so if the receiving party has Wright, they can edit and comment on the markdown file in your compressed archive file.
+**File > Zip for Sharing** creates a zip archive containing `<filename>.html`, `<filename>.md`, and `<filename>.assets`, making it easy to share the complete document. If the recipient uses Wright, they can open the Markdown file from the archive to edit and comment on it.
+
+If you want to digitally sign your document, do so on your zip archive. You can use an external tool such as [GPG Suite](https://gpgtools.org/).
 
 ## Extra
 

@@ -39,6 +39,14 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 		Some("CmdOrCtrl+Shift+E"),
 	)?;
 
+	let share = MenuItem::with_id(
+		app,
+		"share",
+		"Zip for Sharing",
+		true,
+		Some("CmdOrCtrl+Alt+S"),
+	)?;
+
 	// Tauri has documented issues with intercepting native Cmd+Q through its general application-exit event. Replacing the native Quit item gives your app a predictable menu event to handle. See the Tauri issue on macOS application termination. https://github.com/tauri-apps/tauri/issues/9198
 	let quit = MenuItem::with_id(app, "quit", "Quit Wright", true, Some("CmdOrCtrl+Q"))?;
 
@@ -98,6 +106,7 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 					}
 
 					// Prepend these in reverse order to have them above "Close"
+					submenu.prepend(&share)?;
 					submenu.prepend(&export)?;
 					submenu.prepend(&save_as)?;
 					submenu.prepend(&save)?;
@@ -351,6 +360,11 @@ pub fn handle_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
 		"export" => {
 			if let Some(window) = focused {
 				let _ = window.emit_to(window.label(), "export", ());
+			}
+		}
+		"share" => {
+			if let Some(window) = focused {
+				let _ = window.emit_to(window.label(), "share", ());
 			}
 		}
 		"quit" => {

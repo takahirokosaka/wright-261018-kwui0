@@ -69,6 +69,7 @@ declare global {
 
 const sampleMd = await fetch("/sample.md").then((r) => r.text());
 import { emptyLineHighlightPlugin } from "./visual/empty-line";
+import { shareDocument } from "./share";
 
 const currentWindow = getCurrentWindow();
 
@@ -271,6 +272,12 @@ void updateWindowTitle(view.state.doc.toString());
 await currentWindow.listen("export", async () => {
 	exportHtml(view);
 });
+
+// Export ZIP
+await currentWindow.listen("share", async () => {
+	shareDocument(view);
+});
+
 
 // Handle drag & drop from Finder
 await setupFileDrop(view);

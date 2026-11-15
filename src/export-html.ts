@@ -28,6 +28,12 @@ declare global {
 	}
 }
 
+export interface HtmlExportResult {
+	markdownPath: string;
+	htmlPath: string;
+	assetsDir: string;
+}
+
 function getFooterText(markdown: string): string | undefined {
 	const match = markdown.match(
 		/^---[ \t]*\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/,
@@ -172,7 +178,10 @@ function createAdmonitionExtension() {
 	};
 }
 
-export async function exportHtml(view: EditorView) {
+export async function exportHtml(
+	view: EditorView,
+	options: { showSuccess?: boolean } = {},
+): Promise<HtmlExportResult | undefined> {
 	const defaultRenderer = new Renderer();
 
 	const markdown = view.state.doc.toString();
@@ -283,7 +292,7 @@ export async function exportHtml(view: EditorView) {
 	const currentFilePath = getCurrentFilePath();
 
 	if (!currentFilePath) {
-		alert("Save the Markdown document before exporting to HTML.");
+		alert("Please save the document before exporting to HTML.");
 		return;
 	}
 
@@ -349,11 +358,15 @@ ${footerCss}`,
 		fonts: loadedCss.fonts,
 	});
 
-	if (!confirmedOverwriting) {
+	if (!confirmedOverwriting && options.showSuccess !== false) {
 		alert("Exported html!");
 	}
 
-	return html;
+	return {
+		markdownPath: currentFilePath,
+		htmlPath,
+		assetsDir,
+	};
 }
 
 function getLoadedCss(): { css: string; fonts: string[] } {
