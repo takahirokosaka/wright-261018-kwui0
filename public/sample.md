@@ -356,6 +356,12 @@ pnpm run dev
 
 `footer` is embedded in an exported HTML as a CSS variable, so that it can be used by an HTML-to-PDF converter. Other attributes are unsupported for now.
 
+## Sharing
+
+File > Export HTML generates `<filename>.html` and `<filename>.assets/styles.css`. Select `<filename>.html`, `<filename>.md`, and `<filename>.assets` on Finder, right-click, then choose Compress. Now you have a single archive file. If you want to sign on it, you can (using an external tool such as [GPG Suite](https://gpgtools.org/)).
+
+`<filename>.assets` contains all styles and fonts used in the document, so if the receiving party has Wright, they can edit and comment on the markdown file in your compressed archive file.
+
 ## Extra
 
 Trailing space 
@@ -366,13 +372,15 @@ Missspell café あいうえお
 
 ## Editor Config
 
-<div class="terminal"><span style="color: var(--ansi-bright-magenta);">~</span><span style="color: var(--ansi-bright-blue);"> %</span> <span style="color: var(--ansi-green);">cat</span> <span style="text-decoration: underline;">~/.wright.conf</span>
+On the menu bar, find "Settings..." under "Wright". This opens the app's config folder (`~/Library/Application Support/com.takahirokosaka.wright`). At first it contains empty `config.toml`, `custom.css`, and `fonts` folder.
+
+<div class="terminal"><span style="color: var(--ansi-bright-magenta);">~</span><span style="color: var(--ansi-bright-blue);"> %</span> <span style="color: var(--ansi-green);">cat</span> <span style="text-decoration: underline;">config.toml</span>
 [window]
 width = 684
 height = 1082
 &nbsp;
 [editor]
-assets_suffix = &quot;.assets/lfs&quot;
+assets_suffix = &quot;media/lfs&quot;
 </div>
 
 ## Custom Style Sheet
