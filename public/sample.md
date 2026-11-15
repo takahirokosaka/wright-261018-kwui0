@@ -243,7 +243,11 @@ You can make a vertical space by pressing Enter key many times.
 
 
 
-Outside this editor, however, contiguous empty lines are handled as one empty line in markdown. Do not rely on this style of making a space!
+Outside this editor, however, contiguous empty lines are handled as a single paragraph separator. Do not rely on this style of making a space! Instead, switch to Source Mode, then type `<br>` tags:
+
+<br>
+<br>
+<br>
 
 ## Escaping Special Characters
 
