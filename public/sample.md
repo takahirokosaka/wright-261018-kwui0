@@ -150,7 +150,9 @@ Nested blockquotes:
 >> This is the second paragraph.
 >>> It can contain multiple paragraphs. It can contain multiple paragraphs.
 
-## Font
+## Fonts
+
+### Local Only
 
 You can use your favorite fonts by installing them in `~/Library/Application Support/com.takahirokosaka.wright/fonts`. You also need to write `~/Library/Application Support/com.takahirokosaka.wright/custom.css`:
 
@@ -171,6 +173,25 @@ You can use your favorite fonts by installing them in `~/Library/Application Sup
 
 :root {
 	font-family: "Inter", sans-serif;
+}
+```
+
+### Google Fonts
+
+If you are going to eventually upload your exported HTML files to a web server, you may want to let your readers download fonts from Google Fonts rather than your web server. In that case, define local font sources and specify both in `font-family`:
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+	font-family: "Inter Local";
+	src: url("wright://font/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+	font-weight: 100 900;
+	font-style: normal;
+}
+
+:root {
+	font-family: "Inter", "Inter Local", sans-serif;
 }
 ```
 
@@ -224,7 +245,7 @@ A local images of an absolute path:
 
 Drag & drop an image file from Finder. As below, a relative path appears if this markdown file is saved on the disk. Put `!` just before the image tag to make the image appear.
 
-![local](<./Untitled.assets/lfs/paste-2026-10-22T05-29-43.065Z.png>)
+![local](<./demo.assets/lfs/paste-2026-10-22T05-29-43.065Z.png>)
 
 If you copy an image file in Finder and paste it on this editor, the image is copied to the asset folder of the current markdown document. This asset folder can be configured in `~/.wright.conf`.
 

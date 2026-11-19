@@ -409,7 +409,22 @@ function getLoadedCss(): { css: string; fonts: string[] } {
 	const processedCss = css.replace(/wright:\/\/font\//g, "./fonts/");
 
 	const root = postcss.parse(processedCss);
+
+	// Extract @import rules and move them to the beginning.
+	const imports: postcss.AtRule[] = [];
+
+	root.walkAtRules("import", (rule) => {
+		imports.push(rule.clone());
+		rule.remove();
+	});
+
+	// Deduplicate the remaining CSS.
 	deduplicateCss(root);
+
+	// Prepend imports in their original order.
+	for (const rule of imports.reverse()) {
+		root.prepend(rule);
+	}
 
 	return {
 		css: "/* DO NOT EDIT - OVERWRITTEN ON HTML EXPORT */\n\n" + root.toString(),
