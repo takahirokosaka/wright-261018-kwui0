@@ -5,6 +5,8 @@ import { confirm } from "@tauri-apps/plugin-dialog";
 import type { EditorView } from "@codemirror/view";
 import { marked, Renderer } from "marked";
 
+import { parse } from "yaml";
+
 import postcss from "postcss";
 
 import { highlightColors } from "./visual/highlight";
@@ -34,18 +36,21 @@ export interface HtmlExportResult {
 	assetsDir: string;
 }
 
-function getFooterText(markdown: string): string | undefined {
+function getFrontMatterText(
+	fieldname: string,
+	markdown: string,
+): string | undefined {
 	const match = markdown.match(
 		/^---[ \t]*\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/,
 	);
 
 	if (!match) return undefined;
 
-	const footerMatch = match[1].match(/^footer:[ \t]*(.*)$/m);
+	const frontMatter = parse(match[1]);
 
-	if (!footerMatch) return undefined;
+	const value = frontMatter?.[fieldname];
 
-	return footerMatch[1].trim().replace(/^(['"])(.*)\1$/, "$2");
+	return typeof value === "string" ? value.trim() : undefined;
 }
 
 function escapeCssString(value: string): string {
@@ -187,7 +192,7 @@ export async function exportHtml(
 	const markdown = view.state.doc.toString();
 
 	// get footer text
-	const footerText = getFooterText(markdown);
+	const footerText = getFrontMatterText("footer", markdown);
 	const footerCss =
 		footerText === undefined
 			? ""
@@ -304,12 +309,17 @@ export async function exportHtml(
 	const sylesPath = `${assetsDir}/styles.css`;
 	const cssHref = `./${assetsDir.split(/[\\/]/).pop()}/styles.css`;
 
+	let title = getFrontMatterText("title", markdown);
+	if (!title) {
+		title = htmlPath.split(/[\\/]/).pop()!;
+	}
+
 	const html = `<!doctype html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>${htmlPath.split(/[\\/]/).pop()!}</title>
+   <title>${title}</title>
 	<link rel="stylesheet" href="${cssHref}">
 </head>
 <body style="overflow: auto;">
