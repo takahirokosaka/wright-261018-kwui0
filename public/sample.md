@@ -385,7 +385,7 @@ pnpm run dev
 
 **File > Export HTML** generates `<filename>.html` and a companion `<filename>.assets` directory containing all the styles and fonts used in the document.
 
-**File > Zip for Sharing** creates a zip archive containing `<filename>.html`, `<filename>.md`, and `<filename>.assets`, making it easy to share the complete document. If the recipient uses Wright, they can open the Markdown file from the archive to edit and comment on it.
+**File > Zip to Share** creates a zip archive containing `<filename>.html`, `<filename>.md`, and `<filename>.assets`, making it easy to share the complete document. If the recipient uses Wright, they can open the Markdown file from the archive to edit and comment on it.
 
 If you want to digitally sign your document, do so on your zip archive. You can use an external tool such as [GPG Suite](https://gpgtools.org/).
 

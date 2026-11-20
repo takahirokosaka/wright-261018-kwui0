@@ -42,7 +42,7 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 	let share = MenuItem::with_id(
 		app,
 		"share",
-		"Zip for Sharing",
+		"Zip to Share",
 		true,
 		Some("CmdOrCtrl+Alt+S"),
 	)?;
