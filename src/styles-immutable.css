@@ -79,7 +79,7 @@ body {
 	color: #334155;
 	border: 1px solid #e2e8f0;
 	font-family: system-ui, sans-serif;
-	font-size: 13px;
+	font-size: 18px;
 	box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
 }
 
@@ -91,6 +91,7 @@ body {
 	border-radius: 6px;
 	padding: 7px 10px;
 	outline: none;
+	width: 12rem;
 }
 
 .cm-editor .cm-search .cm-textfield:focus {
