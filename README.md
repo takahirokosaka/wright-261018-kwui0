@@ -27,7 +27,7 @@ For supported Markdown syntax, please refer to `sample.md`, which is accessible 
 
 ## Time Budget
 
-I plan to spend one hour per week on this app for maintenance.
+I plan to spend one hour per week maintaining this app, mainly for bug fixes and security updates. This editor will be intentionally kept minimal.
 
 ## Dependencies
 
@@ -44,7 +44,6 @@ The developer console (Cmd+Option+i) is available on the production builds. This
 
 The app’s window may hang when it encountered an unusually exotic combination of nested Markdown syntax. If this happened, close the window, fix the problem with TextEdit, and reopen the document.
 
-Please note that the lack of a feature you want isn’t an issue. This editor is intentionally kept minimal.
 ## TODOs
 
 **Test**
@@ -77,4 +76,4 @@ GPL-3.0
 
 ## Copyright
 
-© 2026- Takahiro Kosaka
+© 2026 Takahiro Kosaka
