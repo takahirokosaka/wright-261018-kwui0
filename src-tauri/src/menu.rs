@@ -14,6 +14,8 @@ use tauri_plugin_opener::OpenerExt;
 pub struct MenuState {
 	save: MenuItem<tauri::Wry>,
 	save_as: MenuItem<tauri::Wry>,
+	export: MenuItem<tauri::Wry>,
+	share: MenuItem<tauri::Wry>,
 	source_mode: CheckMenuItem<tauri::Wry>,
 	focused_windows: Mutex<HashSet<String>>,
 	source_mode_by_window: Mutex<HashMap<String, bool>>, // Lets each window retain its own Source Mode setting, even when another window gets focus.
@@ -39,13 +41,7 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 		Some("CmdOrCtrl+Shift+E"),
 	)?;
 
-	let share = MenuItem::with_id(
-		app,
-		"share",
-		"Zip to Share",
-		true,
-		Some("CmdOrCtrl+Alt+S"),
-	)?;
+	let share = MenuItem::with_id(app, "share", "Zip to Share", true, Some("CmdOrCtrl+Alt+S"))?;
 
 	// Tauri has documented issues with intercepting native Cmd+Q through its general application-exit event. Replacing the native Quit item gives your app a predictable menu event to handle. See the Tauri issue on macOS application termination. https://github.com/tauri-apps/tauri/issues/9198
 	let quit = MenuItem::with_id(app, "quit", "Quit Wright", true, Some("CmdOrCtrl+Q"))?;
@@ -180,6 +176,8 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 	app.manage(MenuState {
 		save,
 		save_as,
+		export,
+		share,
 		source_mode,
 		focused_windows: Mutex::new(focused_windows),
 		source_mode_by_window: Mutex::new(source_mode_by_window),
@@ -221,6 +219,8 @@ fn update_enabled_state(app: &AppHandle) {
 
 	let _ = state.save.set_enabled(enabled);
 	let _ = state.save_as.set_enabled(enabled);
+	let _ = state.export.set_enabled(enabled);
+	let _ = state.share.set_enabled(enabled);
 	let _ = state.source_mode.set_enabled(enabled);
 	let _ = state.source_mode.set_checked(source_mode_enabled);
 }
