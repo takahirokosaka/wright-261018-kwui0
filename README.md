@@ -1,22 +1,24 @@
 # Wright
+
 Yet another WYSIWYG Markdown editor
 
 ## Target Audience
 
-It’s me. But this app might also be helpful to others who want to write Markdown with a simple editor.
+I made this app for myself. But this app might also be helpful to others who want to write Markdown with a simple editor.
 
-I wanted to replace Typora, the best wysiwyg Markdown editor I know, for two reasons: 1) It’s not open source, so I cannot customize it; and 2) its three-user license is not enough for me.
+I wanted to replace Typora, the best wysiwyg Markdown editor I know, for two reasons: 1) It’s not open source, so I cannot customize it; and 2) its three-user license is not enough for me. Apart from Typora, there was [another reason](https://takahirokosaka.com/#pdf) too. I got fed up with PDFs on goverment websites.
 
 So far this app is built only for macOS. Most of the code should work on Linux and Windows too. If you find this app useful on either platform, please fork this repo.
 
 I’ve been using this app since the end of October 2026.
+
 ## Features
 
 - No vault (filesystem-based like TextEdit or NotePad)
 - Clutter-free UI
 - No unintentional normalization (your Markdown source is the only source of truth)
 - HTML element rendering (with DOM cleansing and no JavaScript, for security)
-- Customizable CSS (by editing `~/.wright.css`)
+- Customizable CSS (by editing `custom.css`, located in the app’s data directory, which you can open by pressing `Cmd+,`)
 - Pasting images
   - by dragging and dropping from Finder, or
   - from the clipboard (PNG only, for pasting screen captures)
@@ -42,7 +44,7 @@ The developer console (Cmd+Option+i) is available on the production builds. This
 
 ## Known Issues
 
-The app’s window may hang when it encountered an unusually exotic combination of nested Markdown syntax. If this happened, close the window, fix the problem with TextEdit, and reopen the document.
+The app’s window may hang when it encountered an unexpected combination of nested Markdown syntax. If this happened, close the window, fix the problem with TextEdit, and reopen the document.
 
 ## TODOs
 
@@ -64,7 +66,7 @@ Fix the rendering cache. It grows indefinitely.
 
 **Documentation**
 
-- Encourage the use of macOS keyboard shortcuts (Ctrl+A, Ctrl+E, etc.) Without mastering them, using this app would be unproductive.
+- Encourage the use of macOS keyboard shortcuts (`Ctrl+A`, `Ctrl+E`, etc.) Without mastering them, using this app would be unproductive.
 - Explain how to use smart quotes
 - How to customize CSS (e.g., to use a different set of fonts)
 
