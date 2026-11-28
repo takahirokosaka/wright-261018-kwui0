@@ -20,6 +20,7 @@ export function urlDecorations(view: EditorView): DecorationSet {
 			to,
 			enter(node) {
 				if (node.name === "URL") {
+					// Should we handle あたらしい（https://example.com?a=b&c=d）がっこう?
 					builder.add(node.from, node.to, bareUrlMark);
 					return;
 				}
